@@ -27,6 +27,7 @@ public class SceneFragment extends Fragment {
     protected AnimationPropParser.Animator returnAnimator;
     protected AnimationPropParser.Animator exitAnimator;
     protected AnimationPropParser.Animator reenterAnimator;
+    protected boolean predictiveSharedElements = false;
 
     public SceneFragment() {
         super();
@@ -114,9 +115,10 @@ public class SceneFragment extends Fragment {
             });
             return anim;
         }
-        if ((nextAnim == 0 && enterAnimator == null) && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+        if (!predictiveSharedElements && (nextAnim == 0 && enterAnimator == null) && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
             ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
         }
+        predictiveSharedElements = false;
         if (nextAnim == 0 && exitAnimator != null && !enter) return transform(exitAnimator, false);
         if (nextAnim == -1 && returnAnimator != null) return transform(returnAnimator, false);
         return super.onCreateAnimator(transit, enter, nextAnim);

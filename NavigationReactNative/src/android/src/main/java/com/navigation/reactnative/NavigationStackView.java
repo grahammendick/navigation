@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.transition.Transition;
+import androidx.transition.TransitionListenerAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.bridge.Arguments;
@@ -115,11 +116,31 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         int crumb = fragment.getChildFragmentManager().getBackStackEntryCount();
                         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) crumb--;
                         if (popCrumb <= crumb + 1) {
+                            FragmentManager fragmentManager = fragment.getChildFragmentManager();
+                            SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKeys.getString(crumb + 1));
+                            ArrayList<Pair<SharedElementView, String>> sharedElements = fragment != null ? getOldSharedElements(crumb + 1, popCrumb, fragment) : null;
+                            SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(popCrumb));
+                            if (prevFragment != null && prevFragment.getScene() != null) {
+                                if (sharedElements != null) {
+                                    prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
+                                    prevFragment.predictiveSharedElements = true;
+                                }
+                            }
                             ReactContext reactContext = (ReactContext) getContext();
                             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
                             eventDispatcher.dispatchEvent(new NavigationStackView.WillNavigateBackEvent(getId(), crumb));
                         }
                     }
+                }
+
+                @Override
+                public void onBackStackChangeCancelled() {
+                    FragmentManager.OnBackStackChangedListener.super.onBackStackChangeCancelled();
+                    int crumb = fragment.getChildFragmentManager().getBackStackEntryCount();
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) crumb--;
+                    FragmentManager fragmentManager = fragment.getChildFragmentManager();
+                    SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKeys.getString(crumb - 1));
+                    fragment.getScene().setAlpha(1);
                 }
             });
         }
@@ -183,10 +204,12 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                             enterTrans = enterTrans != null ? enterTrans : new MaterialFade();
                             scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : new MaterialFade();
                         }
-                        prevFragment.setExitTransition(exitTrans);
-                        prevFragment.exitAnimator = exitAnimator;
-                        prevFragment.setReenterTransition(scene.enterTrans);
-                        prevFragment.reenterAnimator = scene.enterAnimator;
+                        if (sharedElements == null) {
+                            prevFragment.setExitTransition(exitTrans);
+                            prevFragment.exitAnimator = exitAnimator;
+                            prevFragment.setReenterTransition(scene.enterTrans);
+                            prevFragment.reenterAnimator = scene.enterAnimator;
+                        }
                     }
                 }
                 if (sharedElements != null) {
@@ -197,11 +220,22 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 }
                 boolean nonAnimatedEnter = oldCrumb == -1 || ((sharedElements != null || exitTrans != null) && enterTrans == null);
                 boolean nonAnimatedPopEnter = (sharedElements != null || scene.exitTrans != null) && scene.enterTrans == null;
-                fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? (enterAnimator != null ? 0 : enter) : 0, exitAnimator != null ? 0 : exit, !nonAnimatedPopEnter ? (scene.enterAnimator != null ? -1 : popEnter) : 0, scene.exitAnimator != null ? -1 : popExit);
+                if (sharedElements == null)
+                    fragmentTransaction.setCustomAnimations(!nonAnimatedEnter ? (enterAnimator != null ? 0 : enter) : 0, exitAnimator != null ? 0 : exit, !nonAnimatedPopEnter ? (scene.enterAnimator != null ? -1 : popEnter) : 0, scene.exitAnimator != null ? -1 : popExit);
                 SceneFragment fragment = new SceneFragment(scene, getSharedElementSet(sharedElementNames), containerTransform);
                 fragment.setEnterTransition(enterTrans);
                 fragment.enterAnimator = !nonAnimatedEnter ? enterAnimator : null;
                 fragment.setReturnTransition(scene.exitTrans);
+                if (scene.exitTrans != null) {
+                    scene.exitTrans.addListener(new TransitionListenerAdapter() {
+                        @Override
+                        public void onTransitionEnd(@NonNull Transition transition) {
+                            super.onTransitionEnd(transition);
+                            int crumb = NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount();
+                            onRest(crumb);
+                        }
+                    });
+                }
                 fragment.returnAnimator = scene.exitAnimator;
                 fragmentTransaction.replace(getId(), fragment, key);
                 if (nextCrumb > 0) {
