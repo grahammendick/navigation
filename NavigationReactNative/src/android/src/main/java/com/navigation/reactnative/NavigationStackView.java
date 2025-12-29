@@ -140,7 +140,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) crumb--;
                     FragmentManager fragmentManager = fragment.getChildFragmentManager();
                     SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKeys.getString(crumb - 1));
-                    fragment.getScene().setAlpha(1);
+                    if (fragment != null && fragment.getScene() != null)
+                        fragment.getScene().setAlpha(1);
                 }
             });
         }
