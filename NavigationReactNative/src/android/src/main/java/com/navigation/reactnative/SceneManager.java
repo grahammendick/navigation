@@ -55,11 +55,6 @@ public class SceneManager extends ViewGroupManager<SceneView> {
         view.setLandscape(landscape);
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-    }
-
     @Nonnull
     @Override
     protected SceneView createViewInstance(@Nonnull ThemedReactContext reactContext) {
