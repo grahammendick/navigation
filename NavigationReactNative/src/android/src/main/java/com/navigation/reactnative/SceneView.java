@@ -108,11 +108,6 @@ public class SceneView extends ReactViewGroup {
         eventDispatcher.dispatchEvent(new PoppedEvent(getId()));
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-    }
-
     static class PoppedEvent extends Event<PoppedEvent> {
         public PoppedEvent(int viewId) {
             super(viewId);
