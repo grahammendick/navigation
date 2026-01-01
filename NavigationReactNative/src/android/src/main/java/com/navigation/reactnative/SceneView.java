@@ -7,10 +7,10 @@ import android.view.WindowInsets;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
-import androidx.transition.Transition;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
@@ -28,8 +28,8 @@ public class SceneView extends ReactViewGroup {
     protected String exitAnim;
     protected AnimationPropParser.Animator enterAnimator;
     protected AnimationPropParser.Animator exitAnimator;
-    protected Transition enterTrans;
-    protected Transition exitTrans;
+    protected ReadableMap enterTrans;
+    protected ReadableMap exitTrans;
     private boolean landscape;
     public final HashSet<SharedElementView> sharedElements = new HashSet<>();
     SharedElementMotion sharedElementMotion;
@@ -106,6 +106,11 @@ public class SceneView extends ReactViewGroup {
         ReactContext reactContext = (ReactContext) getContext();
         EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
         eventDispatcher.dispatchEvent(new PoppedEvent(getId()));
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
     }
 
     static class PoppedEvent extends Event<PoppedEvent> {

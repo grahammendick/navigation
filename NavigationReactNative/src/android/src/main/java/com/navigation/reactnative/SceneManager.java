@@ -40,19 +40,24 @@ public class SceneManager extends ViewGroupManager<SceneView> {
 
     @ReactProp(name = "enterTrans")
     public void setEnterTrans(SceneView view, ReadableMap enterTrans) {
-        view.enterTrans = AnimationPropParser.getTransition(enterTrans);
+        view.enterTrans = enterTrans;
         view.enterAnimator = AnimationPropParser.getAnimator(enterTrans, true);
     }
 
     @ReactProp(name = "exitTrans")
     public void setExitTrans(SceneView view, ReadableMap exitTrans) {
-        view.exitTrans = AnimationPropParser.getTransition(exitTrans);
+        view.exitTrans = exitTrans;
         view.exitAnimator = AnimationPropParser.getAnimator(exitTrans, false);
     }
 
     @ReactProp(name = "landscape")
     public void setLandscape(SceneView view, boolean landscape) {
         view.setLandscape(landscape);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
     }
 
     @Nonnull

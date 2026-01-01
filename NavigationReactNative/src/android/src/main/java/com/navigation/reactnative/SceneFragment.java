@@ -18,7 +18,17 @@ import androidx.lifecycle.Lifecycle;
 import androidx.transition.Transition;
 import androidx.transition.TransitionListenerAdapter;
 
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+import com.google.android.material.transition.Hold;
+import com.google.android.material.transition.MaterialElevationScale;
+import com.google.android.material.transition.MaterialFade;
+import com.google.android.material.transition.MaterialFadeThrough;
+import com.google.android.material.transition.MaterialSharedAxis;
+
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class SceneFragment extends Fragment {
@@ -176,6 +186,7 @@ public class SceneFragment extends Fragment {
 
     @Override
     public void setEnterTransition(@Nullable Object transition) {
+        transition = getTransition((ReadableMap) transition);
         super.setEnterTransition(transition);
         if (transition == null) return;
         ((Transition) transition).addListener(new TransitionListenerAdapter(){
@@ -189,7 +200,14 @@ public class SceneFragment extends Fragment {
     }
 
     @Override
+    public void setExitTransition(@Nullable Object transition) {
+        transition = getTransition((ReadableMap) transition);
+        super.setExitTransition(transition);
+    }
+
+    @Override
     public void setReenterTransition(@Nullable Object transition) {
+        transition = getTransition((ReadableMap) transition);
         super.setReenterTransition(transition);
         if (transition == null) return;
         ((Transition) transition).addListener(new TransitionListenerAdapter(){
@@ -204,6 +222,7 @@ public class SceneFragment extends Fragment {
 
     @Override
     public void setReturnTransition(@Nullable Object transition) {
+        transition = getTransition((ReadableMap) transition);
         super.setReturnTransition(transition);
         if (transition == null) return;
         ((Transition) transition).addListener(new TransitionListenerAdapter(){
@@ -214,6 +233,30 @@ public class SceneFragment extends Fragment {
                   scene.popped();
             }
         });
+    }
+
+    private Transition getTransition(ReadableMap trans) {
+        Transition transition = null;
+        if (trans == null) return null;
+        ReadableArray items = trans.hasKey("items") ? trans.getArray("items") : null;
+        if (items == null || items.size() == 0) return null;
+        trans = items.getMap(0);
+        String transType = trans != null ? trans.getString("type") : null;
+        if (transType == null) return null;
+        switch (transType) {
+            case "sharedAxis" -> {
+                Map<String, Integer> axisMap = new HashMap<>();
+                axisMap.put("x", MaterialSharedAxis.X);
+                axisMap.put("y", MaterialSharedAxis.Y);
+                Integer axis = axisMap.get(trans.getString("axis"));
+                transition = new MaterialSharedAxis(axis != null ? axis : MaterialSharedAxis.Z, true);
+            }
+            case "elevationScale" -> transition = new MaterialElevationScale(true);
+            case "fade" -> transition = new MaterialFade();
+            case "fadeThrough" -> transition = new MaterialFadeThrough();
+            case "hold" -> transition = new Hold();
+        }
+        return transition;
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.PixelUtil;
@@ -37,7 +38,6 @@ import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.google.android.material.transition.MaterialFade;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,8 +59,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected String exitAnim;
     protected AnimationPropParser.Animator enterAnimator;
     protected AnimationPropParser.Animator exitAnimator;
-    protected Transition enterTrans;
-    protected Transition exitTrans;
+    protected ReadableMap enterTrans;
+    protected ReadableMap exitTrans;
     protected ReadableArray sharedElementNames;
     protected Boolean startNavigation = null;
     protected boolean containerTransform = false;
@@ -200,10 +200,12 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     if (prevFragment != null) {
                         sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
                         if (sharedElements != null || enterTrans != null || exitTrans != null || scene.enterTrans != null || scene.exitTrans != null) {
-                            exitTrans = exitTrans != null ? exitTrans : new MaterialFade();
-                            scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : new MaterialFade();
-                            enterTrans = enterTrans != null ? enterTrans : new MaterialFade();
-                            scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : new MaterialFade();
+                            WritableMap fadeMap = Arguments.createMap();
+                            fadeMap.putString("type", "fade");
+                            exitTrans = exitTrans != null ? exitTrans : fadeMap;
+                            scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : fadeMap;
+                            enterTrans = enterTrans != null ? enterTrans : fadeMap;
+                            scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : fadeMap;
                         }
                         if (sharedElements == null) {
                             prevFragment.setExitTransition(exitTrans);
@@ -227,8 +229,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragment.setEnterTransition(enterTrans);
                 fragment.enterAnimator = !nonAnimatedEnter ? enterAnimator : null;
                 fragment.setReturnTransition(scene.exitTrans);
-                if (scene.exitTrans != null) {
-                    scene.exitTrans.addListener(new TransitionListenerAdapter() {
+                if (fragment.getExitTransition() != null) {
+                    ((Transition) fragment.getExitTransition()).addListener(new TransitionListenerAdapter() {
                         @Override
                         public void onTransitionEnd(@NonNull Transition transition) {
                             super.onTransitionEnd(transition);
@@ -262,10 +264,12 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKeys.getString(oldCrumb));
             if (prevFragment != null) {
                 if (enterTrans != null || exitTrans != null || scene.enterTrans != null || scene.exitTrans != null) {
-                    exitTrans = exitTrans != null ? exitTrans : new MaterialFade();
-                    scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : new MaterialFade();
-                    enterTrans = enterTrans != null ? enterTrans : new MaterialFade();
-                    scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : new MaterialFade();
+                    WritableMap fadeMap = Arguments.createMap();
+                    fadeMap.putString("type", "fade");
+                    exitTrans = exitTrans != null ? exitTrans :  fadeMap;
+                    scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : fadeMap;
+                    enterTrans = enterTrans != null ? enterTrans : fadeMap;
+                    scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : fadeMap;
                 }
                 prevFragment.setExitTransition(exitTrans);
                 prevFragment.exitAnimator = exitAnimator;
