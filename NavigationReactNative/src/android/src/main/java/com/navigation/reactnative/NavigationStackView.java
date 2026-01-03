@@ -21,8 +21,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.transition.Transition;
-import androidx.transition.TransitionListenerAdapter;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.facebook.react.bridge.Arguments;
@@ -220,16 +221,16 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragment.setEnterTransition(enterTrans);
                 fragment.enterAnimator = !nonAnimatedEnter ? enterAnimator : null;
                 fragment.setReturnTransition(scene.exitTrans);
-                if (fragment.getReturnTransition() != null) {
-                    ((Transition) fragment.getReturnTransition()).addListener(new TransitionListenerAdapter() {
-                        @Override
-                        public void onTransitionEnd(@NonNull Transition transition) {
-                            super.onTransitionEnd(transition);
-                            int crumb = NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount();
-                            onRest(crumb);
+                fragment.getLifecycle().addObserver(new LifecycleEventObserver() {
+                    @Override
+                    public void onStateChanged(@NonNull LifecycleOwner lifecycleOwner, @NonNull Lifecycle.Event event) {
+                        if (event == Lifecycle.Event.ON_DESTROY || event == Lifecycle.Event.ON_RESUME) {
+                            onRest(NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount());
+                            if (event == Lifecycle.Event.ON_DESTROY)
+                                fragment.getLifecycle().removeObserver(this);
                         }
-                    });
-                }
+                    }
+                });
                 fragment.returnAnimator = scene.exitAnimator;
                 fragmentTransaction.replace(getId(), fragment, key);
                 if (nextCrumb > 0) {

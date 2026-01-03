@@ -1,7 +1,6 @@
 package com.navigation.reactnative;
 
 import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -9,16 +8,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.transition.Transition;
-import androidx.transition.TransitionListenerAdapter;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -70,72 +65,11 @@ public class SceneFragment extends Fragment {
 
     @Nullable
     @Override
-    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if (nextAnim != 0 && enter) {
-            Animation anim;
-            try {
-                anim = AnimationUtils.loadAnimation(getContext(), nextAnim);
-            } catch(RuntimeException e) {
-                return null;
-            }
-            anim.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    if (getView() != null && getView().getParent() instanceof NavigationStackView)
-                        ((NavigationStackView) getView().getParent()).onRest(scene.crumb);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
-            });
-            return anim;
-        }
-        return super.onCreateAnimation(transit, enter, nextAnim);
-    }
-
-    @Nullable
-    @Override
     public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
-        if ((nextAnim != 0 || enterAnimator != null) && enter) {
-            Animator anim;
-            try {
-                anim = nextAnim == 0 ? transform(enterAnimator, true) : (nextAnim == -1 ? transform(reenterAnimator, true) : AnimatorInflater.loadAnimator(getContext(), nextAnim));
-            } catch(RuntimeException e) {
-                return null;
-            }
-            assert anim != null;
-            anim.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(@NonNull Animator animator) {
-                }
-
-                @Override
-                public void onAnimationEnd(@NonNull Animator animator) {
-                    if (getView() != null && getView().getParent() instanceof NavigationStackView)
-                        ((NavigationStackView) getView().getParent()).onRest(scene.crumb);
-                }
-
-                @Override
-                public void onAnimationCancel(@NonNull Animator animator) {
-                }
-
-                @Override
-                public void onAnimationRepeat(@NonNull Animator animator) {
-                }
-            });
-            return anim;
-        }
-        if (!predictiveSharedElements && getView() != null && (nextAnim == 0 && enterAnimator == null) && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-            ((NavigationStackView) getView().getParent()).onRest(scene.crumb);
-        }
-        predictiveSharedElements = false;
+        if (nextAnim == 0 && enterAnimator != null && enter) return transform(enterAnimator, true);
+        if (nextAnim == -1 && reenterAnimator != null && enter) return transform(reenterAnimator, true);
         if (nextAnim == 0 && exitAnimator != null && !enter) return transform(exitAnimator, false);
-        if (nextAnim == -1 && returnAnimator != null) return transform(returnAnimator, false);
+        if (nextAnim == -1 && returnAnimator != null && !enter) return transform(returnAnimator, false);
         return super.onCreateAnimator(transit, enter, nextAnim);
     }
 
@@ -193,15 +127,6 @@ public class SceneFragment extends Fragment {
     public void setEnterTransition(@Nullable Object transition) {
         transition = getTransition((ReadableMap) transition);
         super.setEnterTransition(transition);
-        if (transition == null) return;
-        ((Transition) transition).addListener(new TransitionListenerAdapter(){
-            @Override
-            public void onTransitionEnd(@NonNull Transition transition) {
-                super.onTransitionEnd(transition);
-                if (getView() != null && getView().getParent() instanceof NavigationStackView && isVisible())
-                    ((NavigationStackView) getView().getParent()).onRest(scene.crumb);
-            }
-        });
     }
 
     @Override
@@ -214,15 +139,6 @@ public class SceneFragment extends Fragment {
     public void setReenterTransition(@Nullable Object transition) {
         transition = getTransition((ReadableMap) transition);
         super.setReenterTransition(transition);
-        if (transition == null) return;
-        ((Transition) transition).addListener(new TransitionListenerAdapter(){
-            @Override
-            public void onTransitionEnd(@NonNull Transition transition) {
-                super.onTransitionEnd(transition);
-                if (getView() != null && getView().getParent() instanceof NavigationStackView && isVisible())
-                    ((NavigationStackView) getView().getParent()).onRest(scene.crumb);
-            }
-        });
     }
 
     @Override
