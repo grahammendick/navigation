@@ -229,15 +229,6 @@ public class SceneFragment extends Fragment {
     public void setReturnTransition(@Nullable Object transition) {
         transition = getTransition((ReadableMap) transition);
         super.setReturnTransition(transition);
-        if (transition == null) return;
-        ((Transition) transition).addListener(new TransitionListenerAdapter(){
-            @Override
-            public void onTransitionEnd(@NonNull Transition transition) {
-                super.onTransitionEnd(transition);
-                if (scene != null && !isVisible())
-                    scene.popped();
-            }
-        });
     }
 
     private Transition getTransition(ReadableMap trans) {
@@ -267,7 +258,7 @@ public class SceneFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (getReturnTransition() == null && scene != null)
+        if (scene != null)
             scene.popped();
     }
 
