@@ -141,17 +141,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         }
                     }
                 }
-
-                @Override
-                public void onBackStackChangeCancelled() {
-                    FragmentManager.OnBackStackChangedListener.super.onBackStackChangeCancelled();
-                    int crumb = fragment.getChildFragmentManager().getBackStackEntryCount();
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) crumb--;
-                    FragmentManager fragmentManager = fragment.getChildFragmentManager();
-                    SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKeys.getString(crumb - 1));
-                    if (fragment != null && fragment.getScene() != null)
-                        fragment.getScene().setAlpha(1);
-                }
             });
         }
         startNavigation = startNavigation == null && keys.size() != 0;
@@ -165,7 +154,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             ArrayList<Pair<SharedElementView, String>> sharedElements = fragment != null ? getOldSharedElements(currentCrumb, crumb, fragment) : null;
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(crumb));
             if (prevFragment != null && prevFragment.getScene() != null) {
-                ViewGroup parent = (ViewGroup) prevFragment.getScene().getParent();
+                // check if this is right now
+                ViewGroup parent = (ViewGroup) prevFragment.getScene().getParent().getParent();
                 if (parent != null && parent != this) {
                     parent.removeView(prevFragment.getScene());
                     parent.endViewTransition(prevFragment.getScene());

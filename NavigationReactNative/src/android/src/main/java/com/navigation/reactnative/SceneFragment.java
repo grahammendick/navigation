@@ -4,12 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,11 +56,15 @@ public class SceneFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (scene != null) {
-            if (scene.getParent() != null)
-                ((ViewGroup) scene.getParent()).endViewTransition(scene);
+            SceneFragmentView fragmentView = new SceneFragmentView(getContext());
+            if (scene.getParent() != null) {
+                // ((ViewGroup) scene.getParent()).endViewTransition(scene);
+                ((ViewGroup) scene.getParent()).removeView(scene);
+            }
+            fragmentView.addView(scene);
             if (scene.sharedElementMotion != null)
                 postponeEnterTransition(300, TimeUnit.MILLISECONDS);
-            return scene;
+            return fragmentView;
         }
         return new View(getContext());
     }
@@ -80,8 +86,8 @@ public class SceneFragment extends Fragment {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    if (scene.getParent() instanceof NavigationStackView)
-                        ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+                    if (getView() != null && getView().getParent() instanceof NavigationStackView)
+                        ((NavigationStackView) getView().getParent()).onRest(scene.crumb);
                 }
 
                 @Override
@@ -111,8 +117,8 @@ public class SceneFragment extends Fragment {
 
                 @Override
                 public void onAnimationEnd(@NonNull Animator animator) {
-                    if (scene.getParent() instanceof NavigationStackView)
-                        ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+                    if (getView() != null && getView().getParent() instanceof NavigationStackView)
+                        ((NavigationStackView) getView().getParent()).onRest(scene.crumb);
                 }
 
                 @Override
@@ -125,8 +131,8 @@ public class SceneFragment extends Fragment {
             });
             return anim;
         }
-        if (!predictiveSharedElements && (nextAnim == 0 && enterAnimator == null) && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-            ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+        if (!predictiveSharedElements && getView() != null && (nextAnim == 0 && enterAnimator == null) && enter && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+            ((NavigationStackView) getView().getParent()).onRest(scene.crumb);
         }
         predictiveSharedElements = false;
         if (nextAnim == 0 && exitAnimator != null && !enter) return transform(exitAnimator, false);
@@ -193,8 +199,8 @@ public class SceneFragment extends Fragment {
             @Override
             public void onTransitionEnd(@NonNull Transition transition) {
                 super.onTransitionEnd(transition);
-                if (scene.getParent() instanceof NavigationStackView && isVisible())
-                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+                if (getView() != null && getView().getParent() instanceof NavigationStackView && isVisible())
+                    ((NavigationStackView) getView().getParent()).onRest(scene.crumb);
             }
         });
     }
@@ -214,8 +220,8 @@ public class SceneFragment extends Fragment {
             @Override
             public void onTransitionEnd(@NonNull Transition transition) {
                 super.onTransitionEnd(transition);
-                if (scene.getParent() instanceof NavigationStackView && isVisible())
-                    ((NavigationStackView) scene.getParent()).onRest(scene.crumb);
+                if (getView() != null && getView().getParent() instanceof NavigationStackView && isVisible())
+                    ((NavigationStackView) getView().getParent()).onRest(scene.crumb);
             }
         });
     }
@@ -230,7 +236,7 @@ public class SceneFragment extends Fragment {
             public void onTransitionEnd(@NonNull Transition transition) {
                 super.onTransitionEnd(transition);
                 if (scene != null && !isVisible())
-                  scene.popped();
+                    scene.popped();
             }
         });
     }
@@ -268,5 +274,36 @@ public class SceneFragment extends Fragment {
 
     public SceneView getScene() {
         return scene;
+    }
+
+    public class SceneFragmentView extends LinearLayout {
+        private boolean layoutRequested = false;
+
+        public SceneFragmentView(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onAttachedToWindow() {
+            super.onAttachedToWindow();
+            measureAndLayout.run();
+        }
+
+        @Override
+        public void requestLayout() {
+            super.requestLayout();
+            if (!layoutRequested) {
+                layoutRequested = true;
+                post(measureAndLayout);
+            }
+        }
+
+        private final Runnable measureAndLayout = () -> {
+            layoutRequested = false;
+            measure(
+                MeasureSpec.makeMeasureSpec(((ViewGroup) getParent()).getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(((ViewGroup) getParent()).getHeight(), MeasureSpec.EXACTLY));
+            layout(((ViewGroup) getParent()).getLeft(), ((ViewGroup) getParent()).getTop(), ((ViewGroup) getParent()).getRight(), ((ViewGroup) getParent()).getBottom());
+        };
     }
 }
