@@ -221,15 +221,9 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragment.setEnterTransition(enterTrans);
                 fragment.enterAnimator = !nonAnimatedEnter ? enterAnimator : null;
                 fragment.setReturnTransition(scene.exitTrans);
-                fragment.getLifecycle().addObserver(new LifecycleEventObserver() {
-                    @Override
-                    public void onStateChanged(@NonNull LifecycleOwner lifecycleOwner, @NonNull Lifecycle.Event event) {
-                        if (event == Lifecycle.Event.ON_DESTROY || event == Lifecycle.Event.ON_RESUME) {
-                            onRest(NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount());
-                            if (event == Lifecycle.Event.ON_DESTROY)
-                                fragment.getLifecycle().removeObserver(this);
-                        }
-                    }
+                fragment.getLifecycle().addObserver((LifecycleEventObserver) (lifecycleOwner, event) -> {
+                    if (event == Lifecycle.Event.ON_RESUME)
+                        onRest(NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount());
                 });
                 fragment.returnAnimator = scene.exitAnimator;
                 fragmentTransaction.replace(getId(), fragment, key);
