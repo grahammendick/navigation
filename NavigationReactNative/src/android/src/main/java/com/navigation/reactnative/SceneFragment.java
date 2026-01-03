@@ -266,7 +266,7 @@ public class SceneFragment extends Fragment {
         return scene;
     }
 
-    public class SceneFragmentView extends LinearLayout {
+    public static class SceneFragmentView extends LinearLayout {
         private boolean layoutRequested = false;
 
         public SceneFragmentView(Context context) {
