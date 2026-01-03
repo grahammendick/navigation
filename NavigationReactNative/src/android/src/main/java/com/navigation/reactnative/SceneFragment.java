@@ -58,7 +58,6 @@ public class SceneFragment extends Fragment {
         if (scene != null) {
             SceneFragmentView fragmentView = new SceneFragmentView(getContext());
             if (scene.getParent() != null) {
-                // ((ViewGroup) scene.getParent()).endViewTransition(scene);
                 ((ViewGroup) scene.getParent()).removeView(scene);
             }
             fragmentView.addView(scene);
