@@ -214,6 +214,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragment.setEnterTransition(enterTrans);
                 fragment.enterAnimator = !nonAnimatedEnter ? enterAnimator : null;
                 fragment.setReturnTransition(scene.exitTrans);
+                fragment.returnAnimator = scene.exitAnimator;
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragment.getLifecycle().addObserver((LifecycleEventObserver) (lifecycleOwner, event) -> {
                     if (event == Lifecycle.Event.ON_RESUME) {
                         int restCrumb = NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount();
@@ -222,8 +224,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         predictiveSharedElements = false;
                     }
                 });
-                fragment.returnAnimator = scene.exitAnimator;
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragmentTransaction.replace(getId(), fragment, key);
                 if (nextCrumb > 0) {
                     fragmentTransaction.addToBackStack(String.valueOf(nextCrumb));
@@ -247,12 +247,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             FragmentManager fragmentManager = fragment.getChildFragmentManager();
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKeys.getString(oldCrumb));
             if (prevFragment != null) {
-                if (enterTrans != null || exitTrans != null || scene.enterTrans != null || scene.exitTrans != null) {
-                    exitTrans = exitTrans != null ? exitTrans :  fadeMap;
-                    scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : fadeMap;
-                    enterTrans = enterTrans != null ? enterTrans : fadeMap;
-                    scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : fadeMap;
-                }
                 prevFragment.setExitTransition(exitTrans);
                 prevFragment.exitAnimator = exitAnimator;
                 prevFragment.setReenterTransition(scene.enterTrans);
@@ -268,6 +262,15 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             fragment.enterAnimator = !nonAnimatedEnter ? enterAnimator : null;
             fragment.setReturnTransition(scene.exitTrans);
             fragment.returnAnimator = scene.exitAnimator;
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            fragment.getLifecycle().addObserver((LifecycleEventObserver) (lifecycleOwner, event) -> {
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    int restCrumb = NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount();
+                    if (predictiveSharedElements && Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) restCrumb--;
+                    onRest(restCrumb);
+                    predictiveSharedElements = false;
+                }
+            });
             fragmentTransaction.replace(getId(), fragment, key);
             if (crumb > 0) {
                 fragmentManager.popBackStack();
