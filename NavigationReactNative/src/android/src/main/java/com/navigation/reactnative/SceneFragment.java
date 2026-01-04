@@ -34,7 +34,6 @@ public class SceneFragment extends Fragment {
     protected AnimationPropParser.Animator returnAnimator;
     protected AnimationPropParser.Animator exitAnimator;
     protected AnimationPropParser.Animator reenterAnimator;
-    protected boolean predictiveSharedElements = false;
 
     public SceneFragment() {
         super();

@@ -69,6 +69,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     int nativeEventCount;
     int mostRecentEventCount;
     private boolean layoutRequested = false;
+    protected boolean predictiveSharedElements = false;
 
     public NavigationStackView(Context context) {
         super(context);
@@ -132,7 +133,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                             if (prevFragment != null && prevFragment.getScene() != null) {
                                 if (sharedElements != null) {
                                     prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
-                                    prevFragment.predictiveSharedElements = true;
+                                    predictiveSharedElements = true;
                                 }
                             }
                             ReactContext reactContext = (ReactContext) getContext();
@@ -192,12 +193,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(prevKey);
                     if (prevFragment != null) {
                         sharedElements = getSharedElements(currentCrumb, crumb, prevFragment);
-                        if (sharedElements != null || enterTrans != null || exitTrans != null || scene.enterTrans != null || scene.exitTrans != null) {
-                            exitTrans = exitTrans != null ? exitTrans : fadeMap;
-                            scene.enterTrans = scene.enterTrans != null ? scene.enterTrans : fadeMap;
-                            enterTrans = enterTrans != null ? enterTrans : fadeMap;
-                            scene.exitTrans = scene.exitTrans != null ? scene.exitTrans : fadeMap;
-                        }
                         if (sharedElements == null) {
                             prevFragment.setExitTransition(exitTrans);
                             prevFragment.exitAnimator = exitAnimator;
@@ -221,8 +216,10 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragment.enterAnimator = !nonAnimatedEnter ? enterAnimator : null;
                 fragment.setReturnTransition(scene.exitTrans);
                 fragment.getLifecycle().addObserver((LifecycleEventObserver) (lifecycleOwner, event) -> {
-                    if (event == Lifecycle.Event.ON_RESUME)
-                        onRest(NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount());
+                    if (event == Lifecycle.Event.ON_RESUME) {
+                        onRest(NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount() - (predictiveSharedElements ? 1 : 0));
+                        predictiveSharedElements = false;
+                    }
                 });
                 fragment.returnAnimator = scene.exitAnimator;
                 fragmentTransaction.replace(getId(), fragment, key);
