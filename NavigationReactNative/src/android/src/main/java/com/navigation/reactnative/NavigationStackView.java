@@ -217,7 +217,9 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragment.setReturnTransition(scene.exitTrans);
                 fragment.getLifecycle().addObserver((LifecycleEventObserver) (lifecycleOwner, event) -> {
                     if (event == Lifecycle.Event.ON_RESUME) {
-                        onRest(NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount() - (predictiveSharedElements ? 1 : 0));
+                        int restCrumb = NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount();
+                        if (predictiveSharedElements && Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) restCrumb--;
+                        onRest(restCrumb);
                         predictiveSharedElements = false;
                     }
                 });
