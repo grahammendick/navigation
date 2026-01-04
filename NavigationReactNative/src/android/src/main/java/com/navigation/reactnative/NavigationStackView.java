@@ -233,6 +233,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             String key = keys.getString(crumb);
             SceneView scene = scenes.get(key);
             assert scene != null : "Scene is null";
+            scene.sharedElementNames = sharedElementNames;
             if (scene.stacked) return;
             scene.stacked = true;
             int popEnter = getAnimationResourceId(currentActivity, scene.enterAnim);
