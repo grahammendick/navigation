@@ -29,7 +29,6 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.PixelUtil;
@@ -61,24 +60,16 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     protected AnimationPropParser.Animator exitAnimator;
     protected ReadableMap enterTrans;
     protected ReadableMap exitTrans;
-    protected final WritableMap fadeMap;
     protected ReadableArray sharedElementNames;
     protected Boolean startNavigation = null;
     protected boolean containerTransform = false;
     int nativeEventCount;
     int mostRecentEventCount;
     private boolean layoutRequested = false;
-    protected boolean predictiveSharedElements = false;
+    private boolean predictiveSharedElements = false;
 
     public NavigationStackView(Context context) {
         super(context);
-        fadeMap = Arguments.createMap();
-        WritableArray fadeArray = Arguments.createArray();
-        WritableMap fadeItems = Arguments.createMap();
-        fadeItems.putString("type", "fade");
-        fadeArray.pushMap(fadeItems);
-        fadeMap.putArray("items", fadeArray);
-
     }
 
     @SuppressLint("PrivateResource")
