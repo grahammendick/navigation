@@ -122,7 +122,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(popCrumb));
                             if (prevFragment != null && prevFragment.getScene() != null) {
                                 if (sharedElements != null) {
-                                    prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
+                                    prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(fragment.getScene().sharedElementNames), containerTransform);
                                     predictiveSharedElements = true;
                                 }
                             }
@@ -197,6 +197,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         fragmentTransaction.addSharedElement(containerTransform ? sharedEl : sharedEl.getChildAt(0), (containerTransform ? "" : "element__") + sharedElement.second);
                     }
                 }
+                scene.sharedElementNames = sharedElementNames;
                 boolean nonAnimatedEnter = oldCrumb == -1 || ((sharedElements != null || exitTrans != null) && enterTrans == null);
                 boolean nonAnimatedPopEnter = (sharedElements != null || scene.exitTrans != null) && scene.enterTrans == null;
                 if (sharedElements == null)
@@ -206,7 +207,8 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragment.enterAnimator = !nonAnimatedEnter ? enterAnimator : null;
                 fragment.setReturnTransition(scene.exitTrans);
                 fragment.returnAnimator = scene.exitAnimator;
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                if (sharedElements == null)
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragment.getLifecycle().addObserver((LifecycleEventObserver) (lifecycleOwner, event) -> {
                     if (event == Lifecycle.Event.ON_RESUME) {
                         int restCrumb = NavigationStackView.this.fragment.getChildFragmentManager().getBackStackEntryCount();
@@ -312,6 +314,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
 
     private ArrayList<Pair<SharedElementView, String>> getOldSharedElements(int currentCrumb, int crumb, SceneFragment sceneFragment) {
         final HashMap<String, SharedElementView> oldSharedElementsMap = getSharedElementMap(sceneFragment.getScene());
+        ReadableArray sharedElementNames = sceneFragment.getScene().sharedElementNames;
         final ArrayList<Pair<SharedElementView, String>> oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, sharedElementNames) : null;
         if (oldSharedElements != null && !oldSharedElements.isEmpty()) {
             sceneFragment.setEnterSharedElementCallback(new SharedElementCallback() {

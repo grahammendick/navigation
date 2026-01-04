@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.UIManagerHelper;
 import com.facebook.react.uimanager.events.Event;
@@ -30,6 +31,7 @@ public class SceneView extends ReactViewGroup {
     protected AnimationPropParser.Animator exitAnimator;
     protected ReadableMap enterTrans;
     protected ReadableMap exitTrans;
+    protected ReadableArray sharedElementNames;
     private boolean landscape;
     public final HashSet<SharedElementView> sharedElements = new HashSet<>();
     SharedElementMotion sharedElementMotion;
