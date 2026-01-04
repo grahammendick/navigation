@@ -146,7 +146,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             SceneFragment prevFragment = (SceneFragment) fragmentManager.findFragmentByTag(keys.getString(crumb));
             if (prevFragment != null && prevFragment.getScene() != null) {
                 if (sharedElements != null)
-                    prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(sharedElementNames), containerTransform);
+                    prevFragment.getScene().sharedElementMotion = new SharedElementMotion(fragment, prevFragment, getSharedElementSet(fragment.getScene().sharedElementNames), containerTransform);
             }
             String key = keys.getString(crumb);
             SceneView scene = scenes.get(key);
@@ -198,6 +198,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                     }
                 }
                 scene.sharedElementNames = sharedElementNames;
+                scene.containerTransform = containerTransform;
                 boolean nonAnimatedEnter = oldCrumb == -1 || ((sharedElements != null || exitTrans != null) && enterTrans == null);
                 boolean nonAnimatedPopEnter = (sharedElements != null || scene.exitTrans != null) && scene.enterTrans == null;
                 if (sharedElements == null)
@@ -234,6 +235,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
             SceneView scene = scenes.get(key);
             assert scene != null : "Scene is null";
             scene.sharedElementNames = sharedElementNames;
+            scene.containerTransform = containerTransform;
             if (scene.stacked) return;
             scene.stacked = true;
             int popEnter = getAnimationResourceId(currentActivity, scene.enterAnim);
@@ -316,6 +318,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     private ArrayList<Pair<SharedElementView, String>> getOldSharedElements(int currentCrumb, int crumb, SceneFragment sceneFragment) {
         final HashMap<String, SharedElementView> oldSharedElementsMap = getSharedElementMap(sceneFragment.getScene());
         ReadableArray sharedElementNames = sceneFragment.getScene().sharedElementNames;
+        boolean containerTransform = sceneFragment.getScene().containerTransform;
         final ArrayList<Pair<SharedElementView, String>> oldSharedElements = currentCrumb - crumb == 1 ? getSharedElements(oldSharedElementsMap, sharedElementNames) : null;
         if (oldSharedElements != null && !oldSharedElements.isEmpty()) {
             sceneFragment.setEnterSharedElementCallback(new SharedElementCallback() {

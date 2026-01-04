@@ -34,7 +34,8 @@ public class SceneView extends ReactViewGroup {
     protected ReadableArray sharedElementNames;
     private boolean landscape;
     public final HashSet<SharedElementView> sharedElements = new HashSet<>();
-    SharedElementMotion sharedElementMotion;
+    protected SharedElementMotion sharedElementMotion;
+    protected boolean containerTransform;
     private WeakReference<Toolbar> toolbar;
     private WeakReference<DrawerLayoutView> drawer;
     private final HashSet<WindowInsetsListener> windowInsetsListeners = new HashSet<>();
