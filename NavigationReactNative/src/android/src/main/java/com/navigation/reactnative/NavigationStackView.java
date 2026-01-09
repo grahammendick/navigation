@@ -208,7 +208,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 fragment.enterAnimator = !nonAnimatedEnter ? enterAnimator : null;
                 fragment.setReturnTransition(scene.exitTrans);
                 fragment.returnAnimator = scene.exitAnimator;
-                if (sharedElements == null)
+                if (oldCrumb != -1 && sharedElements == null)
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 fragment.getLifecycle().addObserver((LifecycleEventObserver) (lifecycleOwner, event) -> {
                     if (event == Lifecycle.Event.ON_RESUME) {
