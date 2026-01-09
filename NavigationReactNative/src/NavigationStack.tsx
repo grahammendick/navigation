@@ -86,7 +86,9 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
                 resumeNavigationRef.current = null;
             }
         } else if (crumbs.length === nativeEvent.crumb) {
-            setStackState(prevStackState => ({...prevStackState, rest: true}));
+            setStackState(prevStackState => (
+                !prevStackState.rest ? {...prevStackState, rest: true} : prevStackState
+            ));
         }
     }
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
