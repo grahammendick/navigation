@@ -63,9 +63,9 @@ const Inbox = () => (
   useUnloaded(() => {
     // Stop polling for new emails
   });</code></pre>
-            <h2>Peeking Back on iOS</h2>
+            <h2>Peeking Back</h2>
             <p>
-                On iOS, when the user is reading a mail they can half swipe left so they can peek at their inbox without navigating to it. We want to show them their latest mail but we don't want to start polling because they're still on the 'email' scene. The Navigation router has a <code>useNavigating</code> hook that notifies us when the swipe starts. We use this to issue a one-time call to refresh the inbox. If the user completes the swipe the <code>useNavigated</code> fires and we start polling again.
+                When the user is reading a mail they can half swipe left so they can peek at their inbox without navigating to it. We want to show them their latest mail but we don't want to start polling because they're still on the 'email' scene. The Navigation router has a <code>useNavigating</code> hook that notifies us when the swipe starts. We use this to issue a one-time call to refresh the inbox. If the user completes the swipe the <code>useNavigated</code> fires and we start polling again.
             </p>
             <pre><code class="language-js">import {useNavigating} from 'navigation-react-native';
 
