@@ -215,17 +215,21 @@ API_AVAILABLE(ios(15.0)){
         UIView *sharedElementView = [self sharedElementView];
         if (sharedElementView) {
             if ([sharedElementView isKindOfClass:[NVBarButtonComponentView class]]) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000
                 if (@available(iOS 26.0, *)) {
                     [_bottomSheetController setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceBarButtonItemProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
                         return ((NVBarButtonComponentView *) sharedElementView).button;
                     }]];
                 }
+#endif
             } else {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 180000
                 if (@available(iOS 18.0, *)) {
                     [_bottomSheetController setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
                         return sharedElementView;
                     }]];
                 }
+#endif
             }
         }
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
@@ -234,7 +238,7 @@ API_AVAILABLE(ios(15.0)){
 
 - (UIView *)sharedElementView
 {
-    if (!_sharedElement) return nil;
+    if (!_sharedElement.length) return nil;
     NSSet *sharedElements = ((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements;
     for (UIView<NVSharedElement> *sharedElementView in sharedElements) {
         if ([sharedElementView.name isEqual:self->_sharedElement])

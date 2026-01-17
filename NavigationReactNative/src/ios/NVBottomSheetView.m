@@ -2,6 +2,7 @@
 #import "NVBottomSheetController.h"
 #import "NVSceneController.h"
 #import "NVSharedElementView.h"
+#import "NVBarButtonView.h"
 
 #import <UIKit/UIKit.h>
 #import <React/RCTBridge.h>
@@ -201,22 +202,35 @@ API_AVAILABLE(ios(15.0)){
         _bottomSheetController.presentationController.delegate = self;
         _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(resizeView)];
         [_displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        if ([self sharedElementView]) {
-            if (@available(iOS 18.0, *)) {
-                [_bottomSheetController setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
-                    return [self sharedElementView];
-                }]];
+        UIView *sharedElementView = [self sharedElementView];
+        if (sharedElementView) {
+            if ([sharedElementView isKindOfClass:[NVBarButtonView class]]) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000
+                if (@available(iOS 26.0, *)) {
+                    [_bottomSheetController setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceBarButtonItemProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
+                        return ((NVBarButtonView *) sharedElementView).button;
+                    }]];
+                }
+#endif
+            } else {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 180000
+                if (@available(iOS 18.0, *)) {
+                    [_bottomSheetController setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
+                        return sharedElementView;
+                    }]];
+                }
+#endif
             }
         }
         [[self reactViewController] presentViewController:_bottomSheetController animated:true completion:nil];
     }
 }
 
-- (NVSharedElementView *)sharedElementView
+- (UIView *)sharedElementView
 {
     if (!_sharedElement) return nil;
     NSSet *sharedElements = ((UIViewController<NVSharedElementController> *) self.reactViewController).sharedElements;
-    for (NVSharedElementView *sharedElementView in sharedElements) {
+    for (UIView<NVSharedElement> *sharedElementView in sharedElements) {
         if ([sharedElementView.name isEqual:self->_sharedElement])
             return sharedElementView;
     }

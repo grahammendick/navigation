@@ -82,10 +82,12 @@
             _navigationController.delegate = _stackControllerDelegate;
             _navigationController.interactivePopGestureRecognizer.delegate = self;
             [_navigationController.view addGestureRecognizer:_interactiveGestureRecognizer];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000
             if (@available(iOS 26.0, *)) {
                 _navigationController.interactiveContentPopGestureRecognizer.delegate = self;
                 [_navigationController.view addGestureRecognizer:_interactiveContentGestureRecognizer];
             }
+#endif
         }
     } else {
         if (_navigationController.interactivePopGestureRecognizer.delegate == self) {
@@ -94,8 +96,10 @@
             [_navigationController.view removeGestureRecognizer:_interactiveGestureRecognizer];
             [_navigationController.view removeGestureRecognizer:_interactiveContentGestureRecognizer];
             _navigationController.interactivePopGestureRecognizer.delegate = _interactiveGestureRecognizerDelegate;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000
             if (@available(iOS 26.0, *))
                 _navigationController.interactiveContentPopGestureRecognizer.delegate = _interactiveGestureRecognizerDelegate;
+#endif
         }
     }
 }
@@ -207,11 +211,13 @@
             if (!prevSceneController)
                 prevSceneController = (NVSceneController *) _navigationController.topViewController;
             if (crumb - currentCrumb == 1 && [self sharedElementView:prevSceneController]) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 180000
                 if (@available(iOS 18.0, *)) {
                     [controller setPreferredTransition:[UIViewControllerTransition zoomWithOptions:nil sourceViewProvider:^(UIZoomTransitionSourceViewProviderContext *context) {
                         return [self sharedElementView:prevSceneController];
                     }]];
                 }
+#endif
             }
             prevSceneController.exitTrans = _exitTransitions;
             prevSceneController.popEnterTrans = scene.enterTransArray;
@@ -388,17 +394,19 @@
     NVSceneController *previousSceneController = (NVSceneController *) _navigationController.viewControllers[_navigationController.viewControllers.count - 2];
     if (previousSceneController.view.subviews.count == 0) return NO;
     if (((NVSceneController *) _navigationController.topViewController).popExitTrans.count > 0) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000
         if (@available(iOS 26.0, *)) {
             return gestureRecognizer == _interactiveGestureRecognizer || gestureRecognizer == _interactiveContentGestureRecognizer;
-        } else {
-            return gestureRecognizer == _interactiveGestureRecognizer;
         }
+#endif
+        return gestureRecognizer == _interactiveGestureRecognizer;
     }
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 260000
     if (@available(iOS 26.0, *)) {
         return gestureRecognizer == _navigationController.interactivePopGestureRecognizer || gestureRecognizer == _navigationController.interactiveContentPopGestureRecognizer;
-    } else {
-        return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
     }
+#endif
+    return gestureRecognizer == _navigationController.interactivePopGestureRecognizer;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
