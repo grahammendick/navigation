@@ -41,10 +41,10 @@ The `NavigationLink` component changes scene. You pass the name of the scene and
 
 ### Use the Data
 ```jsx
-import { NavigationContext } from 'navigation-react';
+import { useNavigationEvent } from 'navigation-react';
 
 const World = () => {
-  const { data } = useContext(NavigationContext);
+  const { data } = useNavigationEvent();
   return (
     <div style={{ fontSize: data.size }}>
       World
@@ -52,7 +52,7 @@ const World = () => {
   );
 };
 ```
-In the next scene, you access the data from the `NavigationContext`. The Navigation router passes strongly-typed data. Here, the size is a number.
+In the next scene, you access the data from the `NavigationEvent`. The Navigation router passes strongly-typed data. Here, the size is a number.
 
 ## [React Native](https://grahammendick.github.io/navigation/documentation/native/hello-world.html)
 `npm install navigation navigation-react navigation-react-native`
@@ -80,10 +80,10 @@ For each `State`, you create a `Scene` component that renders the UI. The Naviga
 
 ### Navigate to a Scene
 ```jsx
-import { NavigationContext } from 'navigation-react';
+import { useNavigationEvent } from 'navigation-react';
 
 const Hello = () => {
-  const { stateNavigator } = useContext(NavigationContext);
+  const { stateNavigator } = useNavigationEvent();
   return (
     <Button title="Hello"
       onPress={() => {
@@ -92,14 +92,14 @@ const Hello = () => {
   );
 };
 ```
-You use the `stateNavigator` from the `NavigationContext` to change scenes. You pass the name of the scene and the data. The navigation is 100% native on Android and iOS.
+You use the `stateNavigator` from the `NavigationEvent` to change scenes. You pass the name of the scene and the data. The navigation is 100% native on Android and iOS.
 
 ### Use the Data
 ```jsx
-import { NavigationContext } from 'navigation-react';
+import { useNavigationEvent } from 'navigation-react';
 
 const World = () => {
-  const { data } = useContext(NavigationContext);
+  const { data } = useNavigationEvent();
   return (
     <Text style={{ fontSize: data.size }}>
       World
@@ -107,7 +107,7 @@ const World = () => {
   );
 };
 ```
-In the next scene, you access the data from the `NavigationContext`. You can return to the 'hello' scene via the Android back button or swiping/pressing back on iOS.
+In the next scene, you access the data from the `NavigationEvent`. You can return to the 'hello' scene via the Android back button or swiping/pressing back on iOS.
 
 ## Build
 Once you've cloned the repository, you can install the dependencies and run the build:
