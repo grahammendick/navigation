@@ -12,7 +12,10 @@ const Filter = () => {
         <input id="name" value={name || ''} onChange={({ target: { value } }) => {
           stateNavigator.refresh({ ...data, name: value, page: null });
         }} />
-        <button onClick={() => doSomething('hello', 2)}>Go</button>
+        <button onClick={async () => {
+          const data = await doSomething('hello', 2);
+          console.log(data, 'xxx');
+        }}>Go</button>
       </div>
       Page size
       <RefreshLink navigationData={{ size: 5, page: null }} includeCurrentData>5</RefreshLink>

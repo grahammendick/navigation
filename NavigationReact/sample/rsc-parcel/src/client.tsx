@@ -34,7 +34,6 @@ setServerCallback(async (id, args) => {
         headers: {'Content-Type': 'application/json'},
         body: {id, args}
     }) as any;
-    console.log(res);
     return res.data;
 });
 
