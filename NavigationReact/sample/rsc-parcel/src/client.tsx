@@ -31,7 +31,6 @@ function Shell() {
 setServerCallback(async (id, args) => {
     const res = await fetchRSC(window.location.href, {
         method: 'post',
-        headers: {'Content-Type': 'application/json'},
         body: {id, args}
     }) as any;
     return res.data;

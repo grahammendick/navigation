@@ -34,10 +34,13 @@ app.get('*', async (req, res) => {
 app.post('*', async (req, res) => {
   const temporaryReferences = createTemporaryReferenceSet();
   let request = new Request(`https://${req.get('host')}`, {
+    headers: req.headers as any,
     method: 'POST',
-    body: JSON.stringify(req.body),
+    body: req as any,
+    // @ts-ignore
+    duplex: 'half' as any,
   });
-  const body = await request.text();
+  const body = !req.headers['content-type']?.startsWith('multipart/form-data') ? await request.text() : await request.formData();
   const {id, args} = await decodeReply(body, {temporaryReferences});
   const action = await loadServerAction(id);
   const data = await action.apply(null, args);
