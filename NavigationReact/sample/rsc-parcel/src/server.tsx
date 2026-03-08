@@ -1,5 +1,6 @@
 import express from 'express';
 import { renderRequest, renderRSC } from '@parcel/rsc/node';
+import { createTemporaryReferenceSet, decodeReply, loadServerAction } from 'react-server-dom-parcel/server.edge';
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
 import stateNavigator from './stateNavigator';
@@ -8,6 +9,7 @@ import Person from './Person';
 import People from './People';
 import List from './List';
 import Friends from './Friends';
+import {Readable} from 'stream';
 
 const app = express();
 
@@ -30,7 +32,25 @@ app.get('*', async (req, res) => {
 });
 
 app.post('*', async (req, res) => {
-  const sceneViews: any = {
+  const temporaryReferences = createTemporaryReferenceSet();
+  let request = new Request(`https://${req.get('host')}`, {
+    method: 'POST',
+    body: JSON.stringify(req.body),
+  });
+  const body = await request.text();
+  const {id, args} = await decodeReply(body, {temporaryReferences});
+  const action = await loadServerAction(id);
+  const data = await action.apply(null, args);
+  const stream = renderRSC({data});
+  res.set('Content-Type', 'text/x-component');
+  stream.pipe(res);
+
+
+
+
+
+
+  /** const sceneViews: any = {
     people: People,
     list: List,
     person: Person,
@@ -62,7 +82,7 @@ app.post('*', async (req, res) => {
     }, {})
   });
   res.set('Content-Type', 'text/x-component');
-  stream.pipe(res);
+  stream.pipe(res); **/
 });
 
 app.listen(3001, () => {

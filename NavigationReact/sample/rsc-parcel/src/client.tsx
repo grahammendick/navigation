@@ -1,7 +1,7 @@
 'use client-entry';
 import { useMemo, startTransition } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createFromReadableStream } from 'react-server-dom-parcel/client';
+import { createFromReadableStream, setServerCallback } from 'react-server-dom-parcel/client';
 import { rscStream } from 'rsc-html-stream/client';
 import { fetchRSC } from '@parcel/rsc/client';
 import { BundlerContext } from 'navigation-react';
@@ -27,6 +27,16 @@ function Shell() {
         </BundlerContext.Provider>
     );
 }
+
+setServerCallback(async (id, args) => {
+    const res = await fetchRSC(window.location.href, {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: {id, args}
+    }) as any;
+    console.log(res);
+    return res.data;
+});
 
 startTransition(() => {
     ReactDOM.hydrateRoot(document, <Shell />);
