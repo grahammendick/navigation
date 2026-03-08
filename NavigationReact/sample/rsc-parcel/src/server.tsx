@@ -36,7 +36,7 @@ app.post('*', async (req, res) => {
   let request = new Request(`https://${req.get('host')}`, {
     headers: req.headers as any,
     method: 'POST',
-    body: req as any,
+    body: Readable.toWeb(req) as ReadableStream,
     // @ts-ignore
     duplex: 'half' as any,
   });
