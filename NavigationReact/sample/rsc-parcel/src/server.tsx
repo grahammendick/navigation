@@ -1,4 +1,5 @@
 import express from 'express';
+import { Readable } from 'stream';
 import { renderRequest, renderRSC } from '@parcel/rsc/node';
 import { createTemporaryReferenceSet, decodeReply, loadServerAction } from 'react-server-dom-parcel/server.edge';
 import { StateNavigator } from 'navigation';
@@ -9,7 +10,6 @@ import Person from './Person';
 import People from './People';
 import List from './List';
 import Friends from './Friends';
-import {Readable} from 'stream';
 
 const app = express();
 
