@@ -1,10 +1,12 @@
 'use client'
-import { RefreshLink, useNavigationEvent } from 'navigation-react';
+// @ts-ignore
+import { RefreshLink, useNavigationEvent, useActionScene } from 'navigation-react';
 import { doSomething, submitSomething, actionSomething } from './action';
 import { useActionState, useEffect } from 'react';
 
 const Filter = () => {
   const { data, stateNavigator } = useNavigationEvent();
+  const doSceneSomething = useActionScene(doSomething);
   const { name } = data;
   const submitAction = async (formData: FormData) => {
     const data = await submitSomething(formData);
@@ -22,7 +24,7 @@ const Filter = () => {
           stateNavigator.refresh({ ...data, name: value, page: null });
         }} />
         <button onClick={async () => {
-          const data = await doSomething('hello', 2);
+          const data = await doSceneSomething('hello', 2);
           console.log(data, 'xxx');
         }}>Go</button>
         <form action={submitAction}>

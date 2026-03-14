@@ -29,9 +29,11 @@ function Shell() {
 }
 
 setServerCallback(async (id, args) => {
+    const [f, ...rest] = args;
+    console.log(f(), 'aaa')
     const res = await fetchRSC(window.location.href, {
         method: 'post',
-        body: {id, args}
+        body: {id, args: rest}
     }) as any;
     return res.data;
 });
