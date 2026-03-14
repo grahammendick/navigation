@@ -1,6 +1,7 @@
 'use client'
 import { RefreshLink, useNavigationEvent } from 'navigation-react';
-import { doSomething, submitSomething } from './action';
+import { doSomething, submitSomething, actionSomething } from './action';
+import { useActionState, useEffect } from 'react';
 
 const Filter = () => {
   const { data, stateNavigator } = useNavigationEvent();
@@ -9,6 +10,10 @@ const Filter = () => {
     const data = await submitSomething(formData);
     console.log(data, 'yyy');
   }
+  const [state, sumbitUseAction] = useActionState(actionSomething, 'there');
+  useEffect(() => {
+    if (state) console.log(state, 'zzz');
+  }, [state]);
   return (
     <div>
       <div>
@@ -24,6 +29,10 @@ const Filter = () => {
           <input type="hidden" name="a" value="goodbye" />
           <input type="hidden" name="b" value="3" />
           <button type="submit">Submit</button>
+        </form>
+        <form action={sumbitUseAction}>
+          <input type="hidden" name="a" value="hello" />
+          <button type="submit">Use</button>
         </form>
       </div>
       Page size

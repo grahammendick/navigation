@@ -13,3 +13,10 @@ export async function submitSomething(data: FormData) {
   });
   return `${data.get('a')} moon ${data.get('b')}`;
 }
+
+export async function actionSomething(prevState: string, data: FormData) {
+  await new Promise(res => {
+    setTimeout(res, 300);
+  });
+  return `${data.get('a')} ${prevState}`;
+}
