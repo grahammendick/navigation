@@ -41,8 +41,8 @@ app.post('*', async (req, res) => {
     duplex: 'half' as any,
   });
   const body = !req.headers['content-type']?.startsWith('multipart/form-data') ? await request.text() : await request.formData();
-  const {id, args} = await decodeReply(body, {temporaryReferences});
-  const action = await loadServerAction(id);
+  const {actionId, args} = await decodeReply(body, {temporaryReferences});
+  const action = await loadServerAction(actionId);
   const data = await action.apply(null, args);
   const stream = renderRSC({data});
   res.set('Content-Type', 'text/x-component');

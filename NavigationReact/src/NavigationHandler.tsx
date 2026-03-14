@@ -16,13 +16,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const rootViews = useRef({});
     const {deserialize, onHmrReload} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
-        deserialize: async (sceneViewKey: string) => {
+        deserialize: async (sceneViewKey: string, _options: any, actionId?: string, args?: any[]) => {
             const {stateContext: {url, nextCrumb, historyAction}, historyManager} = navigationEvent.data.stateNavigator;
             const res = await deserialize(historyManager.getHref(nextCrumb.crumblessUrl), {
                 method: 'post',
-                headers: {'Content-Type': 'application/json'},
-                body: {url, sceneViewKey, historyAction, rootViews: rootViews.current}
+                headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
+                body: {url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}
             });
+            if (res.data) return res;
             if (!res.url) return res.sceneViews[sceneViewKey];
             navigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
             navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext);
@@ -64,6 +65,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
+        sceneViewKey: null,
         setRefetch: () => {},
         refetcher: (sceneViewKey: string | boolean = true) => {
             startTransition(() => {

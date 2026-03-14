@@ -28,12 +28,15 @@ function Shell() {
     );
 }
 
-setServerCallback(async (id, args) => {
-    const [f, ...rest] = args;
-    console.log(f(), 'aaa')
+setServerCallback(async (actionId: string, args: any[]) => {
+    const deserializeScene = typeof args[0] === 'function' ? args[0] : undefined;
+    if (deserializeScene) {
+        const res = await deserializeScene(actionId, args.slice(1));
+        return res.data;
+    }
     const res = await fetchRSC(window.location.href, {
         method: 'post',
-        body: {id, args: rest}
+        body: {actionId, args}
     }) as any;
     return res.data;
 });

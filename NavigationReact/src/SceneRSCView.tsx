@@ -82,6 +82,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
     const refetchControl = useMemo(() => ({
+        sceneViewKey,
         setRefetch: (clientRefetch: any) => refetchRef.current = clientRefetch !== undefined ? clientRefetch : serverRefetch,
         refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
         registerSceneView: () => {},
