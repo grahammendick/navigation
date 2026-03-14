@@ -114,10 +114,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         });
         return offHmrReload;
     }, [navigationEvent, onHmrReload]);
-    const history = navigationEvent?.stateNavigator.stateContext.history;
     return (
         <NavigationContext.Provider value={navigationEvent?.data}>
-            <NavigationDeferredContext.Provider value={!history ? navigationDeferredEvent?.data : navigationEvent?.data}>
+            <NavigationDeferredContext.Provider value={navigationDeferredEvent?.data}>
                 <RefetchContext.Provider value={refetchControl}>
                     <HistoryCacheContext.Provider value={historyCacheRef.current}>
                         <BundlerContext.Provider value={bundler}>
