@@ -23,11 +23,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
                 body: {url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}
             });
-            if (res.data) return res;
-            if (!res.url) return res.sceneViews[sceneViewKey];
-            navigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
-            navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext);
-            return new Promise(() => {});
+            if (res.url) {
+                navigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
+                navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext);
+            } else if (actionId && res.refetch) {
+                startTransition(() => {
+                    setNavigationEvent({data: {...navigationEvent.data, ignoreCache: res.refetch, rscCache: res.sceneViews}, stateNavigator: navigationEvent.stateNavigator});
+                });
+            }
+            return !actionId ? !res.url ? res.sceneViews[sceneViewKey] : new Promise(() => {}) : res.data;
         },
         onHmrReload,
     }), [deserialize, onHmrReload, navigationEvent])

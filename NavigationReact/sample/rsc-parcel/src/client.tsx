@@ -31,8 +31,7 @@ function Shell() {
 setServerCallback(async (actionId: string, args: any[]) => {
     const deserializeScene = typeof args[0] === 'function' ? args[0] : undefined;
     if (deserializeScene) {
-        const res = await deserializeScene(actionId, args.slice(1));
-        return res.data;
+        return deserializeScene(actionId, args.slice(1));
     }
     const res = await fetchRSC(window.location.href, {
         method: 'post',

@@ -41,13 +41,13 @@ app.post('*', async (req, res) => {
   const {url, sceneViewKey, historyAction, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url, historyAction);
-  let data, refetch;
+  let data = null; let refetch = null;
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);
     const sceneAction = {
       stateNavigator,
       refetch: (scene: boolean = false) => {
-        refetch = !!scene;
+        refetch = scene || sceneViewKey;
       }
     };
     data = await action.apply(null, url ? [sceneAction, ...args] : args);
@@ -60,11 +60,12 @@ app.post('*', async (req, res) => {
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, [] as string[]) : ((!actionId || refetch === false) ? [sceneViewKey] : []);
+    }, [] as string[]) : ((!actionId || refetch === sceneViewKey) ? [sceneViewKey] : []);
   const stream = renderRSC({
     data,
-    url: oldState ? serverNavigator.stateContext.url : undefined,
-    historyAction: oldState ? serverNavigator.stateContext.historyAction : undefined,
+    refetch,
+    url: oldState ? serverNavigator.stateContext.url : null,
+    historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
     sceneViews: activeViews.reduce((SceneViews, activeKey) => {
       const SceneView = sceneViews[activeKey];
       SceneViews[activeKey] = (
