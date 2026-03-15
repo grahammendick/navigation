@@ -44,13 +44,13 @@ app.post('*', async (req, res) => {
   let data = null; let refetch = null;
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);
-    const sceneAction = {
+    const scene = {
       stateNavigator,
       refetch: (scene: boolean = false) => {
         refetch = scene || sceneViewKey;
       }
     };
-    data = await action.apply(null, url ? [sceneAction, ...args] : args);
+    data = await action.apply(null, url ? [scene, ...args] : args);
   }
   const {state, oldState} = serverNavigator.stateContext;
   const activeViews = (oldState || refetch === true) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
