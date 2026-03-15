@@ -50,7 +50,7 @@ app.post('*', async (req, res) => {
         refetch = scene || sceneViewKey;
       }
     };
-    data = await action.apply(null, url ? [scene, ...args] : args);
+    data = await action.apply(null, url ? [...args, scene] : args);
   }
   const {state, oldState} = serverNavigator.stateContext;
   const activeViews = (oldState || refetch === true) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
