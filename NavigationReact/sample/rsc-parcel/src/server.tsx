@@ -45,7 +45,7 @@ app.post('*', async (req, res) => {
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);
     const scene = {
-      stateNavigator,
+      stateNavigator: serverNavigator,
       refetch: (scene: boolean = false) => {
         refetch = scene || sceneViewKey;
       }
