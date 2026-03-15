@@ -1,6 +1,6 @@
 "use server";
 
-export async function doSomething(a: string, b: number) {
+export async function doSomething(_sceneAction: any, a: string, b: number) {
   await new Promise(res => {
     setTimeout(res, 300);
   });

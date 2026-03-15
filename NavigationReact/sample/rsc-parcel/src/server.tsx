@@ -32,46 +32,37 @@ app.get('*', async (req, res) => {
 });
 
 app.post('*', async (req, res) => {
-  const temporaryReferences = createTemporaryReferenceSet();
-  let request = new Request(`https://${req.get('host')}`, {
-    headers: req.headers as any,
-    method: 'POST',
-    body: Readable.toWeb(req) as ReadableStream,
-    // @ts-ignore
-    duplex: 'half' as any,
-  });
-  const body = !req.headers['content-type']?.startsWith('multipart/form-data') ? await request.text() : await request.formData();
-  const {actionId, args} = await decodeReply(body, {temporaryReferences});
-  const action = await loadServerAction(actionId);
-  const data = await action.apply(null, args);
-  const stream = renderRSC({data});
-  res.set('Content-Type', 'text/x-component');
-  stream.pipe(res);
-
-
-
-
-
-
-  /** const sceneViews: any = {
+  const sceneViews: any = {
     people: People,
     list: List,
     person: Person,
     friends: Friends,
   };
-  const {url, sceneViewKey, historyAction, rootViews} = req.body;
+  const {url, sceneViewKey, historyAction, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
-  serverNavigator.navigateLink(url, historyAction);
+  if (url) serverNavigator.navigateLink(url, historyAction);
+  let data, refetch;
+  if (req.headers['content-type'] !== 'application/json') {
+    const action = await loadServerAction(actionId);
+    const sceneAction = {
+      stateNavigator,
+      refetch: (scene: boolean = false) => {
+        refetch = !!scene;
+      }
+    };
+    data = await action.apply(null, url ? [sceneAction, ...args] : args);
+  }
   const {state, oldState} = serverNavigator.stateContext;
-  const activeViews = oldState ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+  const activeViews = (oldState || refetch === true) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];
       const show =  active != null && (
           typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, [] as string[]) : [sceneViewKey];
+    }, [] as string[]) : ((!actionId || refetch === false) ? [sceneViewKey] : []);
   const stream = renderRSC({
+    data,
     url: oldState ? serverNavigator.stateContext.url : undefined,
     historyAction: oldState ? serverNavigator.stateContext.historyAction : undefined,
     sceneViews: activeViews.reduce((SceneViews, activeKey) => {
@@ -85,8 +76,24 @@ app.post('*', async (req, res) => {
     }, {})
   });
   res.set('Content-Type', 'text/x-component');
-  stream.pipe(res); **/
+  stream.pipe(res);
 });
+
+const decodeBody = async (req: any) => {
+  if (req.headers['content-type'] !== 'application/json') {
+    const temporaryReferences = createTemporaryReferenceSet();
+    let request = new Request(`https://${req.get('host')}`, {
+      headers: req.headers as any,
+      method: 'POST',
+      body: Readable.toWeb(req) as ReadableStream,
+      // @ts-ignore
+      duplex: 'half' as any,
+    });
+    const body = !req.headers['content-type']?.startsWith('multipart/form-data') ? await request.text() : await request.formData();
+    return decodeReply(body, {temporaryReferences});
+  }
+  return req.body;
+}
 
 app.listen(3001, () => {
   console.log('Server listening on port 3001...');

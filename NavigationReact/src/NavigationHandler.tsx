@@ -16,7 +16,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const rootViews = useRef({});
     const {deserialize, onHmrReload} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
-        deserialize: async (sceneViewKey: string, _options: any, actionId?: string, args?: any[]) => {
+        deserialize: async (sceneViewKey: string, _options: any, actionId: string = null, args: any[] = null) => {
             const {stateContext: {url, nextCrumb, historyAction}, historyManager} = navigationEvent.data.stateNavigator;
             const res = await deserialize(historyManager.getHref(nextCrumb.crumblessUrl), {
                 method: 'post',
