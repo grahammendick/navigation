@@ -67,6 +67,11 @@ export function useRefetch(refetch?: string[] | ((stateContext: StateContext) =>
 export function useRootViewRegistry() : (sceneViewKey: string, active: string | string[]) => void;
 
 /**
+ * The hook for navigating or refetching inside a server action
+ */
+export function useActionScene<Payload extends any[], Scene extends { stateNavigator: StateNavigator, refetch: (scene?: boolean) => void }, Data>(action: (...args: [...Payload, Scene]) => Data): (...args: Payload) => Data;
+
+/**
  * Defines the Navigation Handler Props contract
  */
 export interface NavigationHandlerProps {
