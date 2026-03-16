@@ -3,7 +3,7 @@ import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, NavigationLink } from 'navigation-react';
 import { Scene, MobileHistoryManager, SharedElement, NavigationStack } from 'navigation-react-mobile';
 import React, { useContext } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 type AppNavigation = {
     people: { page?: number },
@@ -46,7 +46,8 @@ const Person = () => {
 
 stateNavigator.start();
 
-ReactDOM.render(
+const root = createRoot(document.getElementById("root")!);
+root.render(
     <NavigationStack
         unmountStyle={[
             {transform: 'translateX(100%)'},
@@ -58,6 +59,5 @@ ReactDOM.render(
           ]}>
         <Scene stateKey="people" sharedElements={({id}) => [id]}><People /></Scene>
         <Scene stateKey="person"><Person /></Scene>
-    </NavigationStack>,
-    document.getElementById('root')
+    </NavigationStack>
 );

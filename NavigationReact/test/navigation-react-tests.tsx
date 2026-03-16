@@ -2,7 +2,7 @@
 import { StateNavigator } from 'navigation';
 import { NavigationHandler, NavigationContext, NavigationEvent, SceneView, NavigationBackLink, NavigationLink, RefreshLink } from 'navigation-react';
 import React, { useContext } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 type AppNavigation = {
     people: { page?: number },
@@ -53,10 +53,10 @@ const Person = () => {
 
 stateNavigator.start();
 
-ReactDOM.render(
+const root = createRoot(document.getElementById("root")!);
+root.render(
     <NavigationHandler stateNavigator={stateNavigator}>
         <SceneView active="people"><People /></SceneView>
         <SceneView active="person"><Person /></SceneView>
     </NavigationHandler>,
-    document.getElementById('root')
 );
