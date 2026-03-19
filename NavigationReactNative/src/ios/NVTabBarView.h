@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
 
@@ -20,3 +21,6 @@
 @property (nonatomic, copy) RCTDirectEventBlock onTabSelected;
 
 @end
+
+#endif
+

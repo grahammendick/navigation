@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVSegmentedTabView.h"
 #import <React/RCTViewManager.h>
 
@@ -26,3 +27,5 @@ RCT_EXPORT_VIEW_PROPERTY(fontSize, NSNumber)
 RCT_EXPORT_VIEW_PROPERTY(scrollsToTop, BOOL)
 
 @end
+
+#endif

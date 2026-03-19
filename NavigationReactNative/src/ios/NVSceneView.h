@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import <UIKit/UIKit.h>
 #import <React/RCTComponent.h>
 #import "NVSceneController.h"
@@ -17,3 +18,5 @@
 -(void)didPop;
 
 @end
+
+#endif

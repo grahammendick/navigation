@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVStatusBarView.h"
 #import "NVSceneController.h"
 
@@ -48,3 +49,6 @@
 }
 
 @end
+
+#endif
+

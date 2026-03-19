@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVTabBarView.h"
 #import "NVTabBarItemView.h"
 #import "NVTabBarPagerView.h"
@@ -215,3 +216,6 @@
 }
 
 @end
+
+#endif
+

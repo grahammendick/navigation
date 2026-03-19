@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVSharedElementView.h"
 #import "NVSceneController.h"
 #import <React/UIView+React.h>
@@ -18,3 +19,6 @@
 }
 
 @end
+
+#endif
+

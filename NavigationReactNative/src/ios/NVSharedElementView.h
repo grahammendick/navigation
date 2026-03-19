@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVBarView.h"
 #import "NVSceneController.h"
 
@@ -8,3 +9,6 @@
 @property (nonatomic, copy) NSString *name;
 
 @end
+
+#endif
+

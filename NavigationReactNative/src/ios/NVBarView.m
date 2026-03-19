@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVBarView.h"
 #import "NVBarButtonView.h"
 
@@ -54,3 +55,6 @@
 }
 
 @end
+
+#endif
+
