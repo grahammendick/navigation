@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVBarButtonView.h"
 
 #import <UIKit/UIKit.h>
@@ -124,3 +125,6 @@
 }
 
 @end
+
+#endif
+

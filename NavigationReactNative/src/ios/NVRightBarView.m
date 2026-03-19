@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVRightBarView.h"
 
 #import <React/UIView+React.h>
@@ -15,3 +16,6 @@
 }
 
 @end
+
+#endif
+

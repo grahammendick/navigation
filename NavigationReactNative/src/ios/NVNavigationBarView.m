@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVNavigationBarView.h"
 
 #import "NVSceneController.h"
@@ -213,3 +214,6 @@ API_AVAILABLE(ios(13.0)){
 }
 
 @end
+
+#endif
+

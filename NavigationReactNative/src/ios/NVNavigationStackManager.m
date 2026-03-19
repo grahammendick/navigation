@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVNavigationStackView.h"
 #import <React/RCTViewManager.h>
 
@@ -26,3 +27,6 @@ RCT_EXPORT_VIEW_PROPERTY(onWillNavigateBack, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onRest, RCTDirectEventBlock)
 
 @end
+
+#endif
+

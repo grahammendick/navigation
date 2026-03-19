@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVStatusBarView.h"
 
 #import <UIKit/UIKit.h>
@@ -19,3 +20,6 @@ RCT_EXPORT_VIEW_PROPERTY(tintStyle, UIStatusBarStyle)
 RCT_EXPORT_VIEW_PROPERTY(hidden, BOOL)
 
 @end
+
+#endif
+

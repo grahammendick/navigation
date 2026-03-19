@@ -13,6 +13,8 @@
 #import <React/RCTUtils.h>
 #import <React/UIView+React.h>
 
+#ifndef RCT_REMOVE_LEGACY_ARCH
+
 @implementation NVNavigationStackView
 {
     __weak RCTBridge *_bridge;
@@ -424,6 +426,8 @@
 
 @end
 
+#endif
+
 @implementation NVStackController
 {
     BOOL _dismissing;
@@ -441,10 +445,10 @@
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
 {
-    NVSceneView *scene;
+    UIView *scene;
     NSInteger crumb = [[navigationBar items] indexOfObject:item];
     if (self.viewControllers.count > crumb - 1)
-        scene = ((NVSceneView *) [self.viewControllers objectAtIndex:crumb - 1].view);
+        scene = [self.viewControllers objectAtIndex:crumb - 1].view;
     return scene ? scene.subviews.count > 0 : YES;
 }
 
@@ -496,3 +500,4 @@
 }
 
 @end
+

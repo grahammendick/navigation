@@ -8,6 +8,7 @@
 
 @end
 
+#ifndef RCT_REMOVE_LEGACY_ARCH
 @interface NVNavigationStackView : UIView <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) NVStackController *navigationController;
@@ -21,4 +22,6 @@
 -(id)initWithBridge: (RCTBridge *)bridge;
 
 @end
+
+#endif
 

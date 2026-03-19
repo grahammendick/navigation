@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVTitleBarView.h"
 #import <React/RCTViewManager.h>
 
@@ -14,3 +15,6 @@ RCT_EXPORT_MODULE()
 }
 
 @end
+
+#endif
+

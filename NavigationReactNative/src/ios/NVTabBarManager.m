@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVTabBarView.h"
 #import <React/RCTViewManager.h>
 
@@ -30,3 +31,6 @@ RCT_EXPORT_VIEW_PROPERTY(mostRecentEventCount, NSInteger)
 RCT_EXPORT_VIEW_PROPERTY(onTabSelected, RCTDirectEventBlock)
 
 @end
+
+#endif
+
