@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native/new-app-screen": "0.84.1",
+    "@testing-library/react-native": "^13.3.3",
     "navigation": "^6.3.1",
     "navigation-react": "^4.15.0",
     "navigation-react-native": "^9.35.2",
