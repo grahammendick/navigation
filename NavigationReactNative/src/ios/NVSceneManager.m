@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVSceneView.h"
 #import <React/RCTViewManager.h>
 
@@ -22,3 +23,6 @@ RCT_EXPORT_VIEW_PROPERTY(exitTrans, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(onPopped, RCTDirectEventBlock)
 
 @end
+
+#endif
+

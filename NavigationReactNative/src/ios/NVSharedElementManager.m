@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVSharedElementView.h"
 #import <React/RCTViewManager.h>
 
@@ -16,3 +17,6 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_VIEW_PROPERTY(name, NSString)
 
 @end
+
+#endif
+

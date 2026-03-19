@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVTabBarPagerView.h"
 #import "NVTabBarPagerView.h"
 
@@ -14,3 +15,6 @@
 @property (nonatomic, copy) UIColor *unselectedTintColor;
 
 @end
+
+#endif
+

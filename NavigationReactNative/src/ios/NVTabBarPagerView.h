@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVTabBarPagerView.h"
 #import "NVTabBarItemView.h"
 
@@ -20,3 +21,6 @@
 -(void)scrollToTop;
 
 @end
+
+#endif
+

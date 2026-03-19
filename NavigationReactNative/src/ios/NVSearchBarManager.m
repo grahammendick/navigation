@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVSearchBarView.h"
 
 #import <UIKit/UIKit.h>
@@ -38,3 +39,6 @@ RCT_EXPORT_VIEW_PROPERTY(onQuery, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onChangeScopeButton, RCTDirectEventBlock)
 
 @end
+
+#endif
+

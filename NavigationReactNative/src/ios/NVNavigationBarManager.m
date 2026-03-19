@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVNavigationBarView.h"
 #import <React/RCTViewManager.h>
 
@@ -42,3 +43,6 @@ RCT_EXPORT_VIEW_PROPERTY(backTestID, NSString)
 
 
 @end
+
+#endif
+

@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVSearchBarView.h"
 #import "NVSearchResultsController.h"
 
@@ -213,3 +214,6 @@
 
 
 @end
+
+#endif
+

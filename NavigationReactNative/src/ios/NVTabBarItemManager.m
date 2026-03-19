@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVTabBarItemView.h"
 
 #import <UIKit/UIKit.h>
@@ -50,3 +51,6 @@ RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(testID, NSString)
 
 @end
+
+#endif
+

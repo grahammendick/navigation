@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVBottomSheetView.h"
 #import "NVBottomSheetController.h"
 #import "NVSceneController.h"
@@ -266,4 +267,6 @@ API_AVAILABLE(ios(15.0)){
 }
 
 @end
+
+#endif
 

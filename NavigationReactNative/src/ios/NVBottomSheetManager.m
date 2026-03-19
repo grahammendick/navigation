@@ -1,3 +1,4 @@
+#ifndef RCT_REMOVE_LEGACY_ARCH
 #import "NVBottomSheetView.h"
 
 #import <UIKit/UIKit.h>
@@ -34,3 +35,6 @@ RCT_EXPORT_VIEW_PROPERTY(onDetentChanged, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDismissed, RCTDirectEventBlock)
 
 @end
+
+#endif
+
