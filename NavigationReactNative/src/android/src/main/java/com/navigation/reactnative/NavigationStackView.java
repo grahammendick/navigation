@@ -131,7 +131,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                         int popCrumb = ((SceneFragment) sceneFragment).getScene().crumb;
                         int crumb = fragment.getChildFragmentManager().getBackStackEntryCount();
                         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) crumb--;
-                        if (popCrumb <= crumb + 1) {
+                        if (popCrumb <= crumb + 1 && crumb + 1 < oldKeys.size()) {
                             FragmentManager fragmentManager = fragment.getChildFragmentManager();
                             SceneFragment fragment = (SceneFragment) fragmentManager.findFragmentByTag(oldKeys.getString(crumb + 1));
                             ArrayList<Pair<SharedElementView, String>> sharedElements = fragment != null ? getOldSharedElements(crumb + 1, popCrumb, fragment) : null;
