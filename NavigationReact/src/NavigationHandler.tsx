@@ -17,18 +17,20 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const {deserialize, onHmrReload} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
         deserialize: async (sceneViewKey: string, _options: any, actionId: string = null, args: any[] = null) => {
+            const currentStateContext = navigationEvent.stateNavigator.stateContext;
             const {stateContext: {url, nextCrumb, historyAction}, historyManager} = navigationEvent.data.stateNavigator;
             const res = await deserialize(historyManager.getHref(nextCrumb.crumblessUrl), {
                 method: 'post',
                 headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
                 body: {url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}
             });
+            if (navigationEvent.stateNavigator.stateContext !== currentStateContext) return new Promise(() => {})
             if (res.url) {
                 navigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
                 navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext);
             } else if (actionId && res.refetch) {
                 startTransition(() => {
-                    setNavigationEvent(prevNavigationEvent => ({...prevNavigationEvent, data: {...prevNavigationEvent.data, ignoreCache: res.refetch, rscCache: res.sceneViews}}));
+                    setNavigationEvent({data: {...navigationEvent.data, ignoreCache: res.refetch, rscCache: res.sceneViews}, stateNavigator: navigationEvent.stateNavigator});
                 });
             }
             return !actionId ? !res.url ? res.sceneViews[sceneViewKey] : new Promise(() => {}) : res.data;
