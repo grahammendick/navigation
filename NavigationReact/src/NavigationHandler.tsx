@@ -28,7 +28,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext);
             } else if (actionId && res.refetch) {
                 startTransition(() => {
-                    setNavigationEvent({data: {...navigationEvent.data, ignoreCache: res.refetch, rscCache: res.sceneViews}, stateNavigator: navigationEvent.stateNavigator});
+                    setNavigationEvent(prevNavigationEvent => ({...prevNavigationEvent, data: {...prevNavigationEvent.data, ignoreCache: res.refetch, rscCache: res.sceneViews}}));
                 });
             }
             return !actionId ? !res.url ? res.sceneViews[sceneViewKey] : new Promise(() => {}) : res.data;
