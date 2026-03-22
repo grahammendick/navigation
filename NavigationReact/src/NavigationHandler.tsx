@@ -24,7 +24,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
                 body: {url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}
             });
-            if (navigationEvent.stateNavigator.stateContext !== currentStateContext) return !actionId ? new Promise(() => {}) : res.data;
+            if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
+                return !actionId ? new Promise(() => {}) : res.data;
             if (res.url) {
                 navigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
                 navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext);
