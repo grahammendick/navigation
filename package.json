@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "The data-first JavaScript router",
   "devDependencies": {
-    "@rollup/plugin-sucrase": "^3.0.2",
+    "@rollup/plugin-sucrase": "^5.1.0",
     "@rollup/plugin-typescript": "^4.1.2",
     "@types/node": "^18.19.53",
     "del": "^6.0.0",

@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { SceneView, NavigationHandler, useNavigationEvent } from 'navigation-react';
-import React, { useEffect, useState, act } from 'react';
+import { useEffect, useState, act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { JSDOM } from 'jsdom';
 
