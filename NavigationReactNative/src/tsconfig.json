@@ -3,6 +3,9 @@
         "target": "es6",
         "allowSyntheticDefaultImports": true,
         "jsx": "react",
-        "baseUrl": "../../types"
+        "baseUrl": "../../types",
+        "types": ["node"],
+        "strict": false,
+        "ignoreDeprecations": "6.0"
     }
 }

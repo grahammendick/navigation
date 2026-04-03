@@ -120,7 +120,8 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         return () => clearTimeout(timer);
     }, [pause]);
     useEffect(() => {
-        for(const {props: {stateKey}} of Object.values(allScenes) as any) {
+        for(const key of Object.keys(allScenes) as any) {
+            const {props: {stateKey}} = allScenes[key];
             registerRootView(stateKey, stateKey);
         }
     }, [registerRootView, allScenes]);
