@@ -1,7 +1,7 @@
 // npx tsc --project ./tsconfig.tests.json
 import { StateNavigator } from 'navigation';
 import { NavigationHandler, NavigationContext, NavigationEvent, SceneView, NavigationBackLink, NavigationLink, RefreshLink } from 'navigation-react';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { createRoot } from 'react-dom/client';
 
 type AppNavigation = {

@@ -1,5 +1,5 @@
 // npx tsc --project ./tsconfig.tests.json
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { View, Text, ScrollView, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, NavigationHandler } from 'navigation-react';

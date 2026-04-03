@@ -2,7 +2,7 @@
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, NavigationLink } from 'navigation-react';
 import { Scene, MobileHistoryManager, SharedElement, NavigationStack } from 'navigation-react-mobile';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { createRoot } from 'react-dom/client';
 
 type AppNavigation = {
