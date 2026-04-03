@@ -1,4 +1,4 @@
-// npx tsc --jsx react --target es5 --lib ES2015,DOM --esModuleInterop --baseUrl ../../types --noImplicitAny true --strict true -ignoreConfig --ignoreDeprecations 6.0 navigation-react-native-web-tests.tsx
+// npx tsc --project ./tsconfig.tests.json
 import React, { useContext } from 'react';
 import { View, Text, ScrollView, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
