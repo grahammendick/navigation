@@ -2,9 +2,8 @@ import assert from 'assert';
 import mocha from 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationLink, NavigationHandler, NavigationContext, useNavigationEvent } from 'navigation-react';
-import React, { useContext, useState, useEffect, useMemo } from 'react';
+import React, { useContext, useState, useEffect, useMemo, act } from 'react';
 import { createRoot } from 'react-dom/client';
-import { act, Simulate } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
 declare var global: any;
@@ -13,6 +12,9 @@ var { window } = new JSDOM('<!doctype html><html><body></body></html>', { url: '
 window.addEventListener = () => {};
 global.window = window;
 global.document = window.document;
+const Simulate = {
+    click: (el, props = {}) => el.dispatchEvent(new window.MouseEvent('click', {...props, bubbles: true, cancelable: true}))    
+}
 
 describe('NavigationLinkTest', function () {
     describe('Navigation Link', function () {

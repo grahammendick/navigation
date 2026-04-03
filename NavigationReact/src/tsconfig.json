@@ -1,10 +1,11 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "jsx": "react",
         "esModuleInterop": true,
-        "baseUrl": "../../types",
-        "strict": false,
-        "ignoreDeprecations": "6.0"
+        "paths": {
+            "*": ["../../types/*"],
+        },
+        "strict": false
     }
 }

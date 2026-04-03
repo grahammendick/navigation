@@ -119,7 +119,7 @@ var itemTasks = items.reduce((tasks, item) => {
         tasks.packageTasks.push(
             nameFunc(() => (
                 src(include)
-                    .pipe(ts.createProject(tsconfig)())
+                    .pipe(ts.createProject(tsconfig, {module: 'commonjs'})())
                     .pipe(dest(`./build/npm/${packageName}/cjs`))
             ), 'package' + name)
         );

@@ -2,6 +2,7 @@
   "name": "navigation-react",
   "version": "4.15.0",
   "description": "React plugin for the Navigation router",
+  "type": "module",
   "main": "cjs/NavigationReact.js",
   "types": "navigation.react.d.ts",
   "repository": {

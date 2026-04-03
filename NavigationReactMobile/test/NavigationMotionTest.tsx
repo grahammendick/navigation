@@ -3,10 +3,9 @@ import 'mocha';
 import { StateNavigator } from 'navigation';
 import { NavigationHandler } from 'navigation-react';
 import { NavigationMotion, NavigationStack, Scene } from 'navigation-react-mobile';
-import React, {useState} from 'react';
+import React, {useState, act} from 'react';
 import { createRoot } from 'react-dom/client';
 import ReactDOMServer from 'react-dom/server';
-import { act } from 'react-dom/test-utils';
 import { JSDOM } from 'jsdom';
 
 declare var global: any;
