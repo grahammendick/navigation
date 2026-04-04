@@ -3,6 +3,6 @@
     "files": ["./navigation-react-native-web-tests.tsx"],
     "compilerOptions": {
         "noImplicitAny": true,
-        "strict": true,
+        "strict": true
     }
 }

@@ -1,4 +1,4 @@
-// npx tsc --project ./tsconfig.tests.json
+// npx tsc --project ./navigation-react-mobile-tests.json
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, NavigationLink } from 'navigation-react';
 import { Scene, MobileHistoryManager, SharedElement, NavigationStack } from 'navigation-react-mobile';

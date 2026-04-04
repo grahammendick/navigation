@@ -1,8 +1,8 @@
 {
     "extends": "./tsconfig.json",
-    "files": ["./navigation-react-tests.tsx"],
+    "files": ["./navigation-react-mobile-tests.tsx"],
     "compilerOptions": {
         "noImplicitAny": true,
-        "strict": true,
+        "strict": true
     }
 }

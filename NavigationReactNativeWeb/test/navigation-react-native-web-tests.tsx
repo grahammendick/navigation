@@ -1,4 +1,4 @@
-// npx tsc --project ./tsconfig.tests.json
+// npx tsc --project ./navigation-react-native-web-tests.json
 import { useContext } from 'react';
 import { View, Text, ScrollView, TouchableHighlight } from 'react-native';
 import { StateNavigator } from 'navigation';
