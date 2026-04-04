@@ -3,10 +3,10 @@ import { NavigationContext } from 'navigation-react';
 
 var useNavigated = (handler: () => void) => {
     var navigationEvent = useContext(NavigationContext);
-    var preNavigationEvent = useRef(null);
+    var prevNavigationEvent = useRef(null);
     useEffect(() => {
-        if (!preNavigationEvent.current || navigationEvent !== preNavigationEvent.current) handler();
-        preNavigationEvent.current = navigationEvent;
+        if (!prevNavigationEvent.current || navigationEvent !== prevNavigationEvent.current) handler();
+        prevNavigationEvent.current = navigationEvent;
     }, [navigationEvent]);
 };
 
