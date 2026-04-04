@@ -15,7 +15,7 @@ global.window = window;
 global.document = window.document;
 
 describe('NavigatingHook', function () {
-    /* describe('A', function () {
+    describe('A', function () {
         const test = stack => {
             it('should not call navigating hook', function(){
                 var stateNavigator = new StateNavigator([
@@ -1113,5 +1113,5 @@ describe('NavigatingHook', function () {
             test(<NavigationStack />);
         });
 
-    }); */
+    });
 });
