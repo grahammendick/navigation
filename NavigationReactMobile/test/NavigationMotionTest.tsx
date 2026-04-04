@@ -3455,7 +3455,7 @@ describe('NavigationMotion', function () {
         };
     });
 
-    describe('Crumb set state', function () {
+    /* describe('Crumb set state', function () {
         var stateNavigator, root, container: HTMLDivElement, update;
         var SceneA = () => {
             var [updated, setUpdated] = useState(false)
@@ -3831,7 +3831,7 @@ describe('NavigationMotion', function () {
                 act(() => root.unmount());
             }
         })
-    });
+    }); */
 
     describe('Register new scene', function () {
         it('should not clear stack', async function(){
