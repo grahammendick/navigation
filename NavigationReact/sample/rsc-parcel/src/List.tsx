@@ -1,7 +1,6 @@
 import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
 import { searchPeople } from './data';
 import Pager from './Pager';
-import Filter from './Filter';
 
 const List = async () => {
   const {data: {name, page, size, sort}} = useNavigationEvent();
@@ -28,7 +27,6 @@ const List = async () => {
           ))}
         </tbody>
       </table>
-      <Filter />
       <Pager totalRowCount={count} />
     </>
   )
