@@ -1,5 +1,4 @@
 'use client'
-// @ts-ignore
 import { RefreshLink, useNavigationEvent } from 'navigation-react';
 
 const Filter = () => {
