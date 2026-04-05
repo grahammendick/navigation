@@ -10,6 +10,7 @@ const Person = async () => {
   const {name, dateOfBirth, email, phone} = await getPerson(id);
   return (
     <>
+      <title>{name}</title>
       <h1>Person</h1>
       <div>
         <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
