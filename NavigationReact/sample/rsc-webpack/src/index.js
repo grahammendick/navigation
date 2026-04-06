@@ -1,8 +1,21 @@
 import * as React from 'react';
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { encodeReply, createFromFetch } from 'react-server-dom-webpack/client';
 import { BundlerContext } from 'navigation-react';
+
+const serverCallback = async (actionId, args) => {
+  const ind = args.findIndex(arg => typeof arg === 'function');
+  if (ind !== -1) {
+    const deserializeScene = args[ind];
+    return deserializeScene(actionId, [...args.slice(0, ind), ...args.slice(ind + 1)]);
+  }
+  const res = await fetchRSC(window.location.href, {
+    method: 'post',
+    body: {actionId, args}
+  });
+  return res.data;
+}  
 
 const fetchRSC = async (url, options) => {
   const response = fetch(url, {
@@ -10,7 +23,7 @@ const fetchRSC = async (url, options) => {
     headers: {Accept: 'text/x-component', ...options?.headers},
     body: options?.body ? await encodeReply(options.body) : undefined
   });
-  return createFromFetch(response);
+  return createFromFetch(response, {callServer: serverCallback});
 }
 
 const initialPayload = fetchRSC(window.location.pathname + window.location.search);
@@ -33,7 +46,6 @@ function Shell() {
     </BundlerContext.Provider>
   );
 }
-
 
 ReactDOM.hydrateRoot(document, <Shell />);
 

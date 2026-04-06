@@ -2,7 +2,10 @@
 
 const path = require('path');
 
+const busboy = require('busboy');
 const register = require('react-server-dom-webpack/node-register');
+const { decodeReply, decodeReplyFromBusboy } = require('react-server-dom-webpack/server');
+
 register();
 
 const babelRegister = require('@babel/register');
@@ -76,25 +79,39 @@ app.post('*', async function (req, res) {
     person: await import('../src/Person.js'),
     friends: await import('../src/Friends.js')
   };
-  const {url, sceneViewKey, historyAction, rootViews} = req.body;
+  const {url, sceneViewKey, historyAction, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator.default);
-  serverNavigator.navigateLink(url, historyAction);
+  if (url) serverNavigator.navigateLink(url, historyAction);
+  let data = null; let refetch = null;
+  if (req.headers['content-type'] !== 'application/json') {
+    const [filepath, name] = actionId.split('#');
+    const action = (await import(filepath))[name];
+    const scene = {
+      stateNavigator: serverNavigator,
+      refetch: (scene = false) => {
+        refetch = scene || sceneViewKey;
+      }
+    };
+    data = await action.apply(null, url ? [...args, scene] : args);
+  }
   const {state, oldState} = serverNavigator.stateContext;
-  const activeViews = oldState ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+  const activeViews = (oldState || refetch === true) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];
       const show =  active != null && (
           typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, []) : [sceneViewKey];
+    }, []) : ((!actionId || refetch === sceneViewKey) ? [sceneViewKey] : []);
   const {renderToPipeableStream} = await import(
     'react-server-dom-webpack/server'
   );
   const moduleMap = await getModuleMap();
   const {pipe} = renderToPipeableStream({
-    url: oldState ? serverNavigator.stateContext.url : undefined,
-    historyAction: oldState ? serverNavigator.stateContext.historyAction : undefined,
+    data,
+    refetch,
+    url: oldState ? serverNavigator.stateContext.url : null,
+    historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
     sceneViews: activeViews.reduce((SceneViews, activeKey) => {
       const SceneView = sceneViews[activeKey].default;
       SceneViews[activeKey] = (
@@ -105,6 +122,20 @@ app.post('*', async function (req, res) {
   }, moduleMap);
   pipe(res);
 });
+
+const decodeBody = async (req) => {
+  if (!req.is('application/json')) {
+    if (req.is('multipart/form-data')) {
+      const bb = busboy({headers: req.headers});
+      const reply = decodeReplyFromBusboy(bb);
+      req.pipe(bb);
+      return reply;
+    } else {
+      return decodeReply(req.body);
+    }
+  }
+  return req.body;
+}
 
 app.listen(3001, () => {
   console.log('Server listening on port 3001...');
