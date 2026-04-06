@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createFromReadableStream, setServerCallback } from '@vitejs/plugin-rsc/browser'
+import { createFromReadableStream, setServerCallback, createTemporaryReferenceSet, encodeReply } from '@vitejs/plugin-rsc/browser'
 import { rscStream } from 'rsc-html-stream/client'
 import { createFromFetch } from '@vitejs/plugin-rsc/browser';
 import { BundlerContext } from 'navigation-react';
 
 async function fetchRSC(url: string, {body, ...options}: any) {
-    return createFromFetch(fetch(url, {...options, body: JSON.stringify(body)}));
+    const temporaryReferences = createTemporaryReferenceSet();
+    return createFromFetch(fetch(url, {...options, body: await encodeReply(body, {temporaryReferences})}));
 }
 
 const initialPayload = createFromReadableStream<any>(rscStream)

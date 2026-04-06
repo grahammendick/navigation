@@ -1,6 +1,5 @@
 'use client'
 import { RefreshLink, useNavigationEvent } from 'navigation-react';
-import { doSomething } from './action';
 
 const Filter = () => {
   const { data, stateNavigator } = useNavigationEvent();
@@ -12,10 +11,6 @@ const Filter = () => {
         <input id="name" value={name || ''} onChange={({ target: { value } }) => {
           stateNavigator.refresh({ ...data, name: value, page: null });
         }} />
-        <button onClick={async () => {
-          const data = await doSomething('hello', 2);
-          console.log(data, 'xxx');
-        }}>Go</button>
       </div>
       Page size
       <RefreshLink navigationData={{ size: 5, page: null }} includeCurrentData>5</RefreshLink>
