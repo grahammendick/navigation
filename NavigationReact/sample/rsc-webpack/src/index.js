@@ -7,13 +7,8 @@ import { BundlerContext } from 'navigation-react';
 const fetchRSC = async (url, options) => {
   const response = fetch(url, {
     ...options,
-    headers: {
-      Accept: 'text/x-component',
-      ...options?.headers,
-    },
-    body: options && 'body' in options 
-      ? await encodeReply(options.body)
-      : undefined,
+    headers: {Accept: 'text/x-component', ...options?.headers},
+    body: options?.body ? await encodeReply(options.body) : undefined
   });
   return createFromFetch(response);
 }
