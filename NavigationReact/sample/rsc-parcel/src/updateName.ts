@@ -1,4 +1,4 @@
-"use server";
+'use server'
 import { getPerson } from './data';
 
 export default async function updateName(data: FormData, { refetch }: any) {
