@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createFromReadableStream } from '@vitejs/plugin-rsc/browser'
+import { createFromReadableStream, setServerCallback } from '@vitejs/plugin-rsc/browser'
 import { rscStream } from 'rsc-html-stream/client'
 import { createFromFetch } from '@vitejs/plugin-rsc/browser';
 import { BundlerContext } from 'navigation-react';
@@ -25,4 +25,18 @@ function Shell() {
         </BundlerContext.Provider>
     );
 }
+
+setServerCallback(async (actionId: string, args: any[]) => {
+    const ind = args.findIndex(arg => typeof arg === 'function');
+    if (ind !== -1) {
+        const deserializeScene = args[ind];
+        return deserializeScene(actionId, [...args.slice(0, ind), ...args.slice(ind +1)]);
+    }
+    const res = await fetchRSC(window.location.href, {
+        method: 'post',
+        body: {actionId, args}
+    }) as any;
+    return res.data;
+});
+
 ReactDOM.hydrateRoot(document, <Shell />);
