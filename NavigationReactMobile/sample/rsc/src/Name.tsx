@@ -1,9 +1,9 @@
 'use client'
-import { useActionScene } from 'navigation-react';
+import { useSceneView } from 'navigation-react';
 import updateName from "./updateName";
 
 const Name = ({ id, name }: { id: number, name: string }) => {
-  const saveName = useActionScene(updateName);
+  const saveName = useSceneView(updateName);
   return (
     <form action={saveName}>
       <input type="hidden" name="id" value={id} />
