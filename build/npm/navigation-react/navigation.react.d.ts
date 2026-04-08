@@ -69,7 +69,7 @@ export function useRootViewRegistry() : (sceneViewKey: string, active: string | 
 /**
  * The hook for navigating or refetching inside a server function
  */
-export function useSceneView<Payload extends any[], SceneView extends { stateNavigator: StateNavigator, refetch: (scene?: boolean) => void }, Data>(action: (...args: [...Payload, SceneView]) => Data): (...args: Payload) => Data;
+export function useSceneView<Payload extends any[], SceneView extends { stateNavigator: StateNavigator, refetch: (scene?: boolean) => void }, Data>(fn: (...args: [...Payload, SceneView]) => Data): (...args: Payload) => Data;
 
 /**
  * Defines the Navigation Handler Props contract
