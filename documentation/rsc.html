@@ -116,19 +116,28 @@ const Thread = ({mail}) => {
             <pre><code class="language-jsx">&lt;SceneView active="mail" refetch={['id']}>
   &lt;Mail />
 &lt;/SceneView></code></pre>
-            <h2>Handling Mutations</h2>
+            <h2>Server Functions</h2>
             <p>
-                The Navigation router doesn't support server actions. Instead, create a client component and call your api mutation endpoints as you would in a traditional SPA. The <code>useRefetch</code> hook returns a function you can use to update the  whole scene after the mutation completes. In our example app, we refetch the 'mail' scene when the user sends a reply so that the new reply is appended to the email thread.
+                By default, the Navigation router doesn't refetch the scene after a Server Function call. But by wrapping a Server Function in <code>useActionScene</code>, it receives an extra parameter so you can trigger the refetch yourself. In our email example app, we create a <code>sendReply</code> Server Function that we call when the user replies to an email. We call <code>refetch</code> after a successful send so that the scene updates with the new reply added to the email thread.
             </p>
-            <pre><code class="language-jsx">import {useRefetch} from 'navigation-react';
-
-const refetch = useRefetch();
-
-onClick={() => {
+            <pre><code class="language-jsx">'use server'
+export async function sendReply(mail, {refetch}) {
   // send reply
   refetch();
-}}
-</code></pre>
+}
+
+'use client'
+import {useActionScene} from 'navigation-react';
+
+const send = useActionScene(sendReply);
+&lt;button onClick={() => send(mail)} /></code></pre>
+            <p>
+              This extra parameter the Server Function receives also holds a <code>StateNavigator</code> so you can navigate to a new scene instead of refetching the current one. For example, after the user composes a new email, we navigate them back to their inbox.
+            </p>
+            <pre><code class="language-jsx">export async function compose(mail, {stateNavigator}) {
+  // send mail
+  stateNavigator.navigate('inbox');
+}</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
