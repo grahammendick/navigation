@@ -1,2 +1,2 @@
-const useSceneView = (action: (...args: any) => any) => action;
+const useSceneView = (fn: (...args: any) => any) => fn;
 export default useSceneView;
