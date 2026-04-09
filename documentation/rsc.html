@@ -118,7 +118,7 @@ const Thread = ({mail}) => {
 &lt;/SceneView></code></pre>
             <h2>Server Functions</h2>
             <p>
-                By default, the Navigation router doesn't refetch the scene after a Server Function call. By wrapping a Server Function in <code>useSceneView</code>, it receives an extra parameter so you can trigger the refetch yourself. In our email example app, we create a <code>sendReply</code> Server Function for when the user replies to an email. We call <code>refetch</code> after a successful send so that the scene updates, with the new reply added to the email thread.
+                In our email example app, we call a <code>sendReply</code> Server Function when the user replies to an email. By default, the Navigation router doesn't refetch the scene after a Server Function call. We can trigger the refetch by wrapping our Server Function in <code>useSceneView</code>. It then receives an extra <code>refetch</code> parameter. We call it after a successful send so that the scene updates and the new reply is added to the email thread.
             </p>
             <pre><code class="language-jsx">'use server'
 export async function sendReply(mail, {refetch}) {
