@@ -4,7 +4,7 @@ Try out Navigation React Mobile and RSC's using Parcel.
 ## Run
 Once you've cloned the repository, you can install the dependencies and start the RSC Parcel example:
 
-    npm install --force
+    npm install
     npm run build
     npm run start
 	
