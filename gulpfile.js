@@ -39,7 +39,7 @@ function rollupTask(name, input, file, globals, format) {
         external: Array.isArray(globals) ? globals : Object.keys(globals),
         plugins: input.indexOf('Test') === -1
             ? [ typescript({ include, tsconfig }), cleanup({ comments: 'none' }) ] 
-            : [ sucrase({ include: input, transforms: ['typescript','jsx'] }) ]
+            : [ sucrase({ include: input, transforms: ['typescript','jsx'], jsxRuntime: 'automatic' }) ]
     }).then((bundle) => bundle.write({ format, name, globals, file }));
 }
 function buildTask(name, input, file, globals, details) {
@@ -119,7 +119,7 @@ var itemTasks = items.reduce((tasks, item) => {
         tasks.packageTasks.push(
             nameFunc(() => (
                 src(include)
-                    .pipe(ts.createProject(tsconfig)())
+                    .pipe(ts.createProject(tsconfig, {module: 'commonjs'})())
                     .pipe(dest(`./build/npm/${packageName}/cjs`))
             ), 'package' + name)
         );
@@ -149,7 +149,7 @@ var tests = [
 function testTask(name, input, file) {
     var globals = [
         'mocha', 'assert', 'react', 'react-dom', 'react-dom/client', 'react-dom/server',
-        'react-dom/test-utils', 'jsdom', 'tslib', 'navigation', 'navigation-react',
+        'react/jsx-dev-runtime', 'jsdom', 'tslib', 'navigation', 'navigation-react',
         'navigation-react-mobile'
     ];
     return rollupTask(name, input, file, globals, 'cjs')

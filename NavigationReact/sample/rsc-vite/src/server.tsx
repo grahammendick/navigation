@@ -1,4 +1,4 @@
-import { renderToReadableStream } from '@vitejs/plugin-rsc/rsc';
+import { renderToReadableStream, createTemporaryReferenceSet, decodeReply, loadServerAction } from '@vitejs/plugin-rsc/rsc';
 import { StateNavigator } from 'navigation';
 import stateNavigator from './stateNavigator.ts';
 
@@ -34,22 +34,35 @@ const post = async (request: Request) => {
     person: await import('./Person.tsx'),
     friends: await import('./Friends.tsx')
   };
-  const {url, sceneViewKey, historyAction, rootViews} = await request.json();
+  const {url, sceneViewKey, historyAction, rootViews, actionId, args} = await decodeBody(request);
   const serverNavigator = new StateNavigator(stateNavigator);
-  serverNavigator.navigateLink(url, historyAction);
+  if (url) serverNavigator.navigateLink(url, historyAction);
+  let data = null; let refetch = null;
+  if (request.headers.get('content-type') !== 'application/json') {
+    const action = await loadServerAction(actionId);
+    const scene = {
+      stateNavigator: serverNavigator,
+      refetch: (scene: boolean = false) => {
+        refetch = scene || sceneViewKey;
+      }
+    };
+    data = await action.apply(null, url ? [...args, scene] : args);
+  }
   const {state, oldState} = serverNavigator.stateContext;
-  const activeViews = oldState ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+  const activeViews = (oldState || refetch === true) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
     const active = rootViews[rootKey];
     const show =  active != null && (
         typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
     );
     if (show) activeRoots.push(rootKey);
     return activeRoots;
-  }, [] as string[]) : [sceneViewKey];
+  }, [] as string[]) : ((!actionId || refetch === sceneViewKey) ? [sceneViewKey] : []);
   const {NavigationHandler} = await import('navigation-react');
   const stream = renderToReadableStream({
-    url: oldState ? serverNavigator.stateContext.url : undefined,
-    historyAction: oldState ? serverNavigator.stateContext.historyAction : undefined,
+    data,
+    refetch,
+    url: oldState ? serverNavigator.stateContext.url : null,
+    historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
     sceneViews: activeViews.reduce((SceneViews, activeKey) => {
       const SceneView = sceneViews[activeKey].default;
       SceneViews[activeKey] = (
@@ -61,6 +74,15 @@ const post = async (request: Request) => {
     }, {})
   });
   return new Response(stream, {headers: {'Content-type': 'text/x-component'}});
+}
+
+const decodeBody = async (req: Request) => {
+  if (req.headers.get('content-type') !== 'application/json') {
+    const temporaryReferences = createTemporaryReferenceSet();
+    const body = !req.headers.get('content-type')?.startsWith('multipart/form-data') ? await req.text() : await req.formData();
+    return decodeReply(body, {temporaryReferences});
+  }
+  return req.json();
 }
 
 if (import.meta.hot) {

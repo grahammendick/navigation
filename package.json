@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "The data-first JavaScript router",
   "devDependencies": {
-    "@rollup/plugin-sucrase": "^3.0.2",
+    "@rollup/plugin-sucrase": "^5.1.0",
     "@rollup/plugin-typescript": "^4.1.2",
     "@types/node": "^18.19.53",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "del": "^6.0.0",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.1",
     "gulp-cli": "^2.3.0",
     "gulp-insert": "^0.5.0",
     "gulp-mocha": "^8.0.0",
@@ -18,12 +20,12 @@
     "navigation": "file:build/npm/navigation",
     "navigation-react": "file:build/npm/navigation-react",
     "navigation-react-mobile": "file:build/npm/navigation-react-mobile",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "rollup": "^2.11.2",
     "rollup-plugin-cleanup": "^3.1.1",
     "tslib": "^2.0.0",
-    "typescript": "^5.6.2"
+    "typescript": "^6.0.2"
   },
   "scripts": {
     "test": "gulp test",
@@ -42,8 +44,5 @@
   "bugs": {
     "url": "https://github.com/grahammendick/navigation/issues"
   },
-  "homepage": "https://github.com/grahammendick/navigation",
-  "dependencies": {
-    "navigation-react-native": "^8.10.0"
-  }
+  "homepage": "https://github.com/grahammendick/navigation"
 }

@@ -6,6 +6,7 @@ import List from './List.js';
 const People = async () => {
   return (
     <>
+      <title>People</title>
       <h1>People</h1>
       <Filter />
       <SceneView active="people" name="list">

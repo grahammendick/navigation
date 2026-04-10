@@ -3,6 +3,10 @@
         "target": "es6",
         "allowSyntheticDefaultImports": true,
         "jsx": "react",
-        "baseUrl": "../../types"
+        "paths": {
+            "*": ["../../types/*"],
+        },
+        "types": ["node"],
+        "strict": false,
     }
 }

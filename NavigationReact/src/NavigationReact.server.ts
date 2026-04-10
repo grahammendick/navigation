@@ -5,5 +5,6 @@ import RefreshLink from './RefreshLink.js';
 import FluentLink from './FluentLink.js';
 import SceneView from './SceneView.server.js';
 import useNavigationEvent from './useNavigationEvent.server.js';
+import useSceneView from './useSceneView.server.js';
 
-export { NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent };
+export { NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView };

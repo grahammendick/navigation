@@ -1,4 +1,4 @@
-var people = [
+global.people = [
     {id: 1, name: 'Bell Halvorson', gender: 'female', dateOfBirth: '01/01/1980', email: 'bell@navigation.com', phone: '555 0001', friends: [2,3,4,5]},
     {id: 2, name: 'Aditya Larson', gender: 'male', dateOfBirth: '01/02/1980', email: 'aditya@navigation.com', phone: '555 0002', friends: [3,4,5,6]},
     {id: 3, name: 'Rashawn Schamberger', gender: 'male', dateOfBirth: '01/03/1980', email: 'rashawn@navigation.com', phone: '555 0003', friends: [4,5,6,7]},

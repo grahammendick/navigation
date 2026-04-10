@@ -1,9 +1,9 @@
-// npx tsc --jsx react --target es5 --lib ES2015,DOM --esModuleInterop --baseUrl ../../types --noImplicitAny true --strict true navigation-react-mobile-tests.tsx
+// npx tsc --project ./navigation-react-mobile-tests.json
 import { StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, NavigationLink } from 'navigation-react';
 import { Scene, MobileHistoryManager, SharedElement, NavigationStack } from 'navigation-react-mobile';
-import React, { useContext } from 'react';
-import ReactDOM from 'react-dom';
+import { useContext } from 'react';
+import { createRoot } from 'react-dom/client';
 
 type AppNavigation = {
     people: { page?: number },
@@ -46,7 +46,8 @@ const Person = () => {
 
 stateNavigator.start();
 
-ReactDOM.render(
+const root = createRoot(document.getElementById("root")!);
+root.render(
     <NavigationStack
         unmountStyle={[
             {transform: 'translateX(100%)'},
@@ -58,6 +59,5 @@ ReactDOM.render(
           ]}>
         <Scene stateKey="people" sharedElements={({id}) => [id]}><People /></Scene>
         <Scene stateKey="person"><Person /></Scene>
-    </NavigationStack>,
-    document.getElementById('root')
+    </NavigationStack>
 );
