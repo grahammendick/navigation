@@ -36,8 +36,8 @@ function Shell() {
 setServerCallback(async (actionId: string, args: any[]) => {
     const ind = args.findIndex(arg => typeof arg === 'function');
     if (ind !== -1) {
-        const fetchScene = args[ind];
-        return fetchScene(actionId, [...args.slice(0, ind), ...args.slice(ind +1)]);
+        const callback = args[ind];
+        return callback(actionId, [...args.slice(0, ind), ...args.slice(ind +1)]);
     }
     const res = await fetchRSC(window.location.href, {
         method: 'post',
