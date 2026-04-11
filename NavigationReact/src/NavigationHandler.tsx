@@ -14,16 +14,19 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
     const rootViews = useRef({});
-    const {deserialize, onHmrReload} = useContext(BundlerContext);
+    const {deserialize, createFromFetch, onHmrReload} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
         deserialize: async (sceneViewKey: string, _options: any, actionId: string = null, args: any[] = null) => {
             const currentStateContext = navigationEvent.stateNavigator.stateContext;
             const {stateContext: {url, nextCrumb, historyAction}, historyManager} = navigationEvent.data.stateNavigator;
-            const res = await deserialize(historyManager.getHref(nextCrumb.crumblessUrl), {
+            const resp = await deserialize(historyManager.getHref(nextCrumb.crumblessUrl), {
                 method: 'post',
                 headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
                 body: {url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}
             });
+            const [reactStream, trackerStream] = resp.body!.tee();
+            trackerStream.pipeTo(new WritableStream()).then(() => console.log('xxx'));
+            const res = await createFromFetch(Promise.resolve(new Response(reactStream, resp)));
             if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
                 return !actionId ? new Promise(() => {}) : res.data;
             if (res.url) {
@@ -36,8 +39,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
             return !actionId ? !res.url ? res.sceneViews[sceneViewKey] : new Promise(() => {}) : res.data;
         },
+        createFromFetch,
         onHmrReload,
-    }), [deserialize, onHmrReload, navigationEvent])
+    }), [deserialize, createFromFetch, onHmrReload, navigationEvent])
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {

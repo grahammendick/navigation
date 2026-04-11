@@ -7,10 +7,7 @@ import { BundlerContext } from 'navigation-react';
 
 async function fetchRSC(url: string, {body, ...options}: any) {
     const temporaryReferences = createTemporaryReferenceSet();
-    const response = await fetch(url, {...options, body: await encodeReply(body, {temporaryReferences})});
-    const [reactStream, trackerStream] = response.body!.tee();
-    trackerStream.pipeTo(new WritableStream()).then(() => console.log('xxx'));
-    return createFromFetch(Promise.resolve(new Response(reactStream, response)));
+    return fetch(url, {...options, body: await encodeReply(body, {temporaryReferences})});
 }
 
 function Shell() {
@@ -18,6 +15,7 @@ function Shell() {
     const bundler = useMemo(() => {
         return {
             deserialize: fetchRSC,
+            createFromFetch,
             onHmrReload: (hmrReload: () => void) => {
                 const onHmrReload = (e: any) => {
                     e.preventDefault();
