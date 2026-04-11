@@ -14,7 +14,7 @@ function Shell() {
     const root = useMemo(() => createFromReadableStream(rscStream), []);
     const bundler = useMemo(() => {
         return {
-            deserialize: fetchRSC,
+            fetchRSC,
             createFromFetch,
             onHmrReload: (hmrReload: () => void) => {
                 const onHmrReload = (e: any) => {
@@ -36,8 +36,8 @@ function Shell() {
 setServerCallback(async (actionId: string, args: any[]) => {
     const ind = args.findIndex(arg => typeof arg === 'function');
     if (ind !== -1) {
-        const deserializeScene = args[ind];
-        return deserializeScene(actionId, [...args.slice(0, ind), ...args.slice(ind +1)]);
+        const fetchScene = args[ind];
+        return fetchScene(actionId, [...args.slice(0, ind), ...args.slice(ind +1)]);
     }
     const res = await fetchRSC(window.location.href, {
         method: 'post',
