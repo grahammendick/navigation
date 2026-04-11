@@ -1,10 +1,14 @@
 'use client-entry';
 import { useMemo, startTransition } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createFromReadableStream, setServerCallback } from 'react-server-dom-parcel/client';
+import { createFromReadableStream, setServerCallback, createTemporaryReferenceSet, encodeReply, createFromFetch } from 'react-server-dom-parcel/client';
 import { rscStream } from 'rsc-html-stream/client';
-import { fetchRSC } from '@parcel/rsc/client';
 import { BundlerContext } from 'navigation-react';
+
+async function fetchRSC(url: string, {body, ...options}: any) {
+    const temporaryReferences = createTemporaryReferenceSet();
+    return createFromFetch(fetch(url, {...options, body: await encodeReply(body, {temporaryReferences})}));
+}
 
 function Shell() {
     const root = useMemo(() => createFromReadableStream(rscStream), []);
