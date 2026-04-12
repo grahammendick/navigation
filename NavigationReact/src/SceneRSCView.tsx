@@ -74,11 +74,10 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
     useEffect(() => {
-        if (!navigationEvent['awaiting']?.[sceneViewKey]) setAwaiting(false);
+        const stream = navigationEvent['awaiting']?.[sceneViewKey];
+        if (!stream) setAwaiting(false);
         let cancel = false;
-        navigationEvent['awaiting']?.[sceneViewKey]?.then(() => {
-            if (!cancel) setAwaiting(false);
-        });
+        stream?.then(() => {if (!cancel) setAwaiting(false);});
         return () => {cancel = true;};
     }, [navigationEvent, sceneViewKey]);
     console.log(sceneViewKey, awaiting, 'xxx');
