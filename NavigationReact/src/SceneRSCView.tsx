@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useEffect, useRef, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useMemo, useState, startTransition } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
@@ -15,7 +15,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const navigationEvent = useNavigationEvent();
     const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
     const {url, crumbs, oldUrl, oldData, history, historyAction} = stateContext;
-    const [awaiting, setAwaiting] = useState(false);
+    const [streaming, setStreaming] = useState(false);
     const refetchRef = useRef(serverRefetch);
     const historyCache = useContext(HistoryCacheContext);
     const {fetchRSC} = useContext(BundlerContext);
@@ -37,7 +37,6 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const fetching = (() => {
         const refetch = refetchRef.current;
         if (!show) return false;
-        if (awaiting) return true;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         if (typeof refetch === 'function') return refetch(stateContext);
@@ -49,7 +48,10 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const firstScene = !oldUrl && !ignoreCache;
     if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && !ancestorFetching && fetching) {
         cachedSceneViews[sceneViewKey] = fetchRSC(sceneViewKey, null);
-        setAwaiting(true);
+        navigationEvent['streamCache'][sceneViewKey].then(() => {
+            startTransition(() => {setStreaming(false);});
+        });
+
     }
     const sceneView = (() => {
         if (!show) return null;
@@ -73,14 +75,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     useEffect(() => {
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
-    useEffect(() => {
-        const stream = navigationEvent['awaiting']?.[sceneViewKey];
-        if (!stream) setAwaiting(false);
-        let cancel = false;
-        stream?.then(() => {if (!cancel) setAwaiting(false);});
-        return () => {cancel = true;};
-    }, [navigationEvent, sceneViewKey]);
-    console.log(sceneViewKey, awaiting, 'xxx');
+    console.log(sceneViewKey, streaming, 'xxx');
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <FetchingContext.Provider value={ancestorFetching || fetching}>
