@@ -10,4 +10,4 @@ const useSceneView = (fn: (...args: any) => any) => {
     )), [fn, sceneViewKey, deserialize])
 }
 
-    export default useSceneView;
+export default useSceneView;
