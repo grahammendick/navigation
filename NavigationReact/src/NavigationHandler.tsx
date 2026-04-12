@@ -10,7 +10,6 @@ type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
     const [isPending, startTransition] = useTransition?.() || [false];
-    const [_, setStreaming] = useState({});
     const historyCacheRef = useRef({});
     const rootViews = useRef({});
     const {deserialize, onHmrReload} = useContext(BundlerContext);
