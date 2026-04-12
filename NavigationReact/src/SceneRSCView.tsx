@@ -36,7 +36,8 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     const fetching = (() => {
         const refetch = refetchRef.current;
-        if (!show || cachedSceneViews.__committed) return false;
+        if (!show) return false;
+        if (awaiting) return true;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         if (typeof refetch === 'function') return refetch(stateContext);
@@ -48,6 +49,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const firstScene = !oldUrl && !ignoreCache;
     if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && !ancestorFetching && fetching) {
         cachedSceneViews[sceneViewKey] = fetchRSC(sceneViewKey, null);
+        setAwaiting(true);
     }
     const sceneView = (() => {
         if (!show) return null;
@@ -64,7 +66,6 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     }), [navigationEvent, refetcher]);
     useEffect(() => {
         renderedSceneView.current = {sceneView, navigationEvent};
-        cachedSceneViews.__committed = !awaiting;
         if (historyAction === 'none') return;
         if (!historyCache[url]) historyCache[url] = {};
         historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
@@ -73,11 +74,11 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
     useEffect(() => {
-        setAwaiting(!!navigationEvent['awaiting']?.[sceneViewKey]);
+        if (!navigationEvent['awaiting']?.[sceneViewKey]) setAwaiting(false);
         let cancel = false;
         navigationEvent['awaiting']?.[sceneViewKey]?.then(() => {
             if (!cancel) setAwaiting(false);
-        })
+        });
         return () => {cancel = true;};
     }, [navigationEvent, sceneViewKey]);
     console.log(sceneViewKey, awaiting, 'xxx');
