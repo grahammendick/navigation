@@ -10,6 +10,7 @@ type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
     const [isPending, startTransition] = useTransition?.() || [false];
+    const [_, setStreaming] = useState({});
     const historyCacheRef = useRef({});
     const rootViews = useRef({});
     const {fetchRSC, createFromFetch, onHmrReload} = useContext(BundlerContext);
@@ -23,8 +24,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 body: {url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}
             });
             const [stream1, stream2] = resp.body!.tee();
-            if (!navigationEvent.data['streamCache']) navigationEvent.data['streamCache'] = {};
-            navigationEvent.data['streamCache'][sceneViewKey] = stream2.pipeTo(new WritableStream());
+            stream2.pipeTo(new WritableStream()).then(() => 
+                startTransition(() => {setStreaming({});})
+            );
             const res = await createFromFetch(Promise.resolve(new Response(stream1, resp)));
             if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
                 return !actionId ? new Promise(() => {}) : res.data;

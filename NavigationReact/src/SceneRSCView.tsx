@@ -15,7 +15,6 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const navigationEvent = useNavigationEvent();
     const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
     const {url, crumbs, oldUrl, oldData, history, historyAction} = stateContext;
-    const [streaming, setStreaming] = useState(false);
     const refetchRef = useRef(serverRefetch);
     const historyCache = useContext(HistoryCacheContext);
     const {fetchRSC} = useContext(BundlerContext);
@@ -48,10 +47,6 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const firstScene = !oldUrl && !ignoreCache;
     if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && !ancestorFetching && fetching) {
         cachedSceneViews[sceneViewKey] = fetchRSC(sceneViewKey, null);
-        navigationEvent['streamCache'][sceneViewKey].then(() => {
-            startTransition(() => {setStreaming(false);});
-        });
-
     }
     const sceneView = (() => {
         if (!show) return null;
@@ -75,7 +70,6 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     useEffect(() => {
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
-    console.log(sceneViewKey, streaming, 'xxx');
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <FetchingContext.Provider value={ancestorFetching || fetching}>
