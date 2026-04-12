@@ -23,7 +23,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 body: {url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}
             });
             const [stream1, stream2] = resp.body!.tee();
-            stream2.pipeTo(new WritableStream()).then(() => console.log('xxx'));
+            if (!navigationEvent.data['awaiting']) navigationEvent.data['awaiting'] = {};
+            navigationEvent.data['awaiting'][sceneViewKey] = stream2.pipeTo(new WritableStream());
             const res = await createFromFetch(Promise.resolve(new Response(stream1, resp)));
             if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
                 return !actionId ? new Promise(() => {}) : res.data;

@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useEffect, useRef, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useMemo, useState } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import BundlerContext from './BundlerContext.js';
@@ -15,6 +15,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const navigationEvent = useNavigationEvent();
     const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
     const {url, crumbs, oldUrl, oldData, history, historyAction} = stateContext;
+    const [awaiting, setAwaiting] = useState(false);
     const refetchRef = useRef(serverRefetch);
     const historyCache = useContext(HistoryCacheContext);
     const {fetchRSC} = useContext(BundlerContext);
@@ -63,7 +64,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     }), [navigationEvent, refetcher]);
     useEffect(() => {
         renderedSceneView.current = {sceneView, navigationEvent};
-        cachedSceneViews.__committed = true;
+        cachedSceneViews.__committed = !awaiting;
         if (historyAction === 'none') return;
         if (!historyCache[url]) historyCache[url] = {};
         historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
@@ -71,6 +72,15 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     useEffect(() => {
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
+    useEffect(() => {
+        setAwaiting(!!navigationEvent['awaiting']?.[sceneViewKey]);
+        let cancel = false;
+        navigationEvent['awaiting']?.[sceneViewKey]?.then(() => {
+            if (!cancel) setAwaiting(false);
+        })
+        return () => {cancel = true;};
+    }, [navigationEvent, sceneViewKey]);
+    console.log(sceneViewKey, awaiting, 'xxx');
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <FetchingContext.Provider value={ancestorFetching || fetching}>
