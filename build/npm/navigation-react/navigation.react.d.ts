@@ -44,11 +44,7 @@ export var BundlerContext: Context<{
     /**
      * Streams RSC
      */
-    fetchRSC: (url: string, options: object) => Promise<any>;
-    /**
-     * Deserializes RSC stream
-     */
-    createFromFetch: (resp: Promise<Response>, options?: object) => Promise<any>
+    deserialize: (url: string, options: any) => Promise<any>;
     /**
      * Registers a Hot Module Replacement reload listener
      */

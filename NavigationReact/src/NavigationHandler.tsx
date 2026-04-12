@@ -13,21 +13,16 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const [_, setStreaming] = useState({});
     const historyCacheRef = useRef({});
     const rootViews = useRef({});
-    const {fetchRSC, createFromFetch, onHmrReload} = useContext(BundlerContext);
+    const {deserialize, onHmrReload} = useContext(BundlerContext);
     const bundler = useMemo(() => ({
-        fetchRSC: async (sceneViewKey: string, _options: any, actionId: string = null, args: any[] = null) => {
+        deserialize: async (sceneViewKey: string, _options: any, actionId: string = null, args: any[] = null) => {
             const currentStateContext = navigationEvent.stateNavigator.stateContext;
             const {stateContext: {url, nextCrumb, historyAction}, historyManager} = navigationEvent.data.stateNavigator;
-            const resp = await fetchRSC(historyManager.getHref(nextCrumb.crumblessUrl), {
+            const res = await deserialize(historyManager.getHref(nextCrumb.crumblessUrl), {
                 method: 'post',
                 headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
                 body: {url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}
             });
-            const [stream1, stream2] = resp.body!.tee();
-            stream2.pipeTo(new WritableStream()).then(() => 
-                startTransition(() => {setStreaming({});})
-            );
-            const res = await createFromFetch(Promise.resolve(new Response(stream1, resp)));
             if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
                 return !actionId ? new Promise(() => {}) : res.data;
             if (res.url) {
@@ -40,9 +35,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
             return !actionId ? !res.url ? res.sceneViews[sceneViewKey] : new Promise(() => {}) : res.data;
         },
-        createFromFetch,
         onHmrReload,
-    }), [fetchRSC, createFromFetch, onHmrReload, navigationEvent])
+    }), [deserialize, onHmrReload, navigationEvent])
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {

@@ -17,7 +17,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     const {url, crumbs, oldUrl, oldData, history, historyAction} = stateContext;
     const refetchRef = useRef(serverRefetch);
     const historyCache = useContext(HistoryCacheContext);
-    const {fetchRSC} = useContext(BundlerContext);
+    const {deserialize} = useContext(BundlerContext);
     const {refetcher, registerSceneView} = useContext(RefetchContext);
     const ancestorFetching = useContext(FetchingContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -46,7 +46,7 @@ const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, chil
     })();
     const firstScene = !oldUrl && !ignoreCache;
     if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && !ancestorFetching && fetching) {
-        cachedSceneViews[sceneViewKey] = fetchRSC(sceneViewKey, null);
+        cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey, null);
     }
     const sceneView = (() => {
         if (!show) return null;
