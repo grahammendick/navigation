@@ -6,19 +6,19 @@ import BundlerContext from './BundlerContext.js';
 import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
-import NavigationDeferredContext from './NavigationDeferredContext.js';
-import NavigationContext from './NavigationContext.js';
 
 const FetchingContext = createContext(false);
 
 const SceneViewInner = ({children}) => children;
 
-const SceneView = ({active, name, refetch, pending, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
+const SceneRSCView = ({active, name, refetch: serverRefetch, errorFallback, children}: SceneViewProps & {active: string | string[]}) => {
     const navigationEvent = useNavigationEvent();
     const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
     const {url, crumbs, oldUrl, oldData, history, historyAction} = stateContext;
+    const refetchRef = useRef(serverRefetch);
     const historyCache = useContext(HistoryCacheContext);
     const {fetchRSC} = useContext(BundlerContext);
+    const {refetcher, registerSceneView} = useContext(RefetchContext);
     const ancestorFetching = useContext(FetchingContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     const getShow = (stateKey: string) => (
@@ -34,6 +34,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const cachedSceneViews = navigationEvent['rscCache'];
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     const fetching = (() => {
+        const refetch = refetchRef.current;
         if (!show || cachedSceneViews.__committed) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
@@ -54,64 +55,31 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         if (firstScene || ancestorFetching) return children;
         return renderedSceneView.current.sceneView;
     })();
-    useEffect(() => {
-        renderedSceneView.current = {sceneView, navigationEvent};
-        if (pending) return;
-        cachedSceneViews.__committed = true;
-        if (historyAction === 'none') return;
-        if (!historyCache[url]) historyCache[url] = {};
-        historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
-    });
-    return (
-        <ErrorBoundary errorFallback={errorFallback}>
-            <FetchingContext.Provider value={ancestorFetching || fetching}>
-                <SceneViewInner>{sceneView}</SceneViewInner>
-            </FetchingContext.Provider>
-        </ErrorBoundary>
-    );
-};
-
-const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
-    const {refetch: serverRefetch, active, name} = props;
-    const refetchRef = useRef(serverRefetch);
-    const {refetcher, registerSceneView} = useContext(RefetchContext);
-    const navigationEvent = useNavigationEvent();
-    const navigationDeferredEvent = useContext(NavigationDeferredContext);
-    const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
-    useEffect(() => {
-        registerSceneView(sceneViewKey, active);
-    }, [registerSceneView, sceneViewKey, active]);
     const refetchControl = useMemo(() => ({
         sceneViewKey,
         setRefetch: (clientRefetch: any) => refetchRef.current = clientRefetch !== undefined ? clientRefetch : serverRefetch,
         refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
         registerSceneView: () => {},
     }), [navigationEvent, refetcher]);
-    const {state, data, stateNavigator: {stateContext}} = navigationEvent;
-    const {oldData} = stateContext;
-    const show =  active != null && state && (
-        typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
-    );
-    const fetching = (() => {
-        if (show && navigationDeferredEvent !== navigationEvent) {
-            const refetch = refetchRef.current;
-            if (!refetch) return true;
-            if (typeof refetch === 'function') return refetch(stateContext);
-            for(let i = 0; i < refetch.length; i++) {
-                if (data[refetch[i]] !== oldData[refetch[i]]) return true;
-            }
-        }
-        return false;
-    })();
+    useEffect(() => {
+        renderedSceneView.current = {sceneView, navigationEvent};
+        cachedSceneViews.__committed = true;
+        if (historyAction === 'none') return;
+        if (!historyCache[url]) historyCache[url] = {};
+        historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
+    });
+    useEffect(() => {
+        registerSceneView(sceneViewKey, active);
+    }, [registerSceneView, sceneViewKey, active]);
     return (
-        <NavigationContext.Provider value={fetching ? navigationDeferredEvent : navigationEvent}>
-            <NavigationDeferredContext.Provider value={navigationDeferredEvent}>
+        <ErrorBoundary errorFallback={errorFallback}>
+            <FetchingContext.Provider value={ancestorFetching || fetching}>
                 <RefetchContext.Provider value={refetchControl}>
-                    <SceneView {...props} refetch={refetchRef.current} pending={navigationEvent !== navigationDeferredEvent} />
+                    <SceneViewInner>{sceneView}</SceneViewInner>
                 </RefetchContext.Provider>
-            </NavigationDeferredContext.Provider>
-        </NavigationContext.Provider>
-    )
-}
+            </FetchingContext.Provider>
+        </ErrorBoundary>
+    );
+};
 
 export default SceneRSCView;

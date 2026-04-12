@@ -1,16 +1,14 @@
 'use client'
-import React, { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
-import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
-    const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
     const rootViews = useRef({});
@@ -60,9 +58,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     suspendNavigation = (_stateContext, resumeNavigation) => resumeNavigation();
                 stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
                     suspendNavigation(stateContext, () => {
-                        const {oldState, state, history, crumbs} = stateContext;
-                        const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
-                        const startTran = (!history && !refresh && startTransition) || ((transition) => transition());
+                        const {history} = stateContext;
+                        const startTran = (!history && startTransition) || ((transition) => transition());
                         startTran(() => {
                             raiseNavigationEvent(stateContext, resumeNavigation, this.stateContext['rscCache']);
                         });
@@ -97,7 +94,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [stateNavigator, navigationEvent, raiseNavigationEvent]);
     const oldSceneCount = (typeof window !== 'undefined' && window.history?.state?.sceneCount) || 0;
     useEffect(() => {
-        if (!isPending && navigationEvent === navigationDeferredEvent) {
+        if (!isPending) {
             navigationEvent.resumeNavigation?.();
             const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
@@ -114,7 +111,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
             window.history.replaceState({...window.history.state, sceneCount}, null);
         }
-    }, [isPending, navigationEvent, navigationDeferredEvent]);
+    }, [isPending, navigationEvent]);
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent(undefined, undefined, {});
@@ -129,15 +126,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [navigationEvent, onHmrReload]);
     return (
         <NavigationContext.Provider value={navigationEvent?.data}>
-            <NavigationDeferredContext.Provider value={navigationDeferredEvent?.data}>
-                <RefetchContext.Provider value={refetchControl}>
-                    <HistoryCacheContext.Provider value={historyCacheRef.current}>
-                        <BundlerContext.Provider value={bundler}>
-                            {children}
-                        </BundlerContext.Provider>
-                    </HistoryCacheContext.Provider>
-                </RefetchContext.Provider>
-            </NavigationDeferredContext.Provider>
+            <RefetchContext.Provider value={refetchControl}>
+                <HistoryCacheContext.Provider value={historyCacheRef.current}>
+                    <BundlerContext.Provider value={bundler}>
+                        {children}
+                    </BundlerContext.Provider>
+                </HistoryCacheContext.Provider>
+            </RefetchContext.Provider>
         </NavigationContext.Provider>
     )
 }
