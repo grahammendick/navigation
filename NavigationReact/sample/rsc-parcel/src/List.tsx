@@ -20,7 +20,7 @@ const List = async () => {
           {people.map(({id, name, dateOfBirth}) => (
             <tr key={id}>
               <td>
-                <NavigationLink stateKey="person" navigationData={{id: id, show: true}}>{name}</NavigationLink>
+                <NavigationLink stateKey="person" navigationData={{id: id}}>{name}</NavigationLink>
               </td>
               <td>{dateOfBirth}</td>
             </tr>
