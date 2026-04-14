@@ -1,10 +1,8 @@
 import { useContext } from 'react';
-import { StateContext } from 'navigation';
 import RSCContext from './RefetchContext.js';
 
-const useRefetch = (refetch?: string[] | ((stateContext: StateContext) => boolean) | null) => {
-    const {setRefetch, refetcher} = useContext(RSCContext);
-    setRefetch(refetch);
+const useRefetch = () => {
+    const {refetcher} = useContext(RSCContext);
     return refetcher;
 }
 export default useRefetch;

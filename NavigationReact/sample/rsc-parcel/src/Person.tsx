@@ -4,6 +4,7 @@ import { getPerson } from './data';
 import Gender from './Gender';
 import Friends from './Friends';
 import Name from './Name';
+import { Suspense } from 'react';
 
 const Person = async () => {
   const {data: {id}} = useNavigationEvent();
@@ -24,9 +25,11 @@ const Person = async () => {
           <div>{phone}</div>
         </div>        
         <Gender />
-        <SceneView active="person" name="friends">
-          <Friends />
-        </SceneView>
+        <Suspense fallback={<h2>Loading...</h2>}>
+          <SceneView active="person" name="friends">
+            <Friends />
+          </SceneView>
+        </Suspense>
       </div>
     </>
   )
