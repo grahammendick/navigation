@@ -73,7 +73,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
         sceneViewKey: null,
-        setRefetch: () => {},
         refetcher: (sceneViewKey: string | boolean = true) => {
             startTransition(() => {
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});

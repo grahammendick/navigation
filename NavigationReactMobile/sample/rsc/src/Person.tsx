@@ -21,7 +21,7 @@ const Person = async () => {
           <div>{email}</div>
           <div>Phone</div>
           <div>{phone}</div>
-        </div>        
+        </div>
         <Gender />
         <SceneView active="person" name="friends">
           <Friends />

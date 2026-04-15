@@ -9,7 +9,7 @@ const Filter = () => {
     <div>
       <div>
         <label htmlFor="name">Name</label>
-        <input id="name" value={name || ''} onChange={({ target: { value } }) => {
+        <input id="name" autoComplete="off" value={name || ''} onChange={({ target: { value } }) => {
           stateNavigator.refresh({ ...data, name: value, page: null });
         }} />
       </div>
