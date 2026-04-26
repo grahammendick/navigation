@@ -1,7 +1,7 @@
 'use client-entry';
 import { useMemo, startTransition } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createFromReadableStream, setServerCallback } from 'react-server-dom-parcel/client';
+import { createFromReadableStream, setServerCallback, createFromFetch, createTemporaryReferenceSet, encodeReply } from 'react-server-dom-parcel/client';
 import { rscStream } from 'rsc-html-stream/client';
 import { fetchRSC } from '@parcel/rsc/client';
 import { BundlerContext } from 'navigation-react';
@@ -10,7 +10,11 @@ function Shell() {
     const root = useMemo(() => createFromReadableStream(rscStream), []);
     const bundler = useMemo(() => {
         return {
-            deserialize: fetchRSC,
+            encodeBody: async (body: any) => {
+                const temporaryReferences = createTemporaryReferenceSet();
+                return encodeReply(body, {temporaryReferences});
+            },
+            fetchRSC: async (resp: Promise<Response>) => createFromFetch(resp),
             onHmrReload: (hmrReload: () => void) => {
                 const onHmrReload = (e: any) => {
                     e.preventDefault();
@@ -22,7 +26,7 @@ function Shell() {
         }
     }, []);
     return (
-        <BundlerContext.Provider value={bundler}>
+        <BundlerContext.Provider value={bundler as any}>
             {root}
         </BundlerContext.Provider>
     );
