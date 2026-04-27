@@ -123,22 +123,24 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const oldSceneCount = (typeof window !== 'undefined' && window.history?.state?.sceneCount) || 0;
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
-            navigationEvent['navigationRes']?.();
-            // navigationEvent.resumeNavigation?.();
             const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
-            if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
-            const historyCache = historyCacheRef.current;
-            const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
-            if (!historyCache[url]) historyCache[url] = {};
-            historyCache[url].count = Math.min(historyCache[url].count || sceneCount, sceneCount);
-            const historyUrls = Object.keys(historyCache);
-            for(let i = 0; i < historyUrls.length && !history; i++) {
-                const historyUrl = historyUrls[i];
-                const gap = historyCache[historyUrl].count - sceneCount;
-                if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
-                    delete historyCache[historyUrl];
-            }
-            // window.history.replaceState({...window.history.state, sceneCount}, null);
+            navigation.addEventListener('navigatesuccess', () => {
+                navigationEvent.resumeNavigation?.();
+                if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
+                const historyCache = historyCacheRef.current;
+                const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
+                if (!historyCache[url]) historyCache[url] = {};
+                historyCache[url].count = Math.min(historyCache[url].count || sceneCount, sceneCount);
+                const historyUrls = Object.keys(historyCache);
+                for(let i = 0; i < historyUrls.length && !history; i++) {
+                    const historyUrl = historyUrls[i];
+                    const gap = historyCache[historyUrl].count - sceneCount;
+                    if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
+                        delete historyCache[historyUrl];
+                }
+                window.history.replaceState({...window.history.state, sceneCount}, null);
+            }, {once: true});
+            navigationEvent['navigationRes']?.();
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
