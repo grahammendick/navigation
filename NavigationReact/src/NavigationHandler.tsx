@@ -19,7 +19,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         deserialize: async (sceneViewKey: string, _options: any, actionId: string = null, args: any[] = null) => {
             const currentStateContext = navigationEvent.stateNavigator.stateContext;
             const {stateContext: {url, nextCrumb, historyAction}, historyManager} = navigationEvent.data.stateNavigator;
-            let cancel = false;
             const responsePromise = (async () => {
                 const response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
                     method: 'post',
@@ -29,17 +28,17 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 const reader = response.body.getReader();
                 const customStream = new ReadableStream({
                     async pull(controller) {
-                        const {done, value} = await reader.read();
-                        if (cancel) reader.cancel();
-                        if (!cancel && done) controller.close();
-                        if (!cancel && !done) controller.enqueue(value);
+                        try {
+                            const {done, value} = await reader.read();
+                            if (!done) controller.enqueue(value);
+                            else controller.close();
+                        } catch(e) {
+                            if (!navigationEvent['navigationSignal'].aborted) controller.error(e);
+                        }
                     }
                 });
                 return new Response(customStream, {headers: response.headers});
             })();
-            setTimeout(() => {
-                // cancel = true;
-            }, 1000);
             const res = await fetchRSC(responsePromise);
             if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
                 return !actionId ? new Promise(() => {}) : res.data;
@@ -93,9 +92,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     async precommitHandler() {
                         return new Promise(res => {
                             nextNavigationEvent['navigationRes'] = res;
+                            nextNavigationEvent['navigationSignal'] = e.signal;
                         });
                     }
-                })
+                });
             }, {once: true});
             navigation.navigate(url);
         }
