@@ -29,7 +29,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     });
                 } catch(e) {
                     if (!navigationEvent['navigationSignal'].aborted) throw e;
-                    else return new Promise(() => {})
+                    else return new Promise(() => {});
                 }
                 const reader = response.body.getReader();
                 const customStream = new ReadableStream({
