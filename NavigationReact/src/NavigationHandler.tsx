@@ -20,11 +20,17 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const currentStateContext = navigationEvent.stateNavigator.stateContext;
             const {stateContext: {url, nextCrumb, historyAction}, historyManager} = navigationEvent.data.stateNavigator;
             const responsePromise = (async () => {
-                const response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
-                    method: 'post',
-                    headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
-                    body: await encodeBody({url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args})
-                });
+                let response = null;
+                try {
+                    response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
+                        method: 'post',
+                        headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
+                        body: await encodeBody({url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args})
+                    });
+                } catch(e) {
+                    if (!navigationEvent['navigationSignal'].aborted) throw e;
+                    else return new Promise(() => {})
+                }
                 const reader = response.body.getReader();
                 const customStream = new ReadableStream({
                     async pull(controller) {
