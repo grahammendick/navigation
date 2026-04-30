@@ -9,7 +9,7 @@ import BundlerContext from './BundlerContext.js';
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
-    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
+    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void, intercept?: {resolve: () => {}, signal: AbortSignal}}>();
     const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
@@ -28,7 +28,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         body: await encodeBody({url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args})
                     });
                 } catch(e) {
-                    if (!navigationEvent['navigationSignal'].aborted) throw e;
+                    if (!navigationEvent.intercept?.signal.aborted) throw e;
                     else return new Promise(() => {});
                 }
                 const reader = response.body.getReader();
@@ -39,7 +39,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                             if (!done) controller.enqueue(value);
                             else controller.close();
                         } catch(e) {
-                            if (!navigationEvent['navigationSignal'].aborted) controller.error(e);
+                            if (!navigationEvent.intercept?.signal.aborted) controller.error(e);
                         }
                     }
                 });
@@ -90,15 +90,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldState, state, data, asyncData, historyAction} = asyncNavigator.stateContext;
-        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, resumeNavigation};
+        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, resumeNavigation, intercept: null};
         setNavigationEvent(nextNavigationEvent);
         if (typeof window !== 'undefined' && historyAction !== 'none') {
             navigation.addEventListener('navigate', e => {
                 e.intercept({
                     async precommitHandler() {
-                        return new Promise(res => {
-                            nextNavigationEvent['navigationRes'] = res;
-                            nextNavigationEvent['navigationSignal'] = e.signal;
+                        return new Promise(resolve => {
+                            nextNavigationEvent.intercept = {resolve, signal: e.signal};
                         });
                     }
                 });
@@ -146,7 +145,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 }
                 window.history.replaceState({...window.history.state, sceneCount}, null);
             }, {once: true});
-            navigationEvent['navigationRes']?.();
+            navigationEvent.intercept?.resolve();
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
