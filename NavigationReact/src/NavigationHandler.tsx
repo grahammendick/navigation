@@ -83,10 +83,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
         }
         const asyncNavigator = new AsyncStateNavigator()
-        const {url, oldState, state, data, asyncData} = asyncNavigator.stateContext;
+        const {url, oldState, state, data, asyncData, historyAction} = asyncNavigator.stateContext;
         const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, resumeNavigation};
         setNavigationEvent(nextNavigationEvent);
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && historyAction !== 'none') {
             navigation.addEventListener('navigate', e => {
                 e.intercept({
                     async precommitHandler() {
@@ -97,7 +97,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     }
                 });
             }, {once: true});
-            navigation.navigate(url);
+            stateNavigator.historyManager.addHistory(url, historyAction === 'replace', null);
         }
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
