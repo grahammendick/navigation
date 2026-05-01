@@ -89,10 +89,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
         }
         const asyncNavigator = new AsyncStateNavigator()
-        const {url, oldState, state, data, asyncData, historyAction} = asyncNavigator.stateContext;
+        const {url, oldUrl, oldState, state, data, asyncData, historyAction, crumbs} = asyncNavigator.stateContext;
+        const refresh = oldUrl && oldState === state && crumbs.length === asyncNavigator.parseLink(oldUrl).crumbs.length;
         const intercept = {resume: resumeNavigation, resolve: null, signal: null};
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, intercept});
-        if (typeof window !== 'undefined' && historyAction !== 'none') {
+        if (typeof window !== 'undefined' && historyAction !== 'none' && !refresh) {
             navigation.addEventListener('navigate', e => {
                 e.intercept({
                     async precommitHandler() {
@@ -130,7 +131,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
-            navigation.addEventListener('navigatesuccess', () => {
+            const resume = () => {
                 navigationEvent.intercept?.resume?.();
                 if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
                 const historyCache = historyCacheRef.current;
@@ -145,8 +146,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         delete historyCache[historyUrl];
                 }
                 window.history.replaceState({...window.history.state, sceneCount}, null);
-            }, {once: true});
-            navigationEvent.intercept?.resolve?.();
+            }
+            navigation.addEventListener('navigatesuccess', resume, {once: true});
+            const resolve = navigationEvent.intercept?.resolve;
+            if (resolve) resolve();
+            else resume();
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
