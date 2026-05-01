@@ -89,11 +89,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
         }
         const asyncNavigator = new AsyncStateNavigator()
-        const {url, oldUrl, oldState, state, data, asyncData, historyAction, crumbs} = asyncNavigator.stateContext;
+        const {url, oldUrl, oldState, state, data, asyncData, historyAction, history, crumbs} = asyncNavigator.stateContext;
         const refresh = oldUrl && oldState === state && crumbs.length === asyncNavigator.parseLink(oldUrl).crumbs.length;
         const intercept = {resume: resumeNavigation, resolve: null, signal: null};
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, intercept});
-        if (typeof window !== 'undefined' && historyAction !== 'none' && !refresh) {
+        if (typeof window !== 'undefined' && historyAction !== 'none' && !refresh && !history) {
             navigation.addEventListener('navigate', e => {
                 e.intercept({
                     async precommitHandler() {
