@@ -93,9 +93,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const refresh = oldUrl && oldState === state && crumbs.length === asyncNavigator.parseLink(oldUrl).crumbs.length;
         const intercept = {resume: resumeNavigation, resolve: null, signal: null};
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, intercept});
-        if (typeof window !== 'undefined' && historyAction !== 'none' && !refresh && !history) {
+        if (typeof window !== 'undefined' && historyAction !== 'none' && !history) {
             navigation.addEventListener('navigate', e => {
                 e.intercept({
+                    focusReset: refresh ? 'manual' : 'after-transition',
                     async precommitHandler() {
                         return new Promise(resolve => {
                             intercept.resolve = resolve;
