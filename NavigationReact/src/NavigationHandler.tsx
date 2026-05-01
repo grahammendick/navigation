@@ -94,7 +94,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const intercept = {resume: resumeNavigation, resolve: null, signal: null, title: typeof document !== 'undefined' ? document.title : null};
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, intercept});
         if (typeof window !== 'undefined' && historyAction !== 'none' && !history) {
-            navigation.addEventListener('navigate', e => {
+            let historyAdded = false;
+            const onNavigate = (e: NavigateEvent) => {
+                historyAdded = true;
                 e.intercept({
                     focusReset: refresh ? 'manual' : 'after-transition',
                     async precommitHandler() {
@@ -104,8 +106,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         });
                     }
                 });
-            }, {once: true});
+            };
+            navigation.addEventListener('navigate', onNavigate, {once: true});
             stateNavigator.historyManager.addHistory(url, historyAction === 'replace', null);
+            if (!historyAdded) navigation.removeEventListener('navigate', onNavigate);
         }
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
