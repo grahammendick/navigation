@@ -9,7 +9,7 @@ import BundlerContext from './BundlerContext.js';
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
-    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: {resume: () => void, resolve?: () => {}, signal?: AbortSignal}}>();
+    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: {resume: () => void, resolve?: () => {}, signal?: AbortSignal, title?: string}}>();
     const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
@@ -91,7 +91,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldUrl, oldState, state, data, asyncData, historyAction, history, crumbs} = asyncNavigator.stateContext;
         const refresh = oldUrl && oldState === state && crumbs.length === asyncNavigator.parseLink(oldUrl).crumbs.length;
-        const intercept = {resume: resumeNavigation, resolve: null, signal: null};
+        const intercept = {resume: resumeNavigation, resolve: null, signal: null, title: typeof document !== 'undefined' ? document.title : null};
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, intercept});
         if (typeof window !== 'undefined' && historyAction !== 'none' && !history) {
             navigation.addEventListener('navigate', e => {
@@ -132,8 +132,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
+            const title = typeof document !== 'undefined' ? document.title : null;
             const resume = () => {
                 navigationEvent.intercept?.resume?.();
+                if (typeof document !== 'undefined') document.title = title;
                 if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
                 const historyCache = historyCacheRef.current;
                 const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
@@ -149,6 +151,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 window.history.replaceState({...window.history.state, sceneCount}, null);
             }
             navigation.addEventListener('navigatesuccess', resume, {once: true});
+            if (typeof document !== 'undefined') document.title = navigationEvent.intercept?.title;
             const resolve = navigationEvent.intercept?.resolve;
             if (resolve) resolve();
             else resume();
