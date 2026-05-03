@@ -27,7 +27,9 @@ class HTML5HistoryManager implements HistoryManager {
         }
     }
 
-    getCurrentUrl(): string {
+    getCurrentUrl(destination?: NavigationDestination): string {
+        if (destination)
+            return destination.getState()?.navigationLink || this.getUrl(new URL(destination.url));
         return window.history.state?.navigationLink || this.getUrl(window.location);
     }
 
@@ -37,7 +39,7 @@ class HTML5HistoryManager implements HistoryManager {
         return this.applicationPath + HTML5HistoryManager.prependSlash(this.rewriteUrl?.(url) || url);
     }
 
-    getUrl(hrefElement: HTMLAnchorElement | Location) {
+    getUrl(hrefElement: HTMLAnchorElement | Location | URL) {
         return hrefElement.pathname.substring(this.applicationPath.length) + hrefElement.search + hrefElement.hash;
     }
     

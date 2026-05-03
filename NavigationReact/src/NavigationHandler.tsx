@@ -167,15 +167,12 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
-        // add navigation listener and intercept history navigation
-        // call getUrl(NavigationEntry) on history manager
-        // then pass to navigateLink along with the intercept
-        // info, the promise resolve and the signal
         const onNavigate = (e: NavigateEvent) => {
             if (e.navigationType !== 'traverse' && e.canIntercept) return;
             e.intercept({
                 async precommitHandler() {
                     return new Promise(resolve => {
+                        const url = navigationEvent.stateNavigator.historyManager.getCurrentUrl(e.destination);
                         navigationEvent.data.stateNavigator.navigateHistory('', {resolve, signal:  e.signal});
                     });
                 }
