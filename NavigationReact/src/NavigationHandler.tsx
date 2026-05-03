@@ -173,7 +173,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 async precommitHandler() {
                     return new Promise(resolve => {
                         const url = navigationEvent.stateNavigator.historyManager.getCurrentUrl(e.destination);
-                        navigationEvent.data.stateNavigator.navigateHistory('', {resolve, signal:  e.signal});
+                        navigationEvent.data.stateNavigator.navigateHistory(url, {resolve, signal:  e.signal});
                     });
                 }
             });
