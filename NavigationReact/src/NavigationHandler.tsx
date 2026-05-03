@@ -7,7 +7,7 @@ import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateHistory: (url: string, intercept: Intercept) => void } };
-type Intercept = {resume?: () => void, resolve?: () => void, signal?: AbortSignal, title?: string};
+type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string};
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
@@ -106,7 +106,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     focusReset: refresh ? 'manual' : 'after-transition',
                     async precommitHandler() {
                         return new Promise(resolve => {
-                            intercept.resolve = resolve;
+                            intercept.commit = resolve;
                             intercept.signal = e.signal;
                         });
                     }
@@ -161,9 +161,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
             if (!history) navigation.addEventListener('navigatesuccess', resume, {once: true});
             if (typeof document !== 'undefined') document.title = navigationEvent.intercept?.title;
-            const resolve = navigationEvent.intercept?.resolve;
-            if (history || !resolve) resume();
-            if (resolve) resolve();
+            const commit = navigationEvent.intercept?.commit;
+            if (history || !commit) resume();
+            if (commit) commit();
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
@@ -173,7 +173,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 async precommitHandler() {
                     return new Promise(resolve => {
                         const url = navigationEvent.stateNavigator.historyManager.getCurrentUrl(e.destination);
-                        navigationEvent.data.stateNavigator.navigateHistory(url, {resolve, signal:  e.signal});
+                        navigationEvent.data.stateNavigator.navigateHistory(url, {commit: resolve, signal:  e.signal});
                     });
                 }
             });
