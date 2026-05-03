@@ -140,13 +140,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const oldSceneCount = (typeof window !== 'undefined' && window.history?.state?.sceneCount) || 0;
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
-            const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
+            const {stateContext: {url, historyAction, history}} = navigationEvent.data.stateNavigator;
             const title = typeof document !== 'undefined' ? document.title : null;
-            const resume = (cacheHistory = false) => {
+            const resume = () => {
                 navigationEvent.intercept?.resume?.();
                 if (typeof document !== 'undefined') document.title = title;
-                if (!cacheHistory || historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
-                const historyCache = historyCacheRef.current;
+                if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
+                /* const historyCache = historyCacheRef.current;
                 const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
                 if (!historyCache[url]) historyCache[url] = {};
                 historyCache[url].count = Math.min(historyCache[url].count || sceneCount, sceneCount);
@@ -157,13 +157,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
                         delete historyCache[historyUrl];
                 }
-                window.history.replaceState({...window.history.state, sceneCount}, null);
+                window.history.replaceState({...window.history.state, sceneCount}, null); */
             }
-            navigation.addEventListener('navigatesuccess', () => resume(), {once: true});
+            if (!history) navigation.addEventListener('navigatesuccess', resume, {once: true});
             if (typeof document !== 'undefined') document.title = navigationEvent.intercept?.title;
             const resolve = navigationEvent.intercept?.resolve;
+            if (history || !resolve) resume();
             if (resolve) resolve();
-            else resume(true);
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {

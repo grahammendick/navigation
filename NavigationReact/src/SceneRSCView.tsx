@@ -63,7 +63,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         if (pending) return;
         if (historyAction === 'none') return;
         if (!historyCache[url]) historyCache[url] = {};
-        historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
+        // historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
     });
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
