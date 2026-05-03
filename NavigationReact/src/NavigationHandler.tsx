@@ -142,10 +142,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
             const title = typeof document !== 'undefined' ? document.title : null;
-            const resume = () => {
+            const resume = (cacheHistory = false) => {
                 navigationEvent.intercept?.resume?.();
                 if (typeof document !== 'undefined') document.title = title;
-                if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
+                if (!cacheHistory || historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
                 const historyCache = historyCacheRef.current;
                 const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
                 if (!historyCache[url]) historyCache[url] = {};
@@ -159,11 +159,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 }
                 window.history.replaceState({...window.history.state, sceneCount}, null);
             }
-            navigation.addEventListener('navigatesuccess', resume, {once: true});
+            navigation.addEventListener('navigatesuccess', () => resume(), {once: true});
             if (typeof document !== 'undefined') document.title = navigationEvent.intercept?.title;
             const resolve = navigationEvent.intercept?.resolve;
             if (resolve) resolve();
-            else resume();
+            else resume(true);
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
