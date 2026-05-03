@@ -6,10 +6,11 @@ import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
-type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
+type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateHistory: (url: string, intercept: Intercept) => void } };
+type Intercept = {resume?: () => void, resolve?: () => void, signal?: AbortSignal, title?: string};
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
-    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: {resume: () => void, resolve?: () => {}, signal?: AbortSignal, title?: string}}>();
+    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
     const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
@@ -60,7 +61,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         },
         onHmrReload,
     }), [encodeBody, fetchRSC, onHmrReload, navigationEvent])
-    const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void, rscCache?: any) => {
+    const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
@@ -71,18 +72,23 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 this.onNavigate = stateNavigator.onNavigate.bind(stateNavigator);
                 this.offNavigate = stateNavigator.offNavigate.bind(stateNavigator);
             }
+            navigateHistory(url: string, intercept: Intercept) {
+                this.navigateLink(url, undefined, true, undefined, undefined, intercept);
+            }
             navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
                 suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void,
-                currentContext = this.stateContext) {
+                currentContext = this.stateContext, intercept: Intercept = {}) {
                 if (!suspendNavigation)
                     suspendNavigation = (_stateContext, resumeNavigation) => resumeNavigation();
                 stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
                     suspendNavigation(stateContext, () => {
-                        const {oldState, state, history, crumbs} = stateContext;
+                        const {oldState, state, crumbs} = stateContext;
                         const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
-                        const startTran = (!history && !refresh && startTransition) || ((transition) => transition());
+                        const startTran = (!refresh && startTransition) || ((transition) => transition());
+                        intercept.title = typeof document !== 'undefined' ? document.title : null;
+                        intercept.resume = resumeNavigation;
                         startTran(() => {
-                            raiseNavigationEvent(stateContext, resumeNavigation, this.stateContext['rscCache']);
+                            raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
                         });
                     })
                 }, currentContext);
@@ -91,7 +97,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldUrl, oldState, state, data, asyncData, historyAction, history, crumbs} = asyncNavigator.stateContext;
         const refresh = oldUrl && oldState === state && crumbs.length === asyncNavigator.parseLink(oldUrl).crumbs.length;
-        const intercept = {resume: resumeNavigation, resolve: null, signal: null, title: typeof document !== 'undefined' ? document.title : null};
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, intercept});
         if (typeof window !== 'undefined' && historyAction !== 'none' && !history) {
             let historyAdded = false;
@@ -161,6 +166,24 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             else resume();
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
+    useEffect(() => {
+        // add navigation listener and intercept history navigation
+        // call getUrl(NavigationEntry) on history manager
+        // then pass to navigateLink along with the intercept
+        // info, the promise resolve and the signal
+        const onNavigate = (e: NavigateEvent) => {
+            if (e.navigationType !== 'traverse' && e.canIntercept) return;
+            e.intercept({
+                async precommitHandler() {
+                    return new Promise(resolve => {
+                        navigationEvent.data.stateNavigator.navigateHistory('', {resolve, signal:  e.signal});
+                    });
+                }
+            });
+        };
+        navigation.addEventListener('navigate', onNavigate);
+        return () => navigation.removeEventListener('navigate', onNavigate);
+    }, [navigationEvent])
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent(undefined, undefined, {});
