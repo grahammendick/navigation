@@ -80,8 +80,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 currentContext = this.stateContext, intercept: Intercept = {}) {
                 if (!suspendNavigation)
                     suspendNavigation = (_stateContext, resumeNavigation) => resumeNavigation();
+                let navigating = false;
                 stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
                     suspendNavigation(stateContext, () => {
+                        navigating = true;
                         const {oldState, state, crumbs} = stateContext;
                         const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
                         const startTran = (!refresh && startTransition) || ((transition) => transition());
@@ -92,6 +94,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         });
                     })
                 }, currentContext);
+                if (!navigating) intercept?.commit?.();
             }
         }
         const asyncNavigator = new AsyncStateNavigator()
