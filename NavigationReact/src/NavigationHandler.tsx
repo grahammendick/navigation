@@ -26,7 +26,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
                         method: 'post',
                         headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
-                        body: await encodeBody({url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args})
+                        body: await encodeBody({url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}),
+                        signal: navigationEvent.intercept?.signal
                     });
                 } catch(e) {
                     if (!navigationEvent.intercept?.signal?.aborted) throw e;

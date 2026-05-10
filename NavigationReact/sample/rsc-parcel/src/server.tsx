@@ -32,6 +32,9 @@ app.get('*', async (req, res) => {
 });
 
 app.post('*', async (req, res) => {
+  await new Promise(res => {
+    setTimeout(res, 2000);
+  })
   const sceneViews: any = {
     people: People,
     list: List,
