@@ -65,6 +65,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
+                stateNavigator.historyManager.stop();
                 this.stateContext = stateContext;
                 this.configure = stateNavigator.configure.bind(stateNavigator);
                 this.onBeforeNavigate = stateNavigator.onBeforeNavigate.bind(stateNavigator);
@@ -162,11 +163,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 }
                 window.history.replaceState({...window.history.state, sceneCount}, null); */
             }
-            if (!history) navigation.addEventListener('navigatesuccess', resume, {once: true});
+            navigation.addEventListener('navigatesuccess', resume, {once: true});
             if (typeof document !== 'undefined') document.title = navigationEvent.intercept?.title;
             const commit = navigationEvent.intercept?.commit;
-            if (history || !commit) resume();
             if (commit) commit();
+            else resume();
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
