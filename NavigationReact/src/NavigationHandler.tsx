@@ -15,7 +15,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
     const rootViews = useRef({});
-    const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext) as any;
+    const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -120,7 +120,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     }
                 });
                 return new Response(customStream, {headers: response.headers});
-            })();
+            })() as any;
             const res = await createFromFetch(responsePromise);
             if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
                 return !actionId ? new Promise(() => {}) : res.data;

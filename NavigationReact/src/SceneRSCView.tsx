@@ -17,7 +17,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const {state, stateNavigator: {stateContext}} = navigationEvent;
     const {url, oldUrl, history, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
-    const {deserialize} = useContext(RefetchContext) as any;
+    const {deserialize} = useContext(RefetchContext);
     const ancestorFetchingFn = useContext(FetchingContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -78,7 +78,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
 
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, refetch, name} = props;
-    const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext) as any;
+    const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext);
     const navigationEvent = useNavigationEvent();
     const navigationDeferredEvent = useContext(NavigationDeferredContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
