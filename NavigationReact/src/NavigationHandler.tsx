@@ -151,8 +151,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const resume = () => {
                 navigationEvent.intercept?.resume?.();
                 if (typeof document !== 'undefined') document.title = title;
-                if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
-                /* const historyCache = historyCacheRef.current;
+                if (historyAction === 'none' || typeof window === 'undefined' || !!window['NavigationPrecommitController'] || !window.history) return;
+                const historyCache = historyCacheRef.current;
                 const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
                 if (!historyCache[url]) historyCache[url] = {};
                 historyCache[url].count = Math.min(historyCache[url].count || sceneCount, sceneCount);
@@ -163,7 +163,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
                         delete historyCache[historyUrl];
                 }
-                window.history.replaceState({...window.history.state, sceneCount}, null); */
+                window.history.replaceState({...window.history.state, sceneCount}, null);
             }
             navigation.addEventListener('navigatesuccess', resume, {once: true});
             if (typeof document !== 'undefined') document.title = navigationEvent.intercept?.title;
