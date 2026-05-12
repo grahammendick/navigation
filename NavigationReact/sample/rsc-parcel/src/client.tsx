@@ -10,11 +10,9 @@ function Shell() {
     const root = useMemo(() => createFromReadableStream(rscStream), []);
     const bundler = useMemo(() => {
         return {
-            encodeBody: async (body: any) => {
-                const temporaryReferences = createTemporaryReferenceSet();
-                return encodeReply(body, {temporaryReferences});
-            },
-            fetchRSC: async (resp: Promise<Response>) => createFromFetch(resp),
+            createTemporaryReferenceSet,
+            encodeReply,
+            createFromFetch,
             onHmrReload: (hmrReload: () => void) => {
                 const onHmrReload = (e: any) => {
                     e.preventDefault();

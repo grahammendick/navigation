@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useEffect, useRef, useMemo, useCallback } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
-import BundlerContext from './BundlerContext.js';
 import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
@@ -18,7 +17,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const {state, stateNavigator: {stateContext}} = navigationEvent;
     const {url, oldUrl, history, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
-    const {deserialize} = useContext(BundlerContext);
+    const {deserialize} = useContext(RefetchContext) as any;
     const ancestorFetchingFn = useContext(FetchingContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -79,7 +78,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
 
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, refetch, name} = props;
-    const {refetcher, registerSceneView} = useContext(RefetchContext);
+    const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext) as any;
     const navigationEvent = useNavigationEvent();
     const navigationDeferredEvent = useContext(NavigationDeferredContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -90,7 +89,8 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         sceneViewKey,
         refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
         registerSceneView: () => {},
-    }), [navigationEvent, refetcher]);
+        deserialize,
+    }), [navigationEvent, refetcher, deserialize]);
     const {state, data, stateNavigator: {stateContext}} = navigationEvent;
     const {oldData} = stateContext;
     const show =  active != null && state && (
