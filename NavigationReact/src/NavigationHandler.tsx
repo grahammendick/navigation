@@ -93,14 +93,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const responsePromise = (async () => {
                 let response = null;
                 try {
-                    const encodeBody = async (body: any) => {
-                        const temporaryReferences = createTemporaryReferenceSet();
-                        return encodeReply(body, {temporaryReferences});
-                    }
+                    const temporaryReferences = createTemporaryReferenceSet();
                     response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
                         method: 'post',
-                        headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
-                        body: await encodeBody({url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}),
+                        headers: !actionId ? {'Content-Type': 'application/json'} : {},
+                        body: await encodeReply({url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
                         signal: navigationEvent.intercept?.signal
                     });
                 } catch(e) {
