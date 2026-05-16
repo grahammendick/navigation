@@ -62,7 +62,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const onNavigate = (e: NavigateEvent) => {
                 historyAdded = true;
                 e.intercept({
-                    focusReset: refresh ? 'manual' : 'after-transition',
+                    focusReset: 'manual',
+                    scroll: 'manual',
                     async precommitHandler() {
                         return new Promise(resolve => {
                             intercept.commit = resolve;
@@ -173,6 +174,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const onNavigate = (e: NavigateEvent) => {
             if (e.navigationType !== 'traverse' && e.canIntercept) return;
             e.intercept({
+                focusReset: 'manual',
+                scroll: 'manual',
                 async precommitHandler() {
                     return new Promise(resolve => {
                         const url = navigationEvent.stateNavigator.historyManager.getCurrentUrl(e.destination);
