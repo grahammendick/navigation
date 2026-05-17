@@ -70,8 +70,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 });
             };
             navigation.addEventListener('navigate', onNavigate, {once: true});
-            if (!intercept.controller) stateNavigator.historyManager.addHistory(url, historyAction === 'replace', null);
-            else intercept.controller.redirect(url, {history: 'replace'});
+            stateNavigator.historyManager.navigate(url, historyAction === 'replace', intercept.controller);
             if (!historyAdded) navigation.removeEventListener('navigate', onNavigate);
         }
     }, [stateNavigator]);

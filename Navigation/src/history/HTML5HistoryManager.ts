@@ -19,18 +19,30 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     addHistory(url: string, replace: boolean) {
-        if (!this.disabled && (window.history.state?.navigationLink || this.getUrl(window.location)) !== url) {
-            if (!replace)            
+        if (!this.disabled && (window.history.state?.navigationLink || window.navigation?.currentEntry.getState()?.navigationLink || this.getUrl(window.location)) !== url) {
+            if (!replace)
                 window.history.pushState({navigationLink: url}, null, this.getHref(url));
             else
                 window.history.replaceState({...window.history.state, navigationLink: url}, null, this.getHref(url));
         }
     }
 
+    navigate(url: string, replace: boolean, controller: NavigationPrecommitController) {
+        if (!replace) {
+            if (!controller)
+                navigation.navigate(this.getHref(url), {history: 'push', state: {navigationLink: url}});
+            else
+                controller.redirect(this.getHref(url), {history: 'push', state: {navigationLink: url}});
+        } else {
+            if (!controller)
+                navigation.navigate(this.getHref(url), {history: 'replace', state: {...navigation.currentEntry.getState(), navigationLink: url}});
+            else
+                controller.redirect(this.getHref(url), {history: 'replace', state: {...navigation.currentEntry.getState(), navigationLink: url}});
+        }
+    }
+
     getCurrentUrl(destination?: NavigationDestination): string {
-        if (destination)
-            return destination.getState()?.navigationLink || this.getUrl(new URL(destination.url));
-        return window.history.state?.navigationLink || this.getUrl(window.location);
+        return window.history.state?.navigationLink || (destination || window.navigation?.currentEntry).getState()?.navigationLink || this.getUrl(window.location);
     }
 
     getHref(url: string): string {
