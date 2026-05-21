@@ -142,14 +142,17 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useInsertionEffect(() => {
         const commit = navigationEvent.intercept?.commit;
         if (!isPending && navigationEvent === navigationDeferredEvent && commit) commit();
+            const title = typeof document !== 'undefined' ? document.title : null;
+            const oldTitle = navigationEvent.intercept?.title;
+            if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
+            if (navigationEvent.intercept) navigationEvent.intercept.title = title;
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext: {url, historyAction, history}} = navigationEvent.data.stateNavigator;
-            const title = typeof document !== 'undefined' ? document.title : null;
-            if (typeof document !== 'undefined') document.title = navigationEvent.intercept?.title;
             navigationEvent.intercept?.resume?.();
-            if (typeof document !== 'undefined') document.title = title;
+            const newTitle = navigationEvent.intercept?.title;
+            if (typeof document !== 'undefined' && newTitle) document.title = newTitle;
             if (historyAction === 'none' || typeof window === 'undefined' || !!window['NavigationPrecommitController'] || !window.history) return;
             const historyCache = historyCacheRef.current;
             const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
