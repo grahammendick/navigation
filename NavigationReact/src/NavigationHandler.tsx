@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import React, { useCallback, useContext, useDeferredValue, useEffect, useInsertionEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
@@ -139,32 +139,30 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         return () => stateNavigator.offNavigate(onNavigate);
     }, [stateNavigator, navigationEvent, raiseNavigationEvent]);
     const oldSceneCount = (typeof window !== 'undefined' && window.history?.state?.sceneCount) || 0;
+    useInsertionEffect(() => {
+        const commit = navigationEvent.intercept?.commit;
+        if (!isPending && navigationEvent === navigationDeferredEvent && commit) commit();
+    }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext: {url, historyAction, history}} = navigationEvent.data.stateNavigator;
             const title = typeof document !== 'undefined' ? document.title : null;
-            const resume = () => {
-                navigationEvent.intercept?.resume?.();
-                if (typeof document !== 'undefined') document.title = title;
-                if (historyAction === 'none' || typeof window === 'undefined' || !!window['NavigationPrecommitController'] || !window.history) return;
-                const historyCache = historyCacheRef.current;
-                const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
-                if (!historyCache[url]) historyCache[url] = {};
-                historyCache[url].count = Math.min(historyCache[url].count || sceneCount, sceneCount);
-                const historyUrls = Object.keys(historyCache);
-                for(let i = 0; i < historyUrls.length && !history; i++) {
-                    const historyUrl = historyUrls[i];
-                    const gap = historyCache[historyUrl].count - sceneCount;
-                    if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
-                        delete historyCache[historyUrl];
-                }
-                window.history.replaceState({...window.history.state, sceneCount}, null);
-            }
-            navigation.addEventListener('navigatesuccess', resume, {once: true});
             if (typeof document !== 'undefined') document.title = navigationEvent.intercept?.title;
-            const commit = navigationEvent.intercept?.commit;
-            if (commit) commit();
-            else resume();
+            navigationEvent.intercept?.resume?.();
+            if (typeof document !== 'undefined') document.title = title;
+            if (historyAction === 'none' || typeof window === 'undefined' || !!window['NavigationPrecommitController'] || !window.history) return;
+            const historyCache = historyCacheRef.current;
+            const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
+            if (!historyCache[url]) historyCache[url] = {};
+            historyCache[url].count = Math.min(historyCache[url].count || sceneCount, sceneCount);
+            const historyUrls = Object.keys(historyCache);
+            for(let i = 0; i < historyUrls.length && !history; i++) {
+                const historyUrl = historyUrls[i];
+                const gap = historyCache[historyUrl].count - sceneCount;
+                if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
+                    delete historyCache[historyUrl];
+            }
+            window.history.replaceState({...window.history.state, sceneCount}, null);
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
