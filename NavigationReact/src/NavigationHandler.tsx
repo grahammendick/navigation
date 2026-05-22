@@ -61,10 +61,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     focusReset: 'manual',
                     scroll: 'manual',
                     async precommitHandler(controller) {
-                        return new Promise(resolve => {
+                        return new Promise((resolve, reject) => {
                             intercept.commit = resolve;
                             intercept.signal = e.signal;
                             intercept.controller = controller;
+                            e.signal.addEventListener('abort', () => reject(e.signal.reason));
                         });
                     }
                 });
@@ -175,9 +176,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 focusReset: 'manual',
                 scroll: 'manual',
                 async precommitHandler() {
-                    return new Promise(resolve => {
+                    return new Promise((resolve, reject) => {
                         const url = navigationEvent.stateNavigator.historyManager.getCurrentUrl(e.destination);
                         navigationEvent.data.stateNavigator.navigateLink(url, undefined, true, undefined, undefined, {commit: resolve, signal:  e.signal});
+                        e.signal.addEventListener('abort', () => reject(e.signal.reason));
                     });
                 }
             });
