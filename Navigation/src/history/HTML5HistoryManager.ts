@@ -31,14 +31,14 @@ class HTML5HistoryManager implements HistoryManager {
     navigate(url: string, replace: boolean, controller: NavigationPrecommitController) {
         if (!replace) {
             if (!controller)
-                navigation.navigate(this.getHref(url), {history: 'push', state: {navigationLink: url}});
+                window.navigation.navigate(this.getHref(url), {history: 'push', state: {navigationLink: url}});
             else
                 controller.redirect(this.getHref(url), {history: 'push', state: {navigationLink: url}});
         } else {
             if (!controller)
-                navigation.navigate(this.getHref(url), {history: 'replace', state: {...navigation.currentEntry.getState(), navigationLink: url}});
+                window.navigation.navigate(this.getHref(url), {history: 'replace', state: {...window.navigation.currentEntry.getState(), navigationLink: url}});
             else
-                controller.redirect(this.getHref(url), {history: 'replace', state: {...navigation.currentEntry.getState(), navigationLink: url}});
+                controller.redirect(this.getHref(url), {history: 'replace', state: {...window.navigation.currentEntry.getState(), navigationLink: url}});
         }
     }
 
