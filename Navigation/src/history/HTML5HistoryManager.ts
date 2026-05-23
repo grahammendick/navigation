@@ -24,6 +24,7 @@ class HTML5HistoryManager implements HistoryManager {
                 window.history.pushState({navigationLink: url}, null, this.getHref(url));
             else
                 window.history.replaceState({...window.history.state, navigationLink: url}, null, this.getHref(url));
+            window.navigation?.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), navigationLink: url}});
         }
     }
 
