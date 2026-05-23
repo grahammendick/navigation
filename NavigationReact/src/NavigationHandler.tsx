@@ -154,6 +154,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             navigationEvent.intercept?.resume?.();
             const newTitle = navigationEvent.intercept?.title;
             if (typeof document !== 'undefined' && newTitle) document.title = newTitle;
+            navigationEvent.intercept = {};
             if (historyAction === 'none' || typeof window === 'undefined' || !!window['NavigationPrecommitController'] || !window.history) return;
             const historyCache = historyCacheRef.current;
             const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
