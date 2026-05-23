@@ -143,10 +143,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useInsertionEffect(() => {
         const commit = navigationEvent.intercept?.commit;
         if (!isPending && navigationEvent === navigationDeferredEvent && commit) commit();
-            const title = typeof document !== 'undefined' ? document.title : null;
-            const oldTitle = navigationEvent.intercept?.title;
-            if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
-            if (navigationEvent.intercept) navigationEvent.intercept.title = title;
+        const title = typeof document !== 'undefined' ? document.title : null;
+        const oldTitle = navigationEvent.intercept?.title;
+        if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
+        if (navigationEvent.intercept) navigationEvent.intercept.title = title;
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
