@@ -38,10 +38,10 @@ app.post('*', async (req, res) => {
     person: Person,
     friends: Friends,
   };
-  const {url, sceneViewKey, historyAction, rootViews, actionId, args} = await decodeBody(req);
+  const {url, sceneViewKey, historyAction, history, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
-  if (url) serverNavigator.navigateLink(url, historyAction);
-  if (serverNavigator.stateContext.data.id === 2) serverNavigator.refresh({id: 3});
+  if (url) serverNavigator.navigateLink(url, historyAction, history);
+  if (history && serverNavigator.stateContext.data.id) serverNavigator.refresh({id: 3}, 'replace');
   let data = null; let refetch = null;
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);

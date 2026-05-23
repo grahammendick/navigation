@@ -53,7 +53,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, intercept});
-        if (typeof window !== 'undefined' && historyAction !== 'none' && !history) {
+        if (typeof window !== 'undefined' && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             let historyAdded = false;
             const onNavigate = (e: NavigateEvent) => {
                 historyAdded = true;
@@ -88,7 +88,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         },
         deserialize: async (sceneViewKey: string, _options: any, actionId: string = null, args: any[] = null) => {
             const currentStateContext = navigationEvent.stateNavigator.stateContext;
-            const {stateContext: {url, nextCrumb, historyAction}, historyManager} = navigationEvent.data.stateNavigator;
+            const {stateContext: {url, nextCrumb, historyAction, history}, historyManager} = navigationEvent.data.stateNavigator;
             const responsePromise = (async () => {
                 let response = null;
                 try {
@@ -96,7 +96,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
                         method: 'post',
                         headers: !actionId ? {'Content-Type': 'application/json'} : {},
-                        body: await encodeReply({url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
+                        body: await encodeReply({url, sceneViewKey, historyAction, history, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
                         signal: navigationEvent.intercept?.signal
                     });
                 } catch(e) {
