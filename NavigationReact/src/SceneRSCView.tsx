@@ -28,7 +28,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     );
     const cacheIgnorable = navigationEvent['ignoreCache'];
     const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
-    const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
+    const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey] && (!window['NavigationPrecommitController'] || !!navigationEvent['hasUAVisualTransition']);
     if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = {};
     const cachedSceneViews = navigationEvent['rscCache'];
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
@@ -61,7 +61,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         renderedSceneView.current = {sceneView, navigationEvent};
         if (pending) return;
         if (historyAction === 'none') return;
-        if (typeof window !== 'undefined' && !window['NavigationPrecommitController']) {
+        if (typeof window !== 'undefined') {
             if (!historyCache[url]) historyCache[url] = {};
             historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
         }
