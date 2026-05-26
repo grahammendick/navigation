@@ -6,8 +6,17 @@ import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
-type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
+type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, scrollY?: number, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
+
+if (typeof window !== 'undefined' && window.history && window.navigation) {
+    const nativeReplace = window.history.replaceState;
+    window.history.replaceState = function(...args) {
+        const state = window.navigation.currentEntry.getState();
+        nativeReplace.apply(this, args);
+        window.navigation.updateCurrentEntry({state});
+    };
+}
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
@@ -61,6 +70,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     focusReset: 'manual',
                     scroll: 'manual',
                     async precommitHandler(controller) {
+                        window.navigation?.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), navigationScroll: window.scrollY}});
                         return new Promise((resolve, reject) => {
                             intercept.commit = resolve;
                             intercept.signal = e.signal;
@@ -142,6 +152,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const oldSceneCount = (typeof window !== 'undefined' && window.history?.state?.sceneCount) || 0;
     useInsertionEffect(() => {
         const commit = navigationEvent.intercept?.commit;
+        window.navigation.addEventListener('navigatesuccess', () => {
+            const scrollY = window.navigation?.currentEntry.getState()?.navigationScroll;
+            const hasUAVisualTransition = navigationEvent.intercept?.hasUAVisualTransition;
+            if (scrollY /* && hasUAVisualTransition */) window.scrollTo(0, scrollY);
+        }, {once: true});
         if (!isPending && navigationEvent === navigationDeferredEvent && commit) commit();
         const title = typeof document !== 'undefined' ? document.title : null;
         const oldTitle = navigationEvent.intercept?.title;
@@ -177,6 +192,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 focusReset: 'manual',
                 scroll: 'manual',
                 async precommitHandler() {
+                    window.navigation?.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), navigationScroll: window.scrollY}});
                     return new Promise((resolve, reject) => {
                         const url = navigationEvent.stateNavigator.historyManager.getCurrentUrl(e.destination);
                         const intercept = {commit: resolve, signal:  e.signal, hasUAVisualTransition: e.hasUAVisualTransition};
@@ -188,7 +204,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         };
         navigation.addEventListener('navigate', onNavigate);
         return () => navigation.removeEventListener('navigate', onNavigate);
-    }, [navigationEvent])
+    }, [navigationEvent]);
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent(undefined, undefined, {});

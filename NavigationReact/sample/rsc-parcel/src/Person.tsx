@@ -13,7 +13,6 @@ const Person = async () => {
       <title>{name}</title>
       <h1>Person</h1>
       <div>
-        <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
         <div>
           <Name id={id} name={name} />
           <div>Date of Birth</div>
@@ -27,6 +26,8 @@ const Person = async () => {
         <SceneView active="person" name="friends">
           <Friends />
         </SceneView>
+        <div style={{height: '1000px'}}/>
+        <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
       </div>
     </>
   )
