@@ -20,7 +20,7 @@ class HTML5HistoryManager implements HistoryManager {
 
     addHistory(url: string, replace: boolean) {
         if (!this.disabled && (window.history.state?.navigationLink || window.navigation?.currentEntry.getState()?.navigationLink || this.getUrl(window.location)) !== url) {
-            const currentState = !replace ? null : window.navigation.currentEntry.getState();
+            const currentState = !replace ? null : window.navigation?.currentEntry.getState();
             if (!replace)
                 window.history.pushState({navigationLink: url}, null, this.getHref(url));
             else

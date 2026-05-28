@@ -20,7 +20,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
-                stateNavigator.historyManager.stop();
+                if (typeof window !== 'undefined' && window['NavigationPrecommitController']) stateNavigator.historyManager.stop();
                 this.stateContext = stateContext;
                 this.configure = stateNavigator.configure.bind(stateNavigator);
                 this.onBeforeNavigate = stateNavigator.onBeforeNavigate.bind(stateNavigator);
@@ -53,7 +53,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
-        if (typeof window !== 'undefined' && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
+        if (typeof window !== 'undefined' && window['NavigationPrecommitController'] && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             let historyAdded = false;
             const onNavigate = (e: NavigateEvent) => {
                 historyAdded = true;
@@ -70,9 +70,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     }
                 });
             };
-            navigation.addEventListener('navigate', onNavigate, {once: true});
+            window.navigation.addEventListener('navigate', onNavigate, {once: true});
             stateNavigator.historyManager.navigate(url, historyAction === 'replace', intercept.controller);
-            if (!historyAdded) navigation.removeEventListener('navigate', onNavigate);
+            if (!historyAdded) window.navigation.removeEventListener('navigate', onNavigate);
         }
     }, [stateNavigator]);
     if (!navigationEvent) raiseNavigationEvent();
@@ -187,15 +187,17 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 }
             });
         };
-        navigation.addEventListener('navigate', onNavigate);
-        return () => navigation.removeEventListener('navigate', onNavigate);
+        if (typeof window !== 'undefined' && window['NavigationPrecommitController']) {
+            window.navigation.addEventListener('navigate', onNavigate);
+            return window.navigation.removeEventListener('navigate', onNavigate);
+        }
     }, [navigationEvent])
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent(undefined, undefined, {});
     }, [navigationEvent, stateNavigator]);
     useEffect(() => {
-        const offHmrReload = onHmrReload(() => {
+        const offHmrReload = onHmrReload?.(() => {
             startTransition(() => {
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
