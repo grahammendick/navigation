@@ -40,7 +40,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         const {oldState, state, crumbs} = stateContext;
                         const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
                         const startTran = (!refresh && startTransition) || ((transition) => transition());
-                        intercept.title = typeof document !== 'undefined' ? document.title : null;
+                        intercept.title = typeof document !== 'undefined' && createFromFetch ? document.title : null;
                         intercept.resume = resumeNavigation;
                         startTran(() => {
                             raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
@@ -74,7 +74,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             stateNavigator.historyManager.navigate(url, historyAction === 'replace', intercept.controller);
             if (!historyAdded) window.navigation.removeEventListener('navigate', onNavigate);
         }
-    }, [stateNavigator]);
+    }, [stateNavigator, createFromFetch]);
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
         sceneViewKey: null,
