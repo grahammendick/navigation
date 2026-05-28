@@ -189,7 +189,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         };
         if (typeof window !== 'undefined' && createFromFetch && window['NavigationPrecommitController']) {
             window.navigation.addEventListener('navigate', onNavigate);
-            return window.navigation.removeEventListener('navigate', onNavigate);
+            return () => window.navigation.removeEventListener('navigate', onNavigate);
         }
     }, [navigationEvent])
     useEffect(() => {
