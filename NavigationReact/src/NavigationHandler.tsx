@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useContext, useDeferredValue, useEffect, useInsertionEffect, useMemo, useRef, useState, useTransition } from 'react';
+import React, { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
@@ -20,7 +20,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
-                if (typeof window !== 'undefined' && window['NavigationPrecommitController']) stateNavigator.historyManager.stop();
+                if (typeof window !== 'undefined' && window['NavigationPrecommitController'] && createFromFetch) stateNavigator.historyManager.stop();
                 this.stateContext = stateContext;
                 this.configure = stateNavigator.configure.bind(stateNavigator);
                 this.onBeforeNavigate = stateNavigator.onBeforeNavigate.bind(stateNavigator);
@@ -53,7 +53,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
-        if (typeof window !== 'undefined' && window['NavigationPrecommitController'] && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
+        if (typeof window !== 'undefined' && window['NavigationPrecommitController'] && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             let historyAdded = false;
             const onNavigate = (e: NavigateEvent) => {
                 historyAdded = true;
@@ -140,7 +140,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         return () => stateNavigator.offNavigate(onNavigate);
     }, [stateNavigator, navigationEvent, raiseNavigationEvent]);
     const oldSceneCount = (typeof window !== 'undefined' && (window.navigation?.currentEntry.getState()?.sceneCount || window.history?.state?.sceneCount)) || 0;
-    useInsertionEffect(() => {
+    React.useInsertionEffect?.(() => {
         const commit = navigationEvent.intercept?.commit;
         if (!isPending && navigationEvent === navigationDeferredEvent && commit) commit();
         const title = typeof document !== 'undefined' ? document.title : null;
@@ -187,7 +187,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 }
             });
         };
-        if (typeof window !== 'undefined' && window['NavigationPrecommitController']) {
+        if (typeof window !== 'undefined' && createFromFetch && window['NavigationPrecommitController']) {
             window.navigation.addEventListener('navigate', onNavigate);
             return window.navigation.removeEventListener('navigate', onNavigate);
         }
