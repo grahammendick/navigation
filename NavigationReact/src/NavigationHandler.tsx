@@ -139,7 +139,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         stateNavigator.onNavigate(onNavigate);
         return () => stateNavigator.offNavigate(onNavigate);
     }, [stateNavigator, navigationEvent, raiseNavigationEvent]);
-    const oldSceneCount = (typeof window !== 'undefined' && window.history?.state?.sceneCount) || 0;
+    const oldSceneCount = (typeof window !== 'undefined' && (window.navigation?.currentEntry.getState()?.sceneCount || window.history?.state?.sceneCount)) || 0;
     useInsertionEffect(() => {
         const commit = navigationEvent.intercept?.commit;
         if (!isPending && navigationEvent === navigationDeferredEvent && commit) commit();
@@ -157,7 +157,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             navigationEvent.intercept = {};
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
             const historyCache = historyCacheRef.current;
-            const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
+            const sceneCount = (window.navigation?.currentEntry.getState()?.sceneCount || window.history?.state?.sceneCount) || (oldSceneCount + 1);
             if (!historyCache[url]) historyCache[url] = {};
             historyCache[url].count = Math.min(historyCache[url].count || sceneCount, sceneCount);
             const historyUrls = Object.keys(historyCache);
@@ -167,7 +167,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
                     delete historyCache[historyUrl];
             }
-            window.history.replaceState({...window.history.state, sceneCount}, null);
+            if (window.navigation) window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), sceneCount}});
+            else window.history.replaceState({...window.history.state, sceneCount}, null);
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
