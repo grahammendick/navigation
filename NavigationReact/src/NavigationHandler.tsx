@@ -149,14 +149,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const title = typeof document !== 'undefined' ? document.title : null;
         const oldTitle = navigationEvent.intercept?.title;
         if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
-        if (navigationEvent.intercept) navigationEvent.intercept.title = title;
+        navigation.addEventListener('navigatesuccess', () => {
+            if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
+        }, {once: true});
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext: {url, historyAction, history}} = navigationEvent.data.stateNavigator;
             navigationEvent.intercept?.resume?.();
-            const newTitle = navigationEvent.intercept?.title;
-            if (typeof document !== 'undefined' && newTitle) document.title = newTitle;
             navigationEvent.intercept = {};
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
             const historyCache = historyCacheRef.current;
