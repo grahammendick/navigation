@@ -104,7 +104,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     });
                 } catch(e) {
                     if (!navigationEvent.intercept?.signal?.aborted) throw e;
-                    else return new Promise(() => {});
+                    else return new Promise(() => {}) as Promise<Response>;
                 }
                 const reader = response.body.getReader();
                 const customStream = new ReadableStream({
@@ -119,7 +119,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     }
                 });
                 return new Response(customStream, {headers: response.headers});
-            })() as any;
+            })();
             const res = await createFromFetch(responsePromise);
             if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
                 return !actionId ? new Promise(() => {}) : res.data;
