@@ -32,15 +32,16 @@ class HTML5HistoryManager implements HistoryManager {
     navigate(url: string, replace: boolean, controller: NavigationPrecommitController) {
         if (!replace) {
             if (!controller)
-                window.navigation.navigate(this.getHref(url), {history: 'push', state: {navigationLink: url}});
+                return window.navigation.navigate(this.getHref(url), {history: 'push', state: {navigationLink: url}});
             else
                 controller.redirect(this.getHref(url), {history: 'push', state: {navigationLink: url}});
         } else {
             if (!controller)
-                window.navigation.navigate(this.getHref(url), {history: 'replace', state: {...window.navigation.currentEntry.getState(), navigationLink: url}});
+                return window.navigation.navigate(this.getHref(url), {history: 'replace', state: {...window.navigation.currentEntry.getState(), navigationLink: url}});
             else
                 controller.redirect(this.getHref(url), {history: 'replace', state: {...window.navigation.currentEntry.getState(), navigationLink: url}});
         }
+        return null;
     }
 
     getCurrentUrl(destination?: NavigationDestination): string {

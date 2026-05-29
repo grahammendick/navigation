@@ -71,7 +71,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 });
             };
             window.navigation.addEventListener('navigate', onNavigate, {once: true});
-            stateNavigator.historyManager.navigate(url, historyAction === 'replace', intercept.controller);
+            const res = stateNavigator.historyManager.navigate(url, historyAction === 'replace', intercept.controller);
+            res?.committed.catch((e) => {
+                if (!intercept?.signal?.aborted) throw e;
+            });
             if (!historyAdded) window.navigation.removeEventListener('navigate', onNavigate);
         }
     }, [stateNavigator, createFromFetch]);

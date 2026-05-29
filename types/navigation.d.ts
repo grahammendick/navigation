@@ -177,7 +177,7 @@ export interface HistoryManager {
      * browser history entry
      */
     addHistory(url: string, replace: boolean, stateContext: StateContext): void;
-    navigate(url: string, replace: boolean, controller: NavigationPrecommitController): void;
+    navigate(url: string, replace: boolean, controller: NavigationPrecommitController): NavigationResult | null;
     /**
      * Gets the current location
      */
@@ -240,7 +240,7 @@ export class HTML5HistoryManager implements HistoryManager {
      * browser history entry
      */
     addHistory(url: string, replace: boolean): void;
-    navigate(url: string, replace: boolean, controller: NavigationPrecommitController): void;
+    navigate(url: string, replace: boolean, controller: NavigationPrecommitController): NavigationResult | null;
     /**
      * Gets the current location
      */
