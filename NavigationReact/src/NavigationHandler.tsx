@@ -20,7 +20,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
-                if (typeof window !== 'undefined' && window['NavigationPrecommitController'] && createFromFetch) stateNavigator.historyManager.stop();
+                if (typeof window !== 'undefined' && window.NavigationPrecommitController && createFromFetch) stateNavigator.historyManager.stop();
                 this.stateContext = stateContext;
                 this.configure = stateNavigator.configure.bind(stateNavigator);
                 this.onBeforeNavigate = stateNavigator.onBeforeNavigate.bind(stateNavigator);
@@ -53,7 +53,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
-        if (typeof window !== 'undefined' && window['NavigationPrecommitController'] && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
+        if (typeof window !== 'undefined' && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             let historyAdded = false;
             const onNavigate = (e: NavigateEvent) => {
                 historyAdded = true;
