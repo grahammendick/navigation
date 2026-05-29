@@ -149,7 +149,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const title = typeof document !== 'undefined' ? document.title : null;
         const oldTitle = navigationEvent.intercept?.title;
         if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
-        navigation.addEventListener('navigatesuccess', () => {
+        window.navigation?.addEventListener('navigatesuccess', () => {
             if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
         }, {once: true});
     }, [isPending, navigationEvent, navigationDeferredEvent]);
