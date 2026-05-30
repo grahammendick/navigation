@@ -10,6 +10,7 @@ const App = async ({url}: any) => {
     <html>
       <head>
         <title>Navigation React Mobile</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
       </head>
       <body>
         <NavigationProvider url={url}>

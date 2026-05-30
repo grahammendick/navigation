@@ -42,9 +42,9 @@ app.post('*', async (req, res) => {
     person: Person,
     friends: Friends,
   };
-  const {url, sceneViewKey, historyAction, rootViews, actionId, args} = await decodeBody(req);
+  const {url, sceneViewKey, historyAction, history, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
-  if (url) serverNavigator.navigateLink(url, historyAction);
+  if (url) serverNavigator.navigateLink(url, historyAction, history);
   let data = null; let refetch = null;
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);
