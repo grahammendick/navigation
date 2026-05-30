@@ -48,7 +48,9 @@ class HTML5HistoryManager implements HistoryManager {
     }
 
     interceptHistory(intercept: (navigationLink: string, e: NavigateEvent) => Promise<void>) {
-        if (!this.disabled && !this.onNavigate) {
+        if (this.onNavigate)
+            window.navigation.removeEventListener('navigate', this.onNavigate);
+        if (!this.disabled && !!intercept) {
             this.onNavigate = (e: NavigateEvent) => {
                 if (e.navigationType !== 'traverse' && e.canIntercept) return;
                 e.intercept({
