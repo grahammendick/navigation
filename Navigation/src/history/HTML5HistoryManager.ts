@@ -2,6 +2,7 @@
 
 class HTML5HistoryManager implements HistoryManager {
     private navigateHistory: (e: PopStateEvent) => void = null;
+    private onNavigate: (e: NavigateEvent) => void = null;
     private applicationPath: string = '';
     private rewriteUrl: (url: string) => string | undefined;
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
@@ -13,7 +14,9 @@ class HTML5HistoryManager implements HistoryManager {
     init(navigateHistory: (url?: string) => void, rewriteUrl: (url: string) => string | undefined) {
         if (!this.rewriteUrl) this.rewriteUrl = rewriteUrl;
         if (!this.disabled && !this.navigateHistory) {
-            this.navigateHistory = e => navigateHistory((e.state && e.state.navigationLink) || undefined);
+            this.navigateHistory = e => {
+                if (!this.onNavigate) navigateHistory((e.state && e.state.navigationLink) || undefined)
+            };
             window.addEventListener('popstate', this.navigateHistory);
         }
     }
@@ -44,8 +47,23 @@ class HTML5HistoryManager implements HistoryManager {
         return null;
     }
 
-    getCurrentUrl(destination?: NavigationDestination): string {
-        if (destination) return destination.getState()?.navigationLink || this.getUrl(new URL(destination.url));
+    interceptHistory(intercept: (navigationLink: string, e: NavigateEvent) => Promise<void>) {
+        if (!this.disabled && !this.onNavigate) {
+            this.onNavigate = (e: NavigateEvent) => {
+                if (e.navigationType !== 'traverse' && e.canIntercept) return;
+                e.intercept({
+                    focusReset: 'manual',
+                    scroll: 'manual',
+                    async precommitHandler() {
+                        return intercept(e.destination.getState()?.navigationLink || this.getUrl(new URL(e.destination.url)), e);
+                    }
+                });
+            };
+            window.navigation?.addEventListener('navigate', this.onNavigate);
+        }
+    }
+
+    getCurrentUrl(): string {
         return window.history.state?.navigationLink || window.navigation?.currentEntry.getState()?.navigationLink || this.getUrl(window.location);
     }
 
@@ -62,7 +80,10 @@ class HTML5HistoryManager implements HistoryManager {
     stop() {
         if (this.navigateHistory)
             window.removeEventListener('popstate', this.navigateHistory);
+        if (this.onNavigate)
+            window.navigation.removeEventListener('navigate', this.onNavigate);
         this.navigateHistory = null;
+        this.onNavigate = null;
     }
 
     private static prependSlash(url: string): string {

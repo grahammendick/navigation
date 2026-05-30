@@ -20,7 +20,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
-                if (typeof window !== 'undefined' && window.NavigationPrecommitController && createFromFetch) stateNavigator.historyManager.stop();
                 this.stateContext = stateContext;
                 this.configure = stateNavigator.configure.bind(stateNavigator);
                 this.onBeforeNavigate = stateNavigator.onBeforeNavigate.bind(stateNavigator);
@@ -175,26 +174,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
-        const onNavigate = (e: NavigateEvent) => {
-            if (e.navigationType !== 'traverse' && e.canIntercept) return;
-            e.intercept({
-                focusReset: 'manual',
-                scroll: 'manual',
-                async precommitHandler() {
-                    return new Promise((resolve, reject) => {
-                        const url = navigationEvent.stateNavigator.historyManager.getCurrentUrl(e.destination);
-                        const intercept = {commit: resolve, signal:  e.signal, hasUAVisualTransition: e.hasUAVisualTransition};
-                        navigationEvent.data.stateNavigator.navigateLink(url, undefined, true, undefined, undefined, intercept);
-                        e.signal.addEventListener('abort', () => reject(e.signal.reason));
-                    });
-                }
-            });
-        };
-        if (typeof window !== 'undefined' && createFromFetch && window['NavigationPrecommitController']) {
-            window.navigation.addEventListener('navigate', onNavigate);
-            return () => window.navigation.removeEventListener('navigate', onNavigate);
-        }
-    }, [navigationEvent])
+        if (typeof window === 'undefined' || !createFromFetch || !!window['NavigationPrecommitController']) return;
+        stateNavigator.historyManager.interceptHistory((navigationLink: string, {signal, hasUAVisualTransition}: NavigateEvent) => (
+            new Promise((resolve, reject) => {
+                const intercept = {commit: resolve, signal, hasUAVisualTransition};
+                navigationEvent.data.stateNavigator.navigateLink(navigationLink, undefined, true, undefined, undefined, intercept);
+                signal.addEventListener('abort', () => reject(signal.reason));
+            })
+        ));
+    }, [stateNavigator.historyManager])
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent(undefined, undefined, {});

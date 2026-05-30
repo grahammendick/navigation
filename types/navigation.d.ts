@@ -178,10 +178,11 @@ export interface HistoryManager {
      */
     addHistory(url: string, replace: boolean, stateContext: StateContext): void;
     navigate(url: string, replace: boolean, controller: NavigationPrecommitController): NavigationResult | null;
+    interceptHistory(intercept: (navigationLink: string, e: NavigateEvent) => Promise<void>): void;
     /**
      * Gets the current location
      */
-    getCurrentUrl(destination?: NavigationDestination): string;
+    getCurrentUrl(): string;
     /**
      * Gets an Href from the url
      */
@@ -241,10 +242,11 @@ export class HTML5HistoryManager implements HistoryManager {
      */
     addHistory(url: string, replace: boolean): void;
     navigate(url: string, replace: boolean, controller: NavigationPrecommitController): NavigationResult | null;
+    interceptHistory(intercept: (navigationLink: string, e: NavigateEvent) => Promise<void>): void;
     /**
      * Gets the current location
      */
-    getCurrentUrl(destination?: NavigationDestination): string;
+    getCurrentUrl(): string;
     /**
      * Gets an Href from the url
      */
