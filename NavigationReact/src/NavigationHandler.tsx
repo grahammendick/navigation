@@ -52,10 +52,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
-        if (typeof window !== 'undefined' && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
-            let historyAdded = false;
+        if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             const onNavigate = (e: NavigateEvent) => {
-                historyAdded = true;
                 e.intercept({
                     focusReset: 'manual',
                     scroll: 'manual',
@@ -74,7 +72,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             res?.committed.catch((e) => {
                 if (!intercept?.signal?.aborted) throw e;
             });
-            if (!historyAdded) window.navigation.removeEventListener('navigate', onNavigate);
+            window.navigation.removeEventListener('navigate', onNavigate);
         }
     }, [stateNavigator, createFromFetch]);
     if (!navigationEvent) raiseNavigationEvent();
