@@ -53,7 +53,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
         if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
-            const onNavigate = (e: NavigateEvent) => {
+            window.navigation.addEventListener('navigate', e => {
                 e.intercept({
                     focusReset: 'manual',
                     scroll: 'manual',
@@ -66,8 +66,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         });
                     }
                 });
-            };
-            window.navigation.addEventListener('navigate', onNavigate, {once: true});
+            }, {once: true});
             const res = stateNavigator.historyManager.navigate(url, historyAction === 'replace', intercept.controller, asyncNavigator.stateContext);
             res?.committed.catch((e) => {
                 if (!intercept?.signal?.aborted) throw e;
