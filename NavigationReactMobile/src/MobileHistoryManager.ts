@@ -2,6 +2,7 @@ import { HTML5HistoryManager, StateContext } from 'navigation';
 
 class MobileHistoryManager extends HTML5HistoryManager {
     private navigateHistory: (e: PopStateEvent) => void = null;
+    private onNavigate: (e: NavigateEvent) => void = null;
     private backCrumb: {crumbs: number, url: string} | null = null;
     private hash = false;
     private buildCurrentUrl: (url: string) => string;
@@ -17,6 +18,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
         if (!this.rewriteUrl) this.rewriteUrl = rewriteUrl;
         if (!this.disabled && !this.navigateHistory) {
             this.navigateHistory = e => {
+                if (this.onNavigate) return;
                 var link = e.state?.navigationLink;
                 if (this.backCrumb !== null) {
                     var distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
@@ -50,13 +52,44 @@ class MobileHistoryManager extends HTML5HistoryManager {
             }
             if (!this.disabled && distance < 0) {
                 this.backCrumb = {crumbs: crumbs.length, url};
-                window.history.go(distance);
+                if (this.onNavigate) {
+                    var entries = window.navigation.entries();
+                    for(var i = entries.length - 2; i >= 0 && this.backCrumb !== null; i--) {
+                        var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
+                        var distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
+                        if (!distance) {
+                            var {committed} = window.navigation.traverseTo(entries[i].key);
+                            committed.then(() => super.addHistory(url, true))
+                            this.backCrumb = null;
+                        }
+                    }
+                } else {
+                    window.history.go(distance);
+                }
             }
         }
         if (this.backCrumb === null)
             super.addHistory(url, replace);
         if (title)
             document.title = title;
+    }
+
+    interceptHistory(intercept: (navigationLink: string, e: NavigateEvent) => Promise<void>) {
+        if (this.onNavigate)
+            window.navigation.removeEventListener('navigate', this.onNavigate);
+        if (!this.disabled && !!intercept) {
+            this.onNavigate = (e: NavigateEvent) => {
+                if (e.navigationType !== 'traverse' || !e.canIntercept || this.backCrumb !== null) return;
+                e.intercept({
+                    focusReset: 'manual',
+                    scroll: 'manual',
+                    async precommitHandler() {
+                        return intercept(e.destination.getState()?.navigationLink || this.getUrl(new URL(e.destination.url)), e);
+                    }
+                });
+            };
+            window.navigation?.addEventListener('navigate', this.onNavigate);
+        }
     }
 
     getHref(url: string): string {
@@ -81,7 +114,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
         return !this.hash ? super.getHref(url) : '#' + url;
     }
 
-    getUrl(hrefElement: HTMLAnchorElement | Location) {
+    getUrl(hrefElement: HTMLAnchorElement | Location | URL) {
         return !this.hash ? super.getUrl(hrefElement) : hrefElement.hash.substring(1);
     }
 
@@ -95,7 +128,10 @@ class MobileHistoryManager extends HTML5HistoryManager {
     stop() {
         if (this.navigateHistory)
             window.removeEventListener('popstate', this.navigateHistory);
+        if (this.onNavigate)
+            window.navigation.removeEventListener('navigate', this.onNavigate);
         this.navigateHistory = null;
+        this.onNavigate = null;
     }
 }
 

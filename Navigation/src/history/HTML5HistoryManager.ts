@@ -52,7 +52,7 @@ class HTML5HistoryManager implements HistoryManager {
             window.navigation.removeEventListener('navigate', this.onNavigate);
         if (!this.disabled && !!intercept) {
             this.onNavigate = (e: NavigateEvent) => {
-                if (e.navigationType !== 'traverse' && e.canIntercept) return;
+                if (e.navigationType !== 'traverse' || !e.canIntercept) return;
                 e.intercept({
                     focusReset: 'manual',
                     scroll: 'manual',

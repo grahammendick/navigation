@@ -190,7 +190,7 @@ export interface HistoryManager {
     /**
      * Gets a Url from the anchor or location
      */
-    getUrl(hrefElement: HTMLAnchorElement | Location): string;
+    getUrl(hrefElement: HTMLAnchorElement | Location | URL): string;
     /**
      * Removes browser history event listeners
      */
@@ -254,7 +254,7 @@ export class HTML5HistoryManager implements HistoryManager {
     /**
      * Gets a Url from the anchor or location
      */
-    getUrl(hrefElement: HTMLAnchorElement | Location): string;
+    getUrl(hrefElement: HTMLAnchorElement | Location | URL): string;
     /**
      * Removes a listener for the popstate event
      */
