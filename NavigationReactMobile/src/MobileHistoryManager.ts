@@ -41,8 +41,19 @@ class MobileHistoryManager extends HTML5HistoryManager {
             var {oldUrl, crumbs} = stateContext;
             var start = !oldUrl ? 0 : oldUrl.split('crumb=').length;
             var distance = crumbs.length - start + 1;
-            if (distance < 0)
-                return super.navigate(oldUrl, true, controller);
+            if (distance < 0) {
+                this.backCrumb = {crumbs: crumbs.length, url};
+                var entries = window.navigation.entries();
+                for(var i = entries.length - 1; i >= 0; i--) {
+                    var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
+                    distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
+                    if (!distance) {
+                        const res = window.navigation.traverseTo(entries[i].key);
+                        res.committed.then(() => this.backCrumb = null);
+                        return res;
+                    }
+                }
+            }
         }
         return super.navigate(url, replace, controller);
     }
@@ -69,11 +80,16 @@ class MobileHistoryManager extends HTML5HistoryManager {
                         var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
                         var distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
                         if (!distance) {
-                            var {committed} = window.navigation.traverseTo(entries[i].key);
-                            committed.then(() => {
+                            if (window.navigation.currentEntry !== entries[i]) {
+                                var {committed} = window.navigation.traverseTo(entries[i].key);
+                                committed.then(() => {
+                                    super.addHistory(url, true);
+                                    this.backCrumb = null;
+                                });
+                            } else {
                                 super.addHistory(url, true);
                                 this.backCrumb = null;
-                            });
+                            }
                         }
                     }
                 } else {
@@ -81,7 +97,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 }
             }
         }
-        if (!this.onNavigate)
+        if (this.backCrumb === null && !this.onNavigate)
             super.addHistory(url, replace);
         if (title)
             document.title = title;
