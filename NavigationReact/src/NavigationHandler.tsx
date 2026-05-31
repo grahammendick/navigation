@@ -72,7 +72,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             res?.committed.catch((e) => {
                 if (!intercept?.signal?.aborted) throw e;
             });
-            window.navigation.removeEventListener('navigate', onNavigate);
         }
     }, [stateNavigator, createFromFetch]);
     if (!navigationEvent) raiseNavigationEvent();
