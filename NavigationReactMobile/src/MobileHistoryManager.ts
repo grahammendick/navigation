@@ -48,7 +48,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                     var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
                     distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
                     if (!distance) {
-                        const res = window.navigation.traverseTo(entries[i].key);
+                        var res = window.navigation.traverseTo(entries[i].key);
                         res.committed.then(() => this.backCrumb = null);
                         return res;
                     }
@@ -109,7 +109,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
         if (!this.disabled && !!intercept) {
             this.onNavigate = (e: NavigateEvent) => {
                 if (e.navigationType !== 'traverse' || !e.canIntercept || this.backCrumb !== null) return;
-                const navigationLink = e.destination.getState()?.navigationLink || this.getUrl(new URL(e.destination.url));
+                var navigationLink = e.destination.getState()?.navigationLink || this.getUrl(new URL(e.destination.url));
                 e.intercept({
                     focusReset: 'manual',
                     scroll: 'manual',
