@@ -85,8 +85,8 @@ class MobileHistoryManager extends HTML5HistoryManager {
         return !this.hash ? super.getUrl(hrefElement) : hrefElement.hash.substring(1);
     }
 
-    getCurrentUrl(destination?: NavigationDestination): string {
-        var url = super.getCurrentUrl(destination);
+    getCurrentUrl(): string {
+        var url = super.getCurrentUrl();
         if (this.buildCurrentUrl)
             url = this.buildCurrentUrl(url);
         return url;
