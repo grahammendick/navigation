@@ -42,14 +42,17 @@ class MobileHistoryManager extends HTML5HistoryManager {
             var start = !oldUrl ? 0 : oldUrl.split('crumb=').length;
             var distance = crumbs.length - start + 1;
             if (distance < 0) {
-                this.backCrumb = {crumbs: crumbs.length, url};
+                const backCrumb = {crumbs: crumbs.length, url};
+                this.backCrumb = backCrumb;
                 var entries = window.navigation.entries();
                 for(var i = entries.length - 1; i >= 0; i--) {
                     var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
                     distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
                     if (!distance) {
                         var res = window.navigation.traverseTo(entries[i].key);
-                        res.committed.then(() => this.backCrumb = null);
+                        res.committed.then(() => {
+                            if (this.backCrumb === backCrumb) this.backCrumb = null;
+                        });
                         return res;
                     }
                 }
