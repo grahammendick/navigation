@@ -70,8 +70,10 @@ class MobileHistoryManager extends HTML5HistoryManager {
                         var distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
                         if (!distance) {
                             var {committed} = window.navigation.traverseTo(entries[i].key);
-                            committed.then(() => super.addHistory(url, true))
-                            this.backCrumb = null;
+                            committed.then(() => {
+                                super.addHistory(url, true);
+                                this.backCrumb = null;
+                            });
                         }
                     }
                 } else {
@@ -79,7 +81,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 }
             }
         }
-        if (!this.onNavigate && this.backCrumb === null)
+        if (!this.onNavigate)
             super.addHistory(url, replace);
         if (title)
             document.title = title;
