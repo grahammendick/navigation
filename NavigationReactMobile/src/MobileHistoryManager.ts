@@ -36,6 +36,17 @@ class MobileHistoryManager extends HTML5HistoryManager {
         }
     }
 
+    navigate(url: string, replace: boolean, controller: NavigationPrecommitController, stateContext?: StateContext): NavigationResult | null {
+        if (!!stateContext && !stateContext.history && !controller) {
+            var {oldUrl, crumbs} = stateContext;
+            var start = !oldUrl ? 0 : oldUrl.split('crumb=').length;
+            var distance = crumbs.length - start + 1;
+            if (distance < 0)
+                return super.navigate(oldUrl, true, controller);
+        }
+        return super.navigate(url, replace, controller);
+    }
+
     addHistory(url: string, replace: boolean, stateContext?: StateContext) {
         this.backCrumb = null;
         var title = typeof document !== 'undefined' && document.title;
@@ -54,7 +65,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 this.backCrumb = {crumbs: crumbs.length, url};
                 if (this.onNavigate) {
                     var entries = window.navigation.entries();
-                    for(var i = entries.length - 2; i >= 0 && this.backCrumb !== null; i--) {
+                    for(var i = entries.length - 1; i >= 0 && this.backCrumb !== null; i--) {
                         var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
                         var distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
                         if (!distance) {
@@ -68,7 +79,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 }
             }
         }
-        if (this.backCrumb === null)
+        if (!this.onNavigate && this.backCrumb === null)
             super.addHistory(url, replace);
         if (title)
             document.title = title;
