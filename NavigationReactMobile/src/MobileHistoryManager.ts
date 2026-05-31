@@ -80,11 +80,12 @@ class MobileHistoryManager extends HTML5HistoryManager {
         if (!this.disabled && !!intercept) {
             this.onNavigate = (e: NavigateEvent) => {
                 if (e.navigationType !== 'traverse' || !e.canIntercept || this.backCrumb !== null) return;
+                const navigationLink = e.destination.getState()?.navigationLink || this.getUrl(new URL(e.destination.url));
                 e.intercept({
                     focusReset: 'manual',
                     scroll: 'manual',
                     async precommitHandler() {
-                        return intercept(e.destination.getState()?.navigationLink || this.getUrl(new URL(e.destination.url)), e);
+                        return intercept(navigationLink, e);
                     }
                 });
             };
