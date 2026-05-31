@@ -50,10 +50,17 @@ class MobileHistoryManager extends HTML5HistoryManager {
                     distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
                     if (!distance) {
                         var res = window.navigation.traverseTo(entries[i].key);
-                        res.committed.then(() => {
-                            if (this.backCrumb === backCrumb) this.backCrumb = null;
-                        });
-                        return res;
+                        return {
+                            committed: res.committed
+                                .then(() => {
+                                    if (this.backCrumb === backCrumb) this.backCrumb = null;
+                                    return null;
+                                }).catch((e) => {
+                                    this.backCrumb = null;
+                                    throw e;
+                                }),
+                            finished: res.finished
+                        }
                     }
                 }
             }
