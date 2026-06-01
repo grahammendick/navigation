@@ -4,7 +4,7 @@ interface HistoryManager {
     disabled: boolean;
     init(navigateHistory: (url?: string) => void, rewriteUrl: (url: string) => string | undefined): void;
     addHistory(url: string, replace: boolean, stateContext: StateContext): void;
-    navigate(url: string, replace: boolean, controller?: NavigationPrecommitController): void;
+    navigate(url: string, replace: boolean, controller: NavigationPrecommitController, stateContext: StateContext): void;
     getCurrentUrl(): string;
     getHref(url: string): string;
     getUrl(hrefElement: HTMLAnchorElement | Location): string;

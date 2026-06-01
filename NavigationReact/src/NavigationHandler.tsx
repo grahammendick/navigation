@@ -54,6 +54,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
         if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             window.navigation.addEventListener('navigate', e => {
+                if (e.info.stateContext !== asyncNavigator.stateContext) return;
                 e.intercept({
                     focusReset: 'manual',
                     scroll: 'manual',

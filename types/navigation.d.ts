@@ -241,7 +241,7 @@ export class HTML5HistoryManager implements HistoryManager {
      * browser history entry
      */
     addHistory(url: string, replace: boolean): void;
-    navigate(url: string, replace: boolean, controller: NavigationPrecommitController): NavigationResult | null;
+    navigate(url: string, replace: boolean, controller: NavigationPrecommitController, stateContext: StateContext): NavigationResult | null;
     interceptHistory(intercept: (navigationLink: string, e: NavigateEvent) => Promise<void>): void;
     /**
      * Gets the current location

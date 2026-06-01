@@ -1,4 +1,5 @@
 ﻿import HistoryManager from './HistoryManager';
+import StateContext from '../StateContext';
 
 class HTML5HistoryManager implements HistoryManager {
     private navigateHistory: (e: PopStateEvent) => void = null;
@@ -32,15 +33,15 @@ class HTML5HistoryManager implements HistoryManager {
         }
     }
 
-    navigate(url: string, replace: boolean, controller: NavigationPrecommitController) {
+    navigate(url: string, replace: boolean, controller: NavigationPrecommitController, stateContext: StateContext) {
         if (!replace) {
             if (!controller)
-                return window.navigation.navigate(this.getHref(url), {history: 'push', state: {navigationLink: url}});
+                return window.navigation.navigate(this.getHref(url), {history: 'push', state: {navigationLink: url}, info: {stateContext}});
             else
                 controller.redirect(this.getHref(url), {history: 'push', state: {navigationLink: url}});
         } else {
             if (!controller)
-                return window.navigation.navigate(this.getHref(url), {history: 'replace', state: {...window.navigation.currentEntry.getState(), navigationLink: url}});
+                return window.navigation.navigate(this.getHref(url), {history: 'replace', state: {...window.navigation.currentEntry.getState(), navigationLink: url}, info: {stateContext}});
             else
                 controller.redirect(this.getHref(url), {history: 'replace', state: {...window.navigation.currentEntry.getState(), navigationLink: url}});
         }

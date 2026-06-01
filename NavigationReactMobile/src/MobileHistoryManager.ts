@@ -36,7 +36,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
         }
     }
 
-    navigate(url: string, replace: boolean, controller: NavigationPrecommitController, stateContext?: StateContext): NavigationResult | null {
+    navigate(url: string, replace: boolean, controller: NavigationPrecommitController, stateContext: StateContext): NavigationResult | null {
         if (!!stateContext && !stateContext.history && !controller) {
             var {oldUrl, crumbs} = stateContext;
             var start = !oldUrl ? 0 : oldUrl.split('crumb=').length;
@@ -49,7 +49,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                     var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
                     distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
                     if (!distance) {
-                        var res = window.navigation.traverseTo(entries[i].key);
+                        var res = window.navigation.traverseTo(entries[i].key, {info: {stateContext}});
                         return {
                             committed: res.committed
                                 .then(() => {
@@ -65,7 +65,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 }
             }
         }
-        return super.navigate(url, replace, controller);
+        return super.navigate(url, replace, controller, stateContext);
     }
 
     addHistory(url: string, replace: boolean, stateContext?: StateContext) {
