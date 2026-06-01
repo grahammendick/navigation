@@ -55,7 +55,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             if (!intercept.controller) {
                 window.navigation.addEventListener('navigate', e => {
-                    if (e.info.stateContext !== asyncNavigator.stateContext) return;
+                    if (e.info?.stateContext !== asyncNavigator.stateContext) return;
                     e.intercept({
                         focusReset: 'manual',
                         scroll: 'manual',
