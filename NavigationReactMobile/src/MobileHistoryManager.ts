@@ -56,7 +56,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                                     if (this.backCrumb === backCrumb) this.backCrumb = null;
                                     return null;
                                 }).catch((e) => {
-                                    this.backCrumb = null;
+                                    if (this.backCrumb === backCrumb) this.backCrumb = null;
                                     throw e;
                                 }),
                             finished: res.finished
