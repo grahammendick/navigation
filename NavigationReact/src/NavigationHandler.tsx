@@ -53,21 +53,23 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
         if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
-            window.navigation.addEventListener('navigate', e => {
-                if (e.info.stateContext !== asyncNavigator.stateContext) return;
-                e.intercept({
-                    focusReset: 'manual',
-                    scroll: 'manual',
-                    async precommitHandler(controller) {
-                        return new Promise((resolve, reject) => {
-                            intercept.commit = resolve;
-                            intercept.signal = e.signal;
-                            intercept.controller = controller;
-                            e.signal.addEventListener('abort', () => reject(e.signal.reason));
-                        });
-                    }
-                });
-            }, {once: true});
+            if (!intercept.controller) {
+                window.navigation.addEventListener('navigate', e => {
+                    if (e.info.stateContext !== asyncNavigator.stateContext) return;
+                    e.intercept({
+                        focusReset: 'manual',
+                        scroll: 'manual',
+                        async precommitHandler(controller) {
+                            return new Promise((resolve, reject) => {
+                                intercept.commit = resolve;
+                                intercept.signal = e.signal;
+                                intercept.controller = controller;
+                                e.signal.addEventListener('abort', () => reject(e.signal.reason));
+                            });
+                        }
+                    });
+                }, {once: true});
+            }
             const res = stateNavigator.historyManager.navigate(url, historyAction === 'replace', intercept.controller, asyncNavigator.stateContext);
             res?.committed.catch((e) => {
                 if (!intercept?.signal?.aborted) throw e;
