@@ -63,7 +63,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                             return new Promise((resolve, reject) => {
                                 intercept.commit = resolve;
                                 intercept.signal = e.signal;
-                                intercept.controller = controller;
+                                if (e.navigationType !== 'traverse') intercept.controller = controller;
                                 e.signal.addEventListener('abort', () => reject(e.signal.reason));
                             });
                         }
