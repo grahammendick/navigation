@@ -37,31 +37,35 @@ class MobileHistoryManager extends HTML5HistoryManager {
     }
 
     navigate(url: string, replace: boolean, controller: NavigationPrecommitController, stateContext: StateContext): NavigationResult | null {
-        if (!!stateContext && !stateContext.history && !controller) {
+        if (!!stateContext && !stateContext.history) {
             var {oldUrl, crumbs} = stateContext;
             var start = !oldUrl ? 0 : oldUrl.split('crumb=').length;
             var distance = crumbs.length - start + 1;
             if (distance < 0) {
-                const backCrumb = {crumbs: crumbs.length, url};
-                this.backCrumb = backCrumb;
-                var entries = window.navigation.entries();
-                for(var i = entries.length - 1; i >= 0; i--) {
-                    var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
-                    distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
-                    if (!distance) {
-                        var res = window.navigation.traverseTo(entries[i].key, {info: {stateContext}});
-                        return {
-                            committed: res.committed
-                                .then(() => {
-                                    if (this.backCrumb === backCrumb) this.backCrumb = null;
-                                    return null;
-                                }).catch((e) => {
-                                    if (this.backCrumb === backCrumb) this.backCrumb = null;
-                                    throw e;
-                                }),
-                            finished: res.finished
+                if (!controller) {
+                    const backCrumb = {crumbs: crumbs.length, url};
+                    this.backCrumb = backCrumb;
+                    var entries = window.navigation.entries();
+                    for(var i = entries.length - 1; i >= 0; i--) {
+                        var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
+                        distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
+                        if (!distance) {
+                            var res = window.navigation.traverseTo(entries[i].key, {info: {stateContext}});
+                            return {
+                                committed: res.committed
+                                    .then(() => {
+                                        if (this.backCrumb === backCrumb) this.backCrumb = null;
+                                        return null;
+                                    }).catch((e) => {
+                                        if (this.backCrumb === backCrumb) this.backCrumb = null;
+                                        throw e;
+                                    }),
+                                finished: res.finished
+                            }
                         }
                     }
+                } else {
+                    return super.navigate(oldUrl, true, controller, stateContext);                    
                 }
             }
         }
@@ -86,9 +90,9 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 this.backCrumb = {crumbs: crumbs.length, url};
                 if (this.onNavigate) {
                     var entries = window.navigation.entries();
-                    for(var i = entries.length - 1; i >= 0 && this.backCrumb !== null; i--) {
+                    for(var i = entries.length - 2; i >= 0 && distance; i--) {
                         var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
-                        var distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
+                        distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
                         if (!distance) {
                             if (window.navigation.currentEntry !== entries[i]) {
                                 var {committed} = window.navigation.traverseTo(entries[i].key);
