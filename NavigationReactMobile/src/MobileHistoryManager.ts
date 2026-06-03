@@ -65,11 +65,11 @@ class MobileHistoryManager extends HTML5HistoryManager {
                         }
                     }
                 } else {
-                    return super.navigate(oldUrl, true, controller, stateContext);                    
+                    return super.navigate(oldUrl, true, controller, stateContext);
                 }
             }
             if (distance > 1) {
-                return super.navigate(crumbs[start].url, false, controller, stateContext);                    
+                return super.navigate(crumbs[start].url, false, controller, stateContext);
             }
         }
         return super.navigate(url, replace, controller, stateContext);
