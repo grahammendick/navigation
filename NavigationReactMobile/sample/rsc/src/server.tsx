@@ -35,6 +35,7 @@ app.get('*', async (req, res) => {
   ), {component: App});
 });
 
+let a = false;
 app.post('*', async (req, res) => {
   const sceneViews: any = {
     people: People,
@@ -45,11 +46,13 @@ app.post('*', async (req, res) => {
   const {url, sceneViewKey, historyAction, history, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url, historyAction, history);
-  if (serverNavigator.stateContext.data.id === 1) {
-    /* const url = serverNavigator.fluent(true)
-          .navigate('person', {id: 5})
-          .navigate('person', {id: 6}).url;
-    serverNavigator.navigateLink(url) */
+  if (serverNavigator.stateContext.data.id === 1 && !a) {
+    a = true;
+    const url = serverNavigator.fluent(true)
+          .refresh({id: 5})
+          .navigate('person', {id: 6})
+          .navigate('person', {id: 7}).url;
+    serverNavigator.navigateLink(url)
     // serverNavigator.refresh({id: 7});
     // serverNavigator.navigateBack(1);
   }
