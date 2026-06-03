@@ -8,8 +8,9 @@ const Name = ({ id, name }: { id: number, name: string }) => {
     <>
       <FluentLink withContext navigate={fluent => (
         fluent
-          .navigateBack(2)
+          .navigate('person', {id: 5})
           .navigate('person', {id: 6})
+          .navigate('person', {id: 7})
       )} >Fluent back</FluentLink>
       <form action={saveName}>
         <input type="hidden" name="id" value={id} />

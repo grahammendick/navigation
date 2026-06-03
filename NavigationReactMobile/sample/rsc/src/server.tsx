@@ -45,12 +45,13 @@ app.post('*', async (req, res) => {
   const {url, sceneViewKey, historyAction, history, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url, historyAction, history);
-  if (serverNavigator.stateContext.data.id === 6) {
+  if (serverNavigator.stateContext.data.id === 1) {
     /* const url = serverNavigator.fluent(true)
-          .navigateBack(3)
-          .navigate('person', {id: 6}).url; */
+          .navigate('person', {id: 5})
+          .navigate('person', {id: 6}).url;
+    serverNavigator.navigateLink(url) */
     // serverNavigator.refresh({id: 7});
-    serverNavigator.navigateBack(1);
+    // serverNavigator.navigateBack(1);
   }
   let data = null; let refetch = null;
   if (req.headers['content-type'] !== 'application/json') {

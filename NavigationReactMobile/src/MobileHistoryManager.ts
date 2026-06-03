@@ -68,6 +68,9 @@ class MobileHistoryManager extends HTML5HistoryManager {
                     return super.navigate(oldUrl, true, controller, stateContext);                    
                 }
             }
+            if (distance > 1) {
+                return super.navigate(crumbs[start].url, false, controller, stateContext);                    
+            }
         }
         return super.navigate(url, replace, controller, stateContext);
     }
@@ -80,7 +83,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
             var {oldUrl, crumbs} = stateContext;
             var start = !oldUrl ? 0 : oldUrl.split('crumb=').length;
             distance = crumbs.length - start + 1;
-            for(var i = start; i < crumbs.length; i++) {
+            for(var i = start + (this.onNavigate ? 1 : 0); i < crumbs.length; i++) {
                 let {url, state} = crumbs[i];
                 super.addHistory(url, i === 0);
                 if (typeof document !== 'undefined' && state.title)
@@ -111,7 +114,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                 }
             }
         }
-        if (this.backCrumb === null && !this.onNavigate)
+        if (this.backCrumb === null)
             super.addHistory(url, replace);
         if (title)
             document.title = title;
