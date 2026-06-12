@@ -46,7 +46,7 @@ app.post('*', async (req, res) => {
   const {url, sceneViewKey, historyAction, history, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url, historyAction, history);
-  if (serverNavigator.stateContext.data.id === 1 && !a) {
+  if (history) {
     a = true;
     const url = serverNavigator.fluent(true)
           .refresh({id: 5})

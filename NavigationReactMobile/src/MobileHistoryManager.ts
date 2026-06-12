@@ -40,7 +40,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
         if (!!stateContext && !stateContext.history) {
             var {oldUrl, crumbs} = stateContext;
             var start = !oldUrl ? 0 : oldUrl.split('crumb=').length;
-            var distance = crumbs.length - start + 1;
+            const distance = crumbs.length - start + 1;
             if (distance < 0) {
                 if (!controller) {
                     const backCrumb = {crumbs: crumbs.length, url};
@@ -48,7 +48,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
                     var entries = window.navigation.entries();
                     for(var i = entries.length - 1; i >= 0; i--) {
                         var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
-                        distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
+                        const distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
                         if (!distance) {
                             var res = window.navigation.traverseTo(entries[i].key, {info: {stateContext}});
                             return {
