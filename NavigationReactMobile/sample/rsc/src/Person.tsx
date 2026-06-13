@@ -1,5 +1,5 @@
 'use server-entry'
-import { SceneView, NavigationBackLink, useNavigationEvent, FluentLink } from 'navigation-react';
+import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-react';
 import { getPerson } from './data';
 import Gender from './Gender';
 import Friends from './Friends';
