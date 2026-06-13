@@ -143,13 +143,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const oldSceneCount = (typeof window !== 'undefined' && (window.navigation?.currentEntry.getState()?.sceneCount || window.history?.state?.sceneCount)) || 0;
     React.useInsertionEffect?.(() => {
         const commit = navigationEvent.intercept?.commit;
-        if (!isPending && navigationEvent === navigationDeferredEvent && commit) commit();
-        const title = typeof document !== 'undefined' ? document.title : null;
-        const oldTitle = navigationEvent.intercept?.title;
-        if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
-        window.navigation?.addEventListener('navigatesuccess', () => {
-            if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
-        }, {once: true});
+        if (!isPending && navigationEvent === navigationDeferredEvent && commit) {
+            commit();
+            const title = typeof document !== 'undefined' ? document.title : null;
+            const oldTitle = navigationEvent.intercept?.title;
+            if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
+            window.navigation?.addEventListener('navigatesuccess', () => {
+                if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
+            }, {once: true});
+        }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
