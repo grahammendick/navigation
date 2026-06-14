@@ -170,8 +170,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
                     delete historyCache[historyUrl];
             }
-            if (window.navigation) window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), sceneCount}});
-            else window.history.replaceState({...window.history.state, sceneCount}, null);
+            const state = {...window.navigation?.currentEntry.getState(), sceneCount};
+            window.history.replaceState({...window.history.state, sceneCount}, null);
+            window.navigation?.updateCurrentEntry({state});
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
