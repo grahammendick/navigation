@@ -1,4 +1,4 @@
-import { NavigationLink, RefreshLink, useNavigationEvent } from 'navigation-react';
+import { RefreshLink, useNavigationEvent } from 'navigation-react';
 import { getFriends } from './data';
 
 const Friends = async () => {
@@ -7,7 +7,7 @@ const Friends = async () => {
   return show && (
     <ul>
       {friends?.map(({id, name}) => (
-        <li key={id}><NavigationLink stateKey="person" navigationData={{id}} includeCurrentData>{name}</NavigationLink></li>
+        <li key={id}><RefreshLink navigationData={{id}} includeCurrentData>{name}</RefreshLink></li>
       ))}
     </ul>
   );
