@@ -39,7 +39,7 @@ const getPerson = async (id: number) => {
         const person = people.find(({id: personId}) => personId === id)!
         setTimeout(() => {
             res(person);
-        }, id !== 1 ? 2000 : 10);
+        }, 10);
     })
 }
 
