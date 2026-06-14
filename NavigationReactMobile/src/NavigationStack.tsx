@@ -15,7 +15,8 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     className: sceneClassName, style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
     const sharedElementRegistry = useSharedElementRegistry();
     const registerRootView = useRootViewRegistry();
-    const {stateNavigator} = useContext(NavigationContext);
+    const navigationEvent = useContext(NavigationContext);
+    const {stateNavigator} = navigationEvent;
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false, ignorePause: false});
     const scenes = {};
     let firstLink;
@@ -128,7 +129,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     const sceneData = getScenes();
     return (stateContext.state &&
         <SharedElementContext.Provider value={sharedElementRegistry as any}>
-            <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null}>
+            <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
                 {scenes => (
                     scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
                         <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted)}>
