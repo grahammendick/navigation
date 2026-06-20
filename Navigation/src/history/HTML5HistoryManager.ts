@@ -53,12 +53,13 @@ class HTML5HistoryManager implements HistoryManager {
             window.navigation.removeEventListener('navigate', this.onNavigate);
         if (!this.disabled && !!intercept) {
             this.onNavigate = (e: NavigateEvent) => {
+                const navigationLink = e.destination.getState()?.navigationLink || this.getUrl(new URL(e.destination.url));
                 if (e.navigationType !== 'traverse' || !e.canIntercept) return;
                 e.intercept({
                     focusReset: 'manual',
                     scroll: 'manual',
                     async precommitHandler() {
-                        return intercept(e.destination.getState()?.navigationLink || this.getUrl(new URL(e.destination.url)), e);
+                        return intercept(navigationLink, e);
                     }
                 });
             };
