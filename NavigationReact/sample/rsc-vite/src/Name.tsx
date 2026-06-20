@@ -7,7 +7,7 @@ const Name = ({ id, name }: { id: number, name: string }) => {
   return (
     <form action={saveName}>
       <input type="hidden" name="id" value={id} />
-      <input key={id} type="text" name="name" defaultValue={name} />
+      <input key={id} type="text" name="name" defaultValue={name} autoFocus />
       <button type="submit">Save</button>
       <button type="reset">Reset</button>
     </form>
