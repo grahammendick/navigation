@@ -157,6 +157,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext: {url, historyAction, history}} = navigationEvent.data.stateNavigator;
             navigationEvent.intercept?.resume?.();
+            if (navigationEvent.intercept?.hasUAVisualTransition)
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
             navigationEvent.intercept = {};
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
             const historyCache = historyCacheRef.current;
