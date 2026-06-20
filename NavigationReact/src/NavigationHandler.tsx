@@ -186,7 +186,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 signal.addEventListener('abort', () => reject(signal.reason));
             })
         ));
-    }, [navigationEvent, stateNavigator.historyManager])
+    }, [navigationEvent, stateNavigator.historyManager, createFromFetch])
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent(undefined, undefined, {});
