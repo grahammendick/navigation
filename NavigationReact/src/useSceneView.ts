@@ -4,7 +4,7 @@ import RefetchContext from './RefetchContext.js';
 const useSceneView = (fn: (...args: any) => any) => {
     const {sceneViewKey, deserialize} = useContext(RefetchContext);
     const deserializeScene = useCallback(fn.bind(null, async (actionId: string, args: any[]) => (
-        deserialize(sceneViewKey, undefined, actionId, args)
+        deserialize(sceneViewKey, actionId, args)
     )), [fn, sceneViewKey, deserialize])
     return deserializeScene;
 }
