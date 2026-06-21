@@ -172,12 +172,24 @@ export interface HistoryManager {
     /**
      * Adds browser history
      * @param url The current url
-     * @param replace A value indicating whether to replace the current
-     * @param stateContext The current StateContext
+     * @param replace A value indicating whether to replace the current 
      * browser history entry
+     * @param stateContext The current StateContext
      */
     addHistory(url: string, replace: boolean, stateContext: StateContext): void;
+    /**
+     * Adds browser history via navigation api
+     * @param url The current url
+     * @param replace A value indicating whether to replace the current
+     * browser history entry
+     * @param controller The navigation precommit controller
+     * @param stateContext The current StateContext
+     */
     navigate(url: string, replace: boolean, controller: NavigationPrecommitController, stateContext: StateContext): NavigationResult | null;
+    /**
+     * Registers intercptor for history precommit handling
+     * @param intercept The navigation precommit handler
+     */
     interceptHistory(intercept: (navigationLink: string, e: NavigateEvent) => Promise<void>): void;
     /**
      * Gets the current location
@@ -188,7 +200,7 @@ export interface HistoryManager {
      */
     getHref(url: string): string;
     /**
-     * Gets a Url from the anchor or location
+     * Gets a Url from the anchor, location or URL
      */
     getUrl(hrefElement: HTMLAnchorElement | Location | URL): string;
     /**
@@ -241,7 +253,19 @@ export class HTML5HistoryManager implements HistoryManager {
      * browser history entry
      */
     addHistory(url: string, replace: boolean): void;
+    /**
+     * Adds browser history via navigation api
+     * @param url The current url
+     * @param replace A value indicating whether to replace the current
+     * browser history entry
+     * @param controller The navigation precommit controller
+     * @param stateContext The current StateContext
+     */
     navigate(url: string, replace: boolean, controller: NavigationPrecommitController, stateContext: StateContext): NavigationResult | null;
+    /**
+     * Registers intercptor for history precommit handling
+     * @param intercept The navigation precommit handler
+     */
     interceptHistory(intercept: (navigationLink: string, e: NavigateEvent) => Promise<void>): void;
     /**
      * Gets the current location
@@ -252,7 +276,7 @@ export class HTML5HistoryManager implements HistoryManager {
      */
     getHref(url: string): string;
     /**
-     * Gets a Url from the anchor or location
+     * Gets a Url from the anchor, location or URL
      */
     getUrl(hrefElement: HTMLAnchorElement | Location | URL): string;
     /**
