@@ -1,5 +1,5 @@
 import React from 'react';
-import { MotionProps } from './Props.js';
+import { MotionProps } from './Props';
 
 class Motion<T> extends React.Component<MotionProps<T>, any> {
     private animateId: number;

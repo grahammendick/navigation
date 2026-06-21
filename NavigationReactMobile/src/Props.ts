@@ -1,7 +1,7 @@
 import { ReactElement, ReactNode } from 'react';
 import { StateNavigator, State } from 'navigation';
-import SharedElementMotion from './SharedElementMotion.js';
-import SharedElementRegistry from './SharedElementRegistry.js';
+import SharedElementMotion from './SharedElementMotion';
+import SharedElementRegistry from './SharedElementRegistry';
 
 interface MotionProps<T> {
     data: T[];

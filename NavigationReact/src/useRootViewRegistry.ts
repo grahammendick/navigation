@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import RefetchContext from './RefetchContext.js';
+import RefetchContext from './RefetchContext';
 
 const useRootViewRegistry = () => {
     const {registerSceneView} = useContext(RefetchContext);

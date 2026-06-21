@@ -1,7 +1,7 @@
 import React from 'react';
-import { SceneViewProps } from './Props.js';
-import useNavigationEvent from './useNavigationEvent.server.js';
-import SceneRSCView from './SceneRSCView.js';
+import { SceneViewProps } from './Props';
+import useNavigationEvent from './useNavigationEvent.server';
+import SceneRSCView from './SceneRSCView';
 
 const SceneView = ({active, children, ...props}: SceneViewProps & {active: string | string[]}) => {
     const {state} = useNavigationEvent();

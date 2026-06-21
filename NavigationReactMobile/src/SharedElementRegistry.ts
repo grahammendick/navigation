@@ -1,4 +1,4 @@
-import { SharedItem } from './Props.js';
+import { SharedItem } from './Props';
 
 class SharedElementRegistry {
     private sharedElements: { [scene: string]: { [name: string]: HTMLElement } } = {};

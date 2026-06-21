@@ -1,5 +1,5 @@
-﻿import { LinkProps } from './Props.js';
-import { StateNavigator } from 'navigation.js';
+﻿import { LinkProps } from './Props';
+import { StateNavigator } from 'navigation';
 
 class LinkUtility {
     static getData(stateNavigator: StateNavigator, navigationData, includeCurrentData: boolean, currentDataKeys: string | string[]): any {

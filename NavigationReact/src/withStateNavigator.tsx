@@ -1,5 +1,5 @@
 import React, { ComponentType } from 'react';
-import NavigationContext from './NavigationContext.js';
+import NavigationContext from './NavigationContext';
 
 export default (Comp: ComponentType<any>) => (props: any) => (
     <NavigationContext.Consumer>

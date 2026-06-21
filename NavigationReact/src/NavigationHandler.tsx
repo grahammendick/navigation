@@ -1,11 +1,11 @@
 'use client'
 import React, { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
-import NavigationContext from './NavigationContext.js';
-import RefetchContext from './RefetchContext.js';
-import HistoryCacheContext from './HistoryCacheContext.js';
-import NavigationDeferredContext from './NavigationDeferredContext.js';
-import BundlerContext from './BundlerContext.js';
+import NavigationContext from './NavigationContext';
+import RefetchContext from './RefetchContext';
+import HistoryCacheContext from './HistoryCacheContext';
+import NavigationDeferredContext from './NavigationDeferredContext';
+import BundlerContext from './BundlerContext';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 
@@ -96,7 +96,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     const temporaryReferences = createTemporaryReferenceSet();
                     response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
                         method: 'post',
-                        headers: {Accept: 'text/x-component', ...(!actionId ? {'Content-Type': 'application/json'} : undefined)},
+                        headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
                         body: await encodeReply({url, sceneViewKey, historyAction, history, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
                         signal: navigationEvent.intercept?.signal
                     });

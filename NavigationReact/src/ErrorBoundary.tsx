@@ -1,6 +1,6 @@
 import { Component, ReactNode, cloneElement, createElement } from 'react';
 import { StateContext, StateNavigator } from 'navigation';
-import withStateNavigator from './withStateNavigator.js';
+import withStateNavigator from './withStateNavigator';
 
 type ErrorBoundaryProps = {stateNavigator: StateNavigator, errorFallback: ReactNode, children: any}
 type ErrorBoundaryState = {error: Error, stateContext: StateContext};
