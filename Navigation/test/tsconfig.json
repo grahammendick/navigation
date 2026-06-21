@@ -1,6 +1,9 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "baseUrl": "../../types"
+        "target": "es6",
+        "paths": {
+            "*": ["../../types/*"],
+        },
+        "strict": false
     }
 }
