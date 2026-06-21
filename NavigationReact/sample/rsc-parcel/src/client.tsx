@@ -22,7 +22,7 @@ function Shell() {
         },
     }), []);
     return (
-        <BundlerContext.Provider value={bundler as any}>
+        <BundlerContext.Provider value={bundler}>
             {root}
         </BundlerContext.Provider>
     );
