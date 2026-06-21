@@ -14,6 +14,7 @@ declare global {
     interface NavigateEvent {}
     interface HTMLAnchorElement {}
     interface URL {}
+    interface Response {}
 }
 
 type TranslateAnimation = {
