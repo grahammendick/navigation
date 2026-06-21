@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import NavigationContext from './NavigationContext';
-import { SceneViewProps } from './Props';
-import ErrorBoundary from './ErrorBoundary';
+import NavigationContext from './NavigationContext.js';
+import { SceneViewProps } from './Props.js';
+import ErrorBoundary from './ErrorBoundary.js';
 
 const SceneViewInner = ({children}) => children;
 

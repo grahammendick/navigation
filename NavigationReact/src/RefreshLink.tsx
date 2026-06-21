@@ -1,8 +1,8 @@
 ﻿'use client'
 import React from 'react';
-import LinkUtility from './LinkUtility';
-import withStateNavigator from './withStateNavigator';
-import { RefreshLinkProps } from './Props';
+import LinkUtility from './LinkUtility.js';
+import withStateNavigator from './withStateNavigator.js';
+import { RefreshLinkProps } from './Props.js';
 
 var RefreshLink = (props: RefreshLinkProps) => {
     var htmlProps = LinkUtility.toHtmlProps(props);

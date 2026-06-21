@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react';
-import RefetchContext from './RefetchContext';
+import RefetchContext from './RefetchContext.js';
 
 const useSceneView = (fn: (...args: any) => any) => {
     const {sceneViewKey, deserialize} = useContext(RefetchContext);

@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
-import Motion from './Motion';
-import { SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps } from './Props';
+import Motion from './Motion.js';
+import { SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps } from './Props.js';
 
 class SharedElementMotion extends React.Component<SharedElementNavigationMotionProps & SharedElementMotionProps, any> {
     static defaultProps = {

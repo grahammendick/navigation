@@ -1,12 +1,12 @@
 'use client'
 import React, { createContext, useContext, useEffect, useRef, useMemo, useCallback } from 'react';
-import { SceneViewProps } from './Props';
-import useNavigationEvent from './useNavigationEvent';
-import RefetchContext from './RefetchContext';
-import HistoryCacheContext from './HistoryCacheContext';
-import ErrorBoundary from './ErrorBoundary';
-import NavigationDeferredContext from './NavigationDeferredContext';
-import NavigationContext from './NavigationContext';
+import { SceneViewProps } from './Props.js';
+import useNavigationEvent from './useNavigationEvent.js';
+import RefetchContext from './RefetchContext.js';
+import HistoryCacheContext from './HistoryCacheContext.js';
+import ErrorBoundary from './ErrorBoundary.js';
+import NavigationDeferredContext from './NavigationDeferredContext.js';
+import NavigationContext from './NavigationContext.js';
 
 const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
 
