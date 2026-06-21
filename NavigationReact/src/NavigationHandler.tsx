@@ -96,7 +96,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     const temporaryReferences = createTemporaryReferenceSet();
                     response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
                         method: 'post',
-                        headers: !actionId ? {'Content-Type': 'application/json'} : {},
+                        headers: {Accept: 'text/x-component', ...(!actionId ? {'Content-Type': 'application/json'} : undefined)},
                         body: await encodeReply({url, sceneViewKey, historyAction, history, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
                         signal: navigationEvent.intercept?.signal
                     });
