@@ -6,23 +6,22 @@ import { rscStream } from 'rsc-html-stream/client';
 import { fetchRSC } from '@parcel/rsc/client';
 import { BundlerContext } from 'navigation-react';
 
+const initialPayload = createFromReadableStream<any>(rscStream)
 function Shell() {
-    const root = useMemo(() => createFromReadableStream(rscStream), []);
-    const bundler = useMemo(() => {
-        return {
-            createTemporaryReferenceSet,
-            encodeReply,
-            createFromFetch,
-            onHmrReload: (hmrReload: () => void) => {
-                const onHmrReload = (e: any) => {
-                    e.preventDefault();
-                    hmrReload();
-                };
-                window.addEventListener('parcelhmrreload', onHmrReload);
-                return () => window.removeEventListener('parcelhmrreload', onHmrReload);
-            },
-        }
-    }, []);
+    const root = useMemo(() => initialPayload, []);
+    const bundler = useMemo(() => ({
+        createTemporaryReferenceSet,
+        encodeReply,
+        createFromFetch,
+        onHmrReload: (hmrReload: () => void) => {
+            const onHmrReload = (e: any) => {
+                e.preventDefault();
+                hmrReload();
+            };
+            window.addEventListener('parcelhmrreload', onHmrReload);
+            return () => window.removeEventListener('parcelhmrreload', onHmrReload);
+        },
+    }), []);
     return (
         <BundlerContext.Provider value={bundler as any}>
             {root}
