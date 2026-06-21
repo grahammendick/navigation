@@ -11,7 +11,9 @@ declare global {
     interface SVGSetElement {}
     interface NavigationPrecommitController {}
     interface NavigationResult {}
-    interface NavigationDestination {}
+    interface NavigateEvent {}
+    interface HTMLAnchorElement {}
+    interface URL {}
 }
 
 type TranslateAnimation = {

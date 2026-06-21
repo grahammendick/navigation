@@ -5,6 +5,15 @@ import { SFSymbolURISource } from './sf-symbol';
 
 declare global {
     interface Location {}
+    interface InputEvent {}
+    interface ToggleEvent {}
+    interface FormData {}
+    interface SVGSetElement {}
+    interface NavigationPrecommitController {}
+    interface NavigationResult {}
+    interface NavigateEvent {}
+    interface HTMLAnchorElement {}
+    interface URL {}
 }
 
 type TranslateAnimation = {
