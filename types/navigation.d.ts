@@ -268,6 +268,11 @@ export class HTML5HistoryManager implements HistoryManager {
      */
     interceptHistory(intercept: (navigationLink: string, e: NavigateEvent) => Promise<void>): void;
     /**
+     * Indicates whether can intercept history for precommit handling
+     * @param e The navigation event
+     */
+    canInterceptHistory(e: NavigateEvent): boolean;
+    /**
      * Gets the current location
      */
     getCurrentUrl(): string;
