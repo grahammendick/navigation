@@ -156,7 +156,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
             const {stateContext: {url, historyAction, history}} = navigationEvent.data.stateNavigator;
+            const title = typeof document !== 'undefined' ? document.title : null;
+            const oldTitle = navigationEvent.intercept?.title;
+            if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
             navigationEvent.intercept?.resume?.();
+            if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
             if (navigationEvent.intercept?.hasUAVisualTransition)
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
             navigationEvent.intercept = {};
