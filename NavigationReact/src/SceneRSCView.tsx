@@ -7,6 +7,7 @@ import HistoryCacheContext from './HistoryCacheContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
+import supportsPrecommitNavigation from './supportsPrecommitNavigation.js';
 
 const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
 
@@ -28,7 +29,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     );
     const cacheIgnorable = navigationEvent['ignoreCache'];
     const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
-    const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey] && (!window.NavigationPrecommitController || !!navigationEvent['hasUAVisualTransition']);
+    const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey] && (!supportsPrecommitNavigation || !!navigationEvent['hasUAVisualTransition']);
     if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = {};
     const cachedSceneViews = navigationEvent['rscCache'];
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});

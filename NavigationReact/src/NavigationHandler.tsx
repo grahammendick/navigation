@@ -6,6 +6,7 @@ import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
+import supportsPrecommitNavigation from './supportsPrecommitNavigation.js';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 
@@ -52,7 +53,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
         setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
-        if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
+        if (typeof window !== 'undefined' && intercept.resume && supportsPrecommitNavigation && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             if (!intercept.controller) {
                 window.navigation.addEventListener('navigate', e => {
                     if (e.info?.stateContext !== asyncNavigator.stateContext) return;
@@ -182,7 +183,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
-        if (typeof window === 'undefined' || !createFromFetch || !window.NavigationPrecommitController) return;
+        if (typeof window === 'undefined' || !createFromFetch || !supportsPrecommitNavigation) return;
         stateNavigator.historyManager.interceptHistory((navigationLink: string, {signal, hasUAVisualTransition}: NavigateEvent) => (
             new Promise((resolve, reject) => {
                 const intercept = {commit: resolve, signal, hasUAVisualTransition};
