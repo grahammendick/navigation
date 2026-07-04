@@ -1,2 +1,2 @@
 export default typeof window !== 'undefined' && window.NavigationPrecommitController
-    && !!(window.navigator as any).userAgentData?.brands?.some(b => b.brand === 'Microsoft Edge');
+    && !!(window.navigator as any).userAgentData?.brands?.some(({brand}) => brand === 'Microsoft Edge');
