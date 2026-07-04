@@ -178,7 +178,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
-        if (typeof window === 'undefined' || !createFromFetch || !window['NavigationPrecommitController']) return;
+        if (typeof window === 'undefined' || !createFromFetch || !window.NavigationPrecommitController) return;
         stateNavigator.historyManager.interceptHistory((navigationLink: string, {signal, hasUAVisualTransition}: NavigateEvent) => (
             new Promise((resolve, reject) => {
                 const intercept = {commit: resolve, signal, hasUAVisualTransition};
