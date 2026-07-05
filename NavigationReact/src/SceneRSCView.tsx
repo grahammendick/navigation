@@ -8,6 +8,7 @@ import ErrorBoundary from './ErrorBoundary.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
 import supportsPrecommitNavigation from './supportsPrecommitNavigation.js';
+import Shell from './Shell.js';
 
 const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
 
@@ -73,7 +74,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <FetchingContext.Provider value={combinedFetchingFn}>
-                <SceneViewInner>{sceneView}</SceneViewInner>
+                <SceneViewInner>{sceneView && <Shell>{sceneView}</Shell>}</SceneViewInner>
             </FetchingContext.Provider>
         </ErrorBoundary>
     );

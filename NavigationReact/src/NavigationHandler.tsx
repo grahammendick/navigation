@@ -90,7 +90,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         },
         deserialize: async (sceneViewKey: string, actionId: string = null, args: any[] = null) => {
             const currentStateContext = navigationEvent.stateNavigator.stateContext;
-            const {stateContext: {url, nextCrumb, historyAction, history}, historyManager} = navigationEvent.data.stateNavigator;
+            const {stateContext: nextStateContext, historyManager} = navigationEvent.data.stateNavigator
+            const {url, nextCrumb, historyAction, history} = nextStateContext;
             const responsePromise = (async () => {
                 let response = null;
                 try {
@@ -120,7 +121,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 return new Response(customStream, {headers: response.headers});
             })();
             const res = await createFromFetch(responsePromise);
-            if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
+            const actualStateContext = navigationEvent.stateNavigator.stateContext;
+            if (actualStateContext !== currentStateContext && actualStateContext !== nextStateContext)
                 return !actionId ? new Promise(() => {}) : res.data;
             if (res.url) {
                 navigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
