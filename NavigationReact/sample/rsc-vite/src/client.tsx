@@ -5,16 +5,13 @@ import { rscStream } from 'rsc-html-stream/client'
 import { createFromFetch } from '@vitejs/plugin-rsc/browser';
 import { BundlerContext } from 'navigation-react';
 
-async function fetchRSC(url: string, {body, ...options}: any) {
-    const temporaryReferences = createTemporaryReferenceSet();
-    return createFromFetch(fetch(url, {...options, body: await encodeReply(body, {temporaryReferences})}));
-}
-
 const initialPayload = createFromReadableStream<any>(rscStream)
 function Shell() {
     const root = useMemo(() => initialPayload, []);
     const bundler = useMemo(() => ({
-        deserialize: fetchRSC,
+        createTemporaryReferenceSet,
+        encodeReply,
+        createFromFetch,
         onHmrReload: (hmrReload: () => void) => {
             import.meta.hot?.on("rsc:update", hmrReload);
             return () => import.meta.hot?.off("rsc:update", hmrReload);
@@ -30,13 +27,14 @@ function Shell() {
 setServerCallback(async (actionId: string, args: any[]) => {
     const ind = args.findIndex(arg => typeof arg === 'function');
     if (ind !== -1) {
-        const deserializeScene = args[ind];
-        return deserializeScene(actionId, [...args.slice(0, ind), ...args.slice(ind +1)]);
+        const fetchRSC = args[ind];
+        return fetchRSC(actionId, [...args.slice(0, ind), ...args.slice(ind +1)]);
     }
-    const res = await fetchRSC(window.location.href, {
+    const temporaryReferences = createTemporaryReferenceSet();
+    const res = await createFromFetch<{data: any}>(fetch(window.location.href, {
         method: 'post',
-        body: {actionId, args}
-    }) as any;
+        body: await encodeReply({actionId, args} as any, {temporaryReferences})
+    }));
     return res.data;
 });
 

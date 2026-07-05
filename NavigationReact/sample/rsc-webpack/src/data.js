@@ -25,7 +25,7 @@ const searchPeople = async (name, pageNumber, pageSize, sortExpression) => {
                 people: filteredPeople.slice(start, start + pageSize),
                 count: filteredPeople.length
             });
-        }, 10);
+        }, 300);
     })
 };
 
@@ -34,7 +34,7 @@ const getPerson = async (id) => {
         const person = people.find(({id: personId}) => personId === id)
         setTimeout(() => {
             res(person);
-        }, 10);
+        }, 300);
     })
 }
 
@@ -45,7 +45,7 @@ const getFriends = async (id, gender) => {
             res(person.friends.map((id) => (
                 people.find(({id: personId}) => personId === id)
             )).filter(({gender: personGender}) => !gender || personGender === gender));
-        }, 10);
+        }, 300);
     })
 }
 

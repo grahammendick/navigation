@@ -1,6 +1,6 @@
-import React, {useRef, useState, useLayoutEffect} from 'react';
+import React, {useRef, useState, useLayoutEffect, useContext} from 'react';
 
-const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldState, duration: defaultDuration, pause}) => {
+const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldState, duration: defaultDuration, pause, hasUAVisualTransition}) => {
     const [scenes, setScenes] = useState({prev: null, all: [], count: 0});
     const container = useRef(null);
     useLayoutEffect(() => {
@@ -43,7 +43,12 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                         scene.popEnter = null;
                     }
                     scene.navState = 'popExit';
-                    scene.pushEnter.reverse();
+                    if (!hasUAVisualTransition) {
+                        scene.pushEnter.reverse();
+                    } else {
+                        scene.pushEnter.playbackRate = -1;
+                        scene.pushEnter.currentTime = 0;
+                    }
                 }
                 scene.pushEnter?.finished.then(() => {
                     if (cancel || !scene.navState) return;
@@ -73,7 +78,14 @@ const NavigationAnimation  = ({children, data: nextScenes, history, onRest, oldS
                 }
                 if (popEnter && prevNavState !== 'popEnter') {
                     scene.navState = 'popEnter';
-                    if (prevNavState === 'pushExit') scene.popEnter.reverse();
+                    if (prevNavState === 'pushExit') {
+                        if (!hasUAVisualTransition) {
+                            scene.popEnter.reverse();
+                        } else {
+                            scene.popEnter.playbackRate = 1;
+                            scene.popEnter.currentTime = scene.popEnter.effect.getComputedTiming().duration;
+                        }
+                    }
                     else if (prevNavState) scene.popEnter.finish();
                     else scene.popEnter.play();
                 }

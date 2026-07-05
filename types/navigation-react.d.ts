@@ -42,9 +42,17 @@ export var NavigationDeferredContext: Context<NavigationEvent<any, any>> & Conte
  */
 export var BundlerContext: Context<{
     /**
-     * Streams RSC
+     * Part of RSC bundler api
      */
-    deserialize: (url: string, options: any) => Promise<any>;
+    createTemporaryReferenceSet: () => unknown;
+    /**
+     * Part of RSC bundler api
+     */
+    encodeReply: (v: unknown[], options?: unknown) => Promise<string | FormData>;
+    /**
+     * Part of RSC bundler api
+     */
+    createFromFetch<T>(promiseForResponse: Promise<Response>, options?: object): Promise<T>;
     /**
      * Registers a Hot Module Replacement reload listener
      */

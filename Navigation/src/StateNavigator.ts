@@ -157,7 +157,7 @@ class StateNavigator {
     
     private resumeNavigation(stateContext: StateContext) {
         this.stateContext = stateContext;
-        var { oldState, state, data, asyncData, url, crumbs, historyAction } = stateContext;
+        var { oldState, state, data, asyncData, url, crumbs, history, historyAction } = stateContext;
         this.rewriteCache.rewrites = {};
         this.rewrite(url, state, data, crumbs);
         if (this.stateContext.oldState && this.stateContext.oldState !== state)
@@ -168,7 +168,7 @@ class StateNavigator {
                 this.onNavigateCache.handlers[id](oldState, state, data, asyncData, stateContext);
         }
         if (stateContext === this.stateContext) {
-            if (historyAction !== 'none')
+            if (!history && historyAction !== 'none')
                 this.historyManager.addHistory(url, historyAction === 'replace', this.stateContext);
             if (this.stateContext.title && (typeof document !== 'undefined'))
                 document.title = this.stateContext.title;

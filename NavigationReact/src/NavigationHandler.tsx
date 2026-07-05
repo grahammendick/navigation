@@ -6,39 +6,18 @@ import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
-type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator };
+import supportsPrecommitNavigation from './supportsPrecommitNavigation.js';
+type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
+type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
-    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, resumeNavigation?: () => void}>();
+    const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
     const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
     const rootViews = useRef({});
-    const {deserialize, onHmrReload} = useContext(BundlerContext);
-    const bundler = useMemo(() => ({
-        deserialize: async (sceneViewKey: string, _options: any, actionId: string = null, args: any[] = null) => {
-            const currentStateContext = navigationEvent.stateNavigator.stateContext;
-            const {stateContext: {url, nextCrumb, historyAction}, historyManager} = navigationEvent.data.stateNavigator;
-            const res = await deserialize(historyManager.getHref(nextCrumb.crumblessUrl), {
-                method: 'post',
-                headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
-                body: {url, sceneViewKey, historyAction, rootViews: rootViews.current, actionId, args}
-            });
-            if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
-                return !actionId ? new Promise(() => {}) : res.data;
-            if (res.url) {
-                navigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
-                navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext);
-            } else if (actionId && res.refetch) {
-                startTransition(() => {
-                    setNavigationEvent({data: {...navigationEvent.data, ignoreCache: res.refetch, rscCache: res.sceneViews}, stateNavigator: navigationEvent.stateNavigator});
-                });
-            }
-            return !actionId ? !res.url ? res.sceneViews[sceneViewKey] : new Promise(() => {}) : res.data;
-        },
-        onHmrReload,
-    }), [deserialize, onHmrReload, navigationEvent])
-    const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, resumeNavigation?: () => void, rscCache?: any) => {
+    const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
+    const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
                 super(stateNavigator, stateNavigator.historyManager);
@@ -51,25 +30,53 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
             navigateLink(url: string, historyAction: 'add' | 'replace' | 'none' = 'add', history = false,
                 suspendNavigation?: (stateContext: StateContext, resumeNavigation: () => void) => void,
-                currentContext = this.stateContext) {
+                currentContext = this.stateContext, intercept: Intercept = {}) {
                 if (!suspendNavigation)
                     suspendNavigation = (_stateContext, resumeNavigation) => resumeNavigation();
+                let navigating = false;
                 stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
                     suspendNavigation(stateContext, () => {
-                        const {oldState, state, history, crumbs} = stateContext;
+                        navigating = true;
+                        const {oldState, state, crumbs} = stateContext;
                         const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
-                        const startTran = (!history && !refresh && startTransition) || ((transition) => transition());
+                        const startTran = (!refresh && startTransition) || ((transition) => transition());
+                        intercept.title = typeof document !== 'undefined' && createFromFetch ? document.title : null;
+                        intercept.resume = resumeNavigation;
                         startTran(() => {
-                            raiseNavigationEvent(stateContext, resumeNavigation, this.stateContext['rscCache']);
+                            raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
                         });
                     })
                 }, currentContext);
+                if (!navigating) intercept?.commit?.();
             }
         }
         const asyncNavigator = new AsyncStateNavigator()
-        const {oldState, state, data, asyncData} = asyncNavigator.stateContext;
-        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache}, stateNavigator, resumeNavigation});
-    }, [stateNavigator]);
+        const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
+        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
+        if (typeof window !== 'undefined' && intercept.resume && supportsPrecommitNavigation && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
+            if (!intercept.controller) {
+                window.navigation.addEventListener('navigate', e => {
+                    if (e.info?.stateContext !== asyncNavigator.stateContext) return;
+                    e.intercept({
+                        focusReset: 'manual',
+                        scroll: 'manual',
+                        async precommitHandler(controller) {
+                            return new Promise((resolve, reject) => {
+                                intercept.commit = resolve;
+                                intercept.signal = e.signal;
+                                if (e.navigationType !== 'traverse') intercept.controller = controller;
+                                e.signal.addEventListener('abort', () => reject(e.signal.reason));
+                            });
+                        }
+                    });
+                }, {once: true});
+            }
+            const res = stateNavigator.historyManager.navigate(url, historyAction === 'replace', intercept.controller, asyncNavigator.stateContext);
+            res?.committed.catch((e) => {
+                if (!intercept?.signal?.aborted) throw e;
+            });
+        }
+    }, [stateNavigator, createFromFetch]);
     if (!navigationEvent) raiseNavigationEvent();
     const refetchControl = useMemo(() => ({
         sceneViewKey: null,
@@ -81,7 +88,51 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         registerSceneView: (sceneViewKey: string, active: string | string[]) => {
             rootViews.current[sceneViewKey] = active;
         },
-    }), [navigationEvent]);
+        deserialize: async (sceneViewKey: string, actionId: string = null, args: any[] = null) => {
+            const currentStateContext = navigationEvent.stateNavigator.stateContext;
+            const {stateContext: {url, nextCrumb, historyAction, history}, historyManager} = navigationEvent.data.stateNavigator;
+            const responsePromise = (async () => {
+                let response = null;
+                try {
+                    const temporaryReferences = createTemporaryReferenceSet();
+                    response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
+                        method: 'post',
+                        headers: {Accept: 'text/x-component', ...(!actionId ? {'Content-Type': 'application/json'} : undefined)},
+                        body: await encodeReply({url, sceneViewKey, historyAction, history, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
+                        signal: navigationEvent.intercept?.signal
+                    });
+                } catch(e) {
+                    if (!navigationEvent.intercept?.signal?.aborted) throw e;
+                    else return new Promise(() => {}) as Promise<Response>;
+                }
+                const reader = response.body.getReader();
+                const customStream = new ReadableStream({
+                    async pull(controller) {
+                        try {
+                            const {done, value} = await reader.read();
+                            if (!done) controller.enqueue(value);
+                            else controller.close();
+                        } catch(e) {
+                            if (!navigationEvent.intercept?.signal?.aborted) controller.error(e);
+                        }
+                    }
+                });
+                return new Response(customStream, {headers: response.headers});
+            })();
+            const res = await createFromFetch(responsePromise);
+            if (navigationEvent.stateNavigator.stateContext !== currentStateContext)
+                return !actionId ? new Promise(() => {}) : res.data;
+            if (res.url) {
+                navigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
+                navigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext, navigationEvent.intercept);
+            } else if (actionId && res.refetch) {
+                startTransition(() => {
+                    setNavigationEvent({data: {...navigationEvent.data, ignoreCache: res.refetch, rscCache: res.sceneViews}, stateNavigator: navigationEvent.stateNavigator});
+                });
+            }
+            return !actionId ? !res.url ? res.sceneViews[sceneViewKey] : new Promise(() => {}) : res.data;
+        },
+    }), [navigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch]);
     useEffect(() => {
         const onNavigate = () => {
             if (navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
@@ -90,14 +141,33 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         stateNavigator.onNavigate(onNavigate);
         return () => stateNavigator.offNavigate(onNavigate);
     }, [stateNavigator, navigationEvent, raiseNavigationEvent]);
-    const oldSceneCount = (typeof window !== 'undefined' && window.history?.state?.sceneCount) || 0;
+    const oldSceneCount = (typeof window !== 'undefined' && (window.navigation?.currentEntry.getState()?.sceneCount || window.history?.state?.sceneCount)) || 0;
+    React.useInsertionEffect?.(() => {
+        const commit = navigationEvent.intercept?.commit;
+        if (!isPending && navigationEvent === navigationDeferredEvent && commit) {
+            commit();
+            const title = typeof document !== 'undefined' ? document.title : null;
+            const oldTitle = navigationEvent.intercept?.title;
+            if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
+            window.navigation?.addEventListener('navigatesuccess', () => {
+                if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
+            }, {once: true});
+        }
+    }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
         if (!isPending && navigationEvent === navigationDeferredEvent) {
-            navigationEvent.resumeNavigation?.();
-            const {stateContext: {url, historyAction, history}} = navigationEvent.stateNavigator;
+            const {stateContext: {url, historyAction, history}} = navigationEvent.data.stateNavigator;
+            const title = typeof document !== 'undefined' ? document.title : null;
+            const oldTitle = navigationEvent.intercept?.title;
+            if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
+            navigationEvent.intercept?.resume?.();
+            if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
+            if (navigationEvent.intercept?.hasUAVisualTransition)
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
+            navigationEvent.intercept = {};
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
             const historyCache = historyCacheRef.current;
-            const sceneCount = window.history.state?.sceneCount || (oldSceneCount + 1);
+            const sceneCount = (window.navigation?.currentEntry.getState()?.sceneCount || window.history?.state?.sceneCount) || (oldSceneCount + 1);
             if (!historyCache[url]) historyCache[url] = {};
             historyCache[url].count = Math.min(historyCache[url].count || sceneCount, sceneCount);
             const historyUrls = Object.keys(historyCache);
@@ -107,15 +177,27 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
                     delete historyCache[historyUrl];
             }
+            const state = {...window.navigation?.currentEntry.getState(), sceneCount};
             window.history.replaceState({...window.history.state, sceneCount}, null);
+            window.navigation?.updateCurrentEntry({state});
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
+    useEffect(() => {
+        if (typeof window === 'undefined' || !createFromFetch || !supportsPrecommitNavigation) return;
+        stateNavigator.historyManager.interceptHistory((navigationLink: string, {signal, hasUAVisualTransition}: NavigateEvent) => (
+            new Promise((resolve, reject) => {
+                const intercept = {commit: resolve, signal, hasUAVisualTransition};
+                navigationEvent.data.stateNavigator.navigateLink(navigationLink, undefined, true, undefined, undefined, intercept);
+                signal.addEventListener('abort', () => reject(signal.reason));
+            })
+        ));
+    }, [navigationEvent, stateNavigator.historyManager, createFromFetch])
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent(undefined, undefined, {});
     }, [navigationEvent, stateNavigator]);
     useEffect(() => {
-        const offHmrReload = onHmrReload(() => {
+        const offHmrReload = onHmrReload?.(() => {
             startTransition(() => {
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
@@ -127,9 +209,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             <NavigationDeferredContext.Provider value={navigationDeferredEvent?.data}>
                 <RefetchContext.Provider value={refetchControl}>
                     <HistoryCacheContext.Provider value={historyCacheRef.current}>
-                        <BundlerContext.Provider value={bundler}>
-                            {children}
-                        </BundlerContext.Provider>
+                        {children}
                     </HistoryCacheContext.Provider>
                 </RefetchContext.Provider>
             </NavigationDeferredContext.Provider>

@@ -2,12 +2,12 @@
 import React, { createContext, useContext, useEffect, useRef, useMemo, useCallback } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
-import BundlerContext from './BundlerContext.js';
 import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
+import supportsPrecommitNavigation from './supportsPrecommitNavigation.js';
 
 const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
 
@@ -18,7 +18,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const {state, stateNavigator: {stateContext}} = navigationEvent;
     const {url, oldUrl, history, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
-    const {deserialize} = useContext(BundlerContext);
+    const {deserialize} = useContext(RefetchContext);
     const ancestorFetchingFn = useContext(FetchingContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -29,7 +29,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     );
     const cacheIgnorable = navigationEvent['ignoreCache'];
     const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
-    const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey];
+    const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey] && (!supportsPrecommitNavigation || !!navigationEvent['hasUAVisualTransition']);
     if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = {};
     const cachedSceneViews = navigationEvent['rscCache'];
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
@@ -49,7 +49,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const fetching = fetchingFn(navigationEvent);
     const firstScene = !oldUrl && !ignoreCache;
     if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && !ancestorFetching && fetching) {
-        cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey, null);
+        cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey);
     }
     const sceneView = (() => {
         if (!getShow(state?.key)) return null;
@@ -62,8 +62,10 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         renderedSceneView.current = {sceneView, navigationEvent};
         if (pending) return;
         if (historyAction === 'none') return;
-        if (!historyCache[url]) historyCache[url] = {};
-        historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
+        if (typeof window !== 'undefined') {
+            if (!historyCache[url]) historyCache[url] = {};
+            historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
+        }
     });
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
@@ -79,7 +81,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
 
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, refetch, name} = props;
-    const {refetcher, registerSceneView} = useContext(RefetchContext);
+    const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext);
     const navigationEvent = useNavigationEvent();
     const navigationDeferredEvent = useContext(NavigationDeferredContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -90,7 +92,8 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         sceneViewKey,
         refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
         registerSceneView: () => {},
-    }), [navigationEvent, refetcher]);
+        deserialize,
+    }), [navigationEvent, refetcher, deserialize]);
     const {state, data, stateNavigator: {stateContext}} = navigationEvent;
     const {oldData} = stateContext;
     const show =  active != null && state && (
