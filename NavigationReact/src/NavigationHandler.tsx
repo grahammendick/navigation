@@ -121,7 +121,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 return new Response(customStream, {headers: response.headers});
             })();
             const res = await createFromFetch(responsePromise);
-            const actualStateContext = navigationEvent.stateNavigator.stateContext;
+            const {stateContext: actualStateContext} = navigationEvent.stateNavigator;
             if (actualStateContext !== currentStateContext && actualStateContext !== nextStateContext)
                 return !actionId ? new Promise(() => {}) : res.data;
             if (res.url) {
