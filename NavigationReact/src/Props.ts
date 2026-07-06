@@ -1,4 +1,4 @@
-import { AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode } from 'react';
+import { AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType } from 'react';
 import { FluentNavigator, StateContext, StateNavigator } from 'navigation';
 
 interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
@@ -35,7 +35,8 @@ interface SceneViewProps {
     active: string | string[] | ((stateContext: StateContext) => boolean);
     refetch: string[] | ((stateContext: StateContext) => boolean);
     name: string;
-    errorFallback: ReactNode;
+    shell: ReactNode | ComponentType;
+    errorFallback: ReactNode | ComponentType;
     children: any;
 }
 

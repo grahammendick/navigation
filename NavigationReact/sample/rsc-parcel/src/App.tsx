@@ -4,6 +4,7 @@ import { SceneView } from 'navigation-react';
 import NavigationProvider from './NavigationProvider';
 import People from './People';
 import Person from './Person';
+import Shell from './Shell';
 
 const App = async ({url}: any) => {
   return (
@@ -17,7 +18,7 @@ const App = async ({url}: any) => {
           <SceneView active="people" refetch={[]}>
             <People />
           </SceneView>
-          <SceneView active="person" refetch={['id']}>
+          <SceneView active="person" refetch={['id']} shell={<Shell />}>
             <Person />
           </SceneView>
         </NavigationProvider>
