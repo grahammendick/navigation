@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useMemo, useCallback, Suspense } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import RefetchContext from './RefetchContext.js';
@@ -8,9 +8,10 @@ import ErrorBoundary from './ErrorBoundary.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
 import supportsPrecommitNavigation from './supportsPrecommitNavigation.js';
-import Shell from './Shell.js';
 
 const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
+
+const Shell = ({children}) => <Suspense fallback={<h2>Loading...</h2>}> {children}</Suspense>;
 
 const SceneViewInner = ({children}) => children;
 
@@ -71,10 +72,11 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
     ), [ancestorFetchingFn, fetchingFn]);
+    if (!sceneView) return null
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <FetchingContext.Provider value={combinedFetchingFn}>
-                <SceneViewInner>{sceneView && <Shell>{sceneView}</Shell>}</SceneViewInner>
+                <Shell><SceneViewInner>{sceneView}</SceneViewInner></Shell>
             </FetchingContext.Provider>
         </ErrorBoundary>
     );
