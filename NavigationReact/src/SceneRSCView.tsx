@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useEffect, useRef, useMemo, useCallback, cloneElement, createElement } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useMemo, useCallback } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import RefetchContext from './RefetchContext.js';
@@ -13,7 +13,7 @@ const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => f
 
 const SceneViewInner = ({children}) => children;
 
-const SceneView = ({active, name, refetch, pending, shell = SceneViewInner as any, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
+const SceneView = ({active, name, refetch, pending, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const {state, stateNavigator: {stateContext}} = navigationEvent;
     const {url, oldUrl, history, historyAction} = stateContext;
@@ -70,13 +70,10 @@ const SceneView = ({active, name, refetch, pending, shell = SceneViewInner as an
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
     ), [ancestorFetchingFn, fetchingFn]);
-    if (!sceneView) return null;
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <FetchingContext.Provider value={combinedFetchingFn}>
-                {typeof shell !== 'function'
-                    ? cloneElement(shell as any, undefined, <SceneViewInner>{sceneView}</SceneViewInner>)
-                    : createElement(shell, undefined, <SceneViewInner>{sceneView}</SceneViewInner>)}
+                <SceneViewInner>{sceneView}</SceneViewInner>
             </FetchingContext.Provider>
         </ErrorBoundary>
     );
