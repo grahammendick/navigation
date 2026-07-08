@@ -36,6 +36,7 @@ interface SceneViewProps {
     refetch: string[] | ((stateContext: StateContext) => boolean);
     name: string;
     errorFallback: ReactNode;
+    client?: boolean;
     children: any;
 }
 

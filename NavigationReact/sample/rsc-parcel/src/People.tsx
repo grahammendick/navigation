@@ -1,17 +1,16 @@
-'use server-entry'
-import { SceneView } from 'navigation-react';
+'use client'
 import Filter from './Filter';
-import List from './List';
+import { Suspense } from 'react';
 
-const People = async () => {
+const People = ({children}: any) => {
   return (
     <>
       <title>People</title>
       <h1>People</h1>
       <Filter />
-      <SceneView active="people" name="list">
-        <List />
-      </SceneView>
+      <Suspense fallback={<h2>loading...</h2>}>
+        {children}
+      </Suspense>
     </>
   );
 }

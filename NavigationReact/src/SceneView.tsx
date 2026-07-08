@@ -1,3 +1,4 @@
+'use client'
 import React, { useContext } from 'react';
 import NavigationContext from './NavigationContext.js';
 import { SceneViewProps } from './Props.js';
