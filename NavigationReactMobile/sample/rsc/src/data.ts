@@ -30,7 +30,7 @@ const searchPeople = async (name: string, pageNumber: number, pageSize: number, 
                 people: filteredPeople.slice(start, start + pageSize),
                 count: filteredPeople.length
             });
-        }, 300);
+        }, 1000);
     })
 };
 
@@ -39,7 +39,7 @@ const getPerson = async (id: number) => {
         const person = people.find(({id: personId}) => personId === id)!
         setTimeout(() => {
             res(person);
-        }, 300);
+        }, 1000);
     })
 }
 
@@ -50,7 +50,7 @@ const getFriends = async (id: number, gender: 'male' | 'female' | 'other') => {
             res(person.friends.map((id) => (
                 people.find(({id: personId}) => personId === id)!
             )).filter(({gender: personGender}) => !gender || personGender === gender));
-        }, 300);
+        }, 1000);
     })
 }
 
