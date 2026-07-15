@@ -1,7 +1,7 @@
 'use client'
-import React, {useRef, useState, useContext, useEffect, ReactElement} from 'react';
+import React, {useRef, useState, useContext, useMemo, useEffect, ReactElement} from 'react';
 import { State, StateNavigator } from 'navigation';
-import { NavigationContext, useRootViewRegistry } from 'navigation-react';
+import { NavigationContext, HistoryCacheContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
 import Scene from './Scene.js';
 import Freeze from './Freeze.js';
 import SharedElementContext from './SharedElementContext.js';
@@ -126,23 +126,35 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             registerRootView(stateKey, stateKey);
         }
     }, [registerRootView, allScenes]);
+    const {instance: historyCacheInstance, set: setHistory} = useContext(HistoryCacheContext);
+    const historyCache = useMemo(() => ({
+        instance: historyCacheInstance,
+        get: ({stateNavigator: {stateContext: {url, history, crumbs, oldUrl}}}: NavigationEvent, sceneViewKey: string) => {
+            if (!oldUrl) return null;
+            const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
+            return (history || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
+        },
+        set: setHistory
+    }), [historyCacheInstance, setHistory, navigationEvent]);
     const sceneData = getScenes();
     return (stateContext.state &&
-        <SharedElementContext.Provider value={sharedElementRegistry as any}>
-            <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
-                {scenes => (
-                    scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
-                        <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted)}>
-                            <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className}
-                                style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} />
-                        </Freeze>
-                    )).concat(
-                        <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}
-                            unmountStyle={sceneData[sceneData.length - 1].unmountStyle} duration={duration} />
-                    )
-                )}
-            </NavigationAnimation>
-        </SharedElementContext.Provider>
+        <HistoryCacheContext.Provider value={historyCache}>
+            <SharedElementContext.Provider value={sharedElementRegistry as any}>
+                <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
+                    {scenes => (
+                        scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
+                            <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted)}>
+                                <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className}
+                                    style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} />
+                            </Freeze>
+                        )).concat(
+                            <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}
+                                unmountStyle={sceneData[sceneData.length - 1].unmountStyle} duration={duration} />
+                        )
+                    )}
+                </NavigationAnimation>
+            </SharedElementContext.Provider>
+        </HistoryCacheContext.Provider>
     )
 }
 

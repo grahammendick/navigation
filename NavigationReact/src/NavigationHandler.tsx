@@ -6,15 +6,26 @@ import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
-import supportsPrecommitNavigation from './supportsPrecommitNavigation.js';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
+
+const supportsPrecommitNavigation = typeof window !== 'undefined' && !!window.NavigationPrecommitController;
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
     const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
     const [isPending, startTransition] = useTransition?.() || [false];
     const historyCacheRef = useRef({});
+    const historyCache = useMemo(() => ({
+        instance: historyCacheRef,
+        get: ({hasUAVisualTransition, stateNavigator: {stateContext: {url, history}}}: NavigationHandlerState, sceneViewKey: string) => {
+            return (history && (!supportsPrecommitNavigation || !!hasUAVisualTransition)) ? historyCacheRef.current[url]?.[sceneViewKey] : null;
+        },
+        set: ({stateNavigator: {stateContext: {url}}}: NavigationHandlerState, sceneViewKey: string, sceneView: any) => {
+            if (!historyCacheRef.current[url]) historyCacheRef.current[url] = {};
+            historyCacheRef.current[url][sceneViewKey] = sceneView;
+        }
+    }), [navigationEvent]);
     const rootViews = useRef({});
     const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
@@ -210,7 +221,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         <NavigationContext.Provider value={navigationEvent?.data}>
             <NavigationDeferredContext.Provider value={navigationDeferredEvent?.data}>
                 <RefetchContext.Provider value={refetchControl}>
-                    <HistoryCacheContext.Provider value={historyCacheRef.current}>
+                    <HistoryCacheContext.Provider value={historyCache}>
                         {children}
                     </HistoryCacheContext.Provider>
                 </RefetchContext.Provider>

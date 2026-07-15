@@ -7,7 +7,6 @@ import HistoryCacheContext from './HistoryCacheContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
-import supportsPrecommitNavigation from './supportsPrecommitNavigation.js';
 
 const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
 
@@ -16,7 +15,7 @@ const SceneViewInner = ({children}) => children;
 const SceneView = ({active, name, refetch, pending, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const {state, stateNavigator: {stateContext}} = navigationEvent;
-    const {url, oldUrl, history, historyAction} = stateContext;
+    const {url, oldUrl, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
     const {deserialize} = useContext(RefetchContext);
     const ancestorFetchingFn = useContext(FetchingContext);
@@ -29,7 +28,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     );
     const cacheIgnorable = navigationEvent['ignoreCache'];
     const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
-    const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey] && (!supportsPrecommitNavigation || !!navigationEvent['hasUAVisualTransition']);
+    const cachedHistory = !ignoreCache && !!historyCache.get(navigationEvent, sceneViewKey);
     if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = {};
     const cachedSceneViews = navigationEvent['rscCache'];
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
@@ -53,7 +52,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     }
     const sceneView = (() => {
         if (!getShow(state?.key)) return null;
-        if (cachedHistory) return historyCache[url][sceneViewKey];
+        if (cachedHistory) return historyCache.get(navigationEvent, sceneViewKey);
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
         return renderedSceneView.current.sceneView;
@@ -62,10 +61,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         renderedSceneView.current = {sceneView, navigationEvent};
         if (pending) return;
         if (historyAction === 'none') return;
-        if (typeof window !== 'undefined') {
-            if (!historyCache[url]) historyCache[url] = {};
-            historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
-        }
+        if (typeof window !== 'undefined') historyCache.set(navigationEvent, sceneViewKey, renderedSceneView.current.sceneView);
     });
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)

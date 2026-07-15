@@ -1,5 +1,5 @@
 import { State, StateNavigator, FluentNavigator, StateContext } from 'navigation';
-import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType } from 'react';
+import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType, RefObject } from 'react';
 
 /**
  * Navigation event data
@@ -58,6 +58,11 @@ export var BundlerContext: Context<{
      */
     onHmrReload: (hmrReload: () => void) => () => void;
 }>;
+
+/**
+ * 
+ */
+export var HistoryCacheContext: Context<{instance: RefObject<any>, get: (navigationEvent: NavigationEvent<any, any>, sceneViewKey: string) => any, set: (navigationEvent: NavigationEvent<any, any>, sceneViewKey: string, sceneView: any) => void}>;
 
 /**
  * The hook that provides the current navigation event data
