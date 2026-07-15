@@ -135,7 +135,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             return (history || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
         },
         set: setHistory
-    }), [historyCacheInstance, setHistory, navigationEvent]);
+    }), [historyCacheInstance, setHistory]);
     const sceneData = getScenes();
     return (stateContext.state &&
         <HistoryCacheContext.Provider value={historyCache}>
