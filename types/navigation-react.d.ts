@@ -60,7 +60,7 @@ export var BundlerContext: Context<{
 }>;
 
 /**
- * 
+ * The history cache context
  */
 export var HistoryCacheContext: Context<{instance: RefObject<any>, get: (navigationEvent: NavigationEvent<any, any>, sceneViewKey: string) => any, set: (navigationEvent: NavigationEvent<any, any>, sceneViewKey: string, sceneView: any) => void}>;
 
