@@ -25,7 +25,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             if (!historyCacheRef.current[url]) historyCacheRef.current[url] = {};
             historyCacheRef.current[url][sceneViewKey] = sceneView;
         }
-    }), [navigationEvent]);
+    }), []);
     const rootViews = useRef({});
     const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
