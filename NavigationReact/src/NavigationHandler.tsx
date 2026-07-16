@@ -6,7 +6,7 @@ import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
-type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
+type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, startTran?: (fn: () => void) => void, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 
 const supportsPrecommitNavigation = typeof window !== 'undefined' && !!window.NavigationPrecommitController;
@@ -50,12 +50,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         navigating = true;
                         const {oldState, state, crumbs} = stateContext;
                         const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
-                        const startTran = (!refresh && startTransition) || ((transition) => transition());
+                        const startTran = !refresh ? startTransition : null;
                         intercept.title = typeof document !== 'undefined' && createFromFetch ? document.title : null;
                         intercept.resume = resumeNavigation;
-                        startTran(() => {
-                            raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
-                        });
+                        intercept.startTran = startTran;
+                        raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
                     })
                 }, currentContext);
                 if (!navigating) intercept?.commit?.();
@@ -63,7 +62,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
-        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
+        const startTran = intercept.startTran || ((transition) => transition());
+        const startNavigation = () => startTran(() => {
+            setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
+        });
         if (typeof window !== 'undefined' && intercept.resume && supportsPrecommitNavigation && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             if (!intercept.controller) {
                 window.navigation.addEventListener('navigate', e => {
@@ -72,6 +74,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         focusReset: 'manual',
                         scroll: 'manual',
                         async precommitHandler(controller) {
+                            startNavigation();
                             return new Promise((resolve, reject) => {
                                 intercept.commit = resolve;
                                 intercept.signal = e.signal;
@@ -81,11 +84,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         }
                     });
                 }, {once: true});
+            } else {
+                startNavigation();
             }
             const res = stateNavigator.historyManager.navigate(url, historyAction === 'replace', intercept.controller, asyncNavigator.stateContext);
             res?.committed.catch((e) => {
                 if (!intercept?.signal?.aborted) throw e;
             });
+        } else {
+            startNavigation();
         }
     }, [stateNavigator, createFromFetch]);
     if (!navigationEvent) raiseNavigationEvent();
