@@ -32,7 +32,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = {};
     const cachedSceneViews = navigationEvent['rscCache'];
     if (cachedHistory) cachedSceneViews[sceneViewKey] = cachedHistory;
-    const renderedSceneView = useRef<any>(null);
+    const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     const fetchingFn = useCallback(((navigationEvent) => {
         const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
         const {crumbs, oldUrl, oldData} = stateContext;
@@ -53,15 +53,15 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     }
     const sceneView = (() => {
         if (!getShow(state?.key)) return null;
+        if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
-        return renderedSceneView.current;
+        return renderedSceneView.current.sceneView;
     })();
     useEffect(() => {
-        renderedSceneView.current = sceneView;
-        cachedSceneViews[sceneViewKey] = cachedSceneViews[sceneViewKey] || sceneView;
+        renderedSceneView.current = {sceneView, navigationEvent};
         if (pending) return;
         if (historyAction === 'none') return;
-        if (typeof window !== 'undefined') historyCache.set(navigationEvent, sceneViewKey, renderedSceneView.current);
+        if (typeof window !== 'undefined') historyCache.set(navigationEvent, sceneViewKey, renderedSceneView.current.sceneView);
     });
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
