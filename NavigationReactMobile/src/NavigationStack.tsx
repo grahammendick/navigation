@@ -132,7 +132,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         get: ({stateNavigator: {stateContext: {url, history, crumbs, oldUrl}}}: NavigationEvent, sceneViewKey: string) => {
             if (!oldUrl) return null;
             const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
-            return (history || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
+            return ((history && oldCrumbs.length !== crumbs.length) || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
         },
         set: setHistory
     }), [historyCacheInstance, setHistory]);
