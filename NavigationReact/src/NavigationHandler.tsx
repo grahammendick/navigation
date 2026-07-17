@@ -196,9 +196,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             for(let i =0; i < historyKeys.length; i ++) {
                 if (!historyUrls[historyKeys[i]]) delete historyCacheRef.current[url];
             }
-            /* const state = {...window.navigation?.currentEntry.getState(), sceneCount};
-            window.history.replaceState({...window.history.state, sceneCount}, null);
-            window.navigation?.updateCurrentEntry({state}); */
+            if (window.navigation.transition) window.history.replaceState({...window.history.state}, null);
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
