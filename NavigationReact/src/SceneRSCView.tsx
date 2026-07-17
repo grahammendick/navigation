@@ -58,6 +58,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     })();
     useEffect(() => {
         renderedSceneView.current = sceneView;
+        cachedSceneViews[sceneViewKey] = cachedSceneViews[sceneViewKey] || sceneView;
         if (pending) return;
         if (historyAction === 'none') return;
         if (typeof window !== 'undefined') historyCache.set(navigationEvent, sceneViewKey, renderedSceneView.current);
