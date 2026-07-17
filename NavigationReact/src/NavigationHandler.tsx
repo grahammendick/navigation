@@ -161,7 +161,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         stateNavigator.onNavigate(onNavigate);
         return () => stateNavigator.offNavigate(onNavigate);
     }, [stateNavigator, navigationEvent, raiseNavigationEvent]);
-    const oldSceneCount = (typeof window !== 'undefined' && (window.navigation?.currentEntry.getState()?.sceneCount || window.history?.state?.sceneCount)) || 0;
     React.useInsertionEffect?.(() => {
         const commit = navigationEvent.intercept?.commit;
         if (!isPending && navigationEvent === navigationDeferredEvent && commit) {
@@ -185,21 +184,21 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             if (navigationEvent.intercept?.hasUAVisualTransition)
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
             navigationEvent.intercept = {};
-            if (historyAction === 'none' || typeof window === 'undefined' || !window.history) return;
-            const historyCache = historyCacheRef.current;
-            const sceneCount = (window.navigation?.currentEntry.getState()?.sceneCount || window.history?.state?.sceneCount) || (oldSceneCount + 1);
-            if (!historyCache[url]) historyCache[url] = {};
-            historyCache[url].count = Math.min(historyCache[url].count || sceneCount, sceneCount);
-            const historyUrls = Object.keys(historyCache);
-            for(let i = 0; i < historyUrls.length && !history; i++) {
-                const historyUrl = historyUrls[i];
-                const gap = historyCache[historyUrl].count - sceneCount;
-                if (historyUrl !== url && (gap === 0 || (historyAction === 'add' && gap > 0)))
-                    delete historyCache[historyUrl];
+            if (historyAction === 'none' || typeof window === 'undefined' || !window.history || !window.navigation) return;
+            const historyKeys = Object.keys(historyCacheRef.current);
+            const historyUrls = window.navigation.entries().reduce((entries, entry) => {
+                if (!entry.url) return entries;
+                const historyUrl = navigationEvent.stateNavigator.historyManager.getCurrentUrl(entry);
+                entries[historyUrl] = true;
+                return entries;
+            }, {});
+            historyUrls[url] = true;
+            for(let i =0; i < historyKeys.length; i ++) {
+                if (!historyUrls[historyKeys[i]]) delete historyCacheRef.current[url];
             }
-            const state = {...window.navigation?.currentEntry.getState(), sceneCount};
+            /* const state = {...window.navigation?.currentEntry.getState(), sceneCount};
             window.history.replaceState({...window.history.state, sceneCount}, null);
-            window.navigation?.updateCurrentEntry({state});
+            window.navigation?.updateCurrentEntry({state}); */
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {

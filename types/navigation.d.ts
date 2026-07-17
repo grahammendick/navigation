@@ -194,7 +194,7 @@ export interface HistoryManager {
     /**
      * Gets the current location
      */
-    getCurrentUrl(): string;
+    getCurrentUrl(destination?: NavigationDestination): string;
     /**
      * Gets an Href from the url
      */
@@ -275,7 +275,7 @@ export class HTML5HistoryManager implements HistoryManager {
     /**
      * Gets the current location
      */
-    getCurrentUrl(): string;
+    getCurrentUrl(destination?: NavigationDestination): string;
     /**
      * Gets an Href from the url
      */

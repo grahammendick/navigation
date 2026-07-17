@@ -75,7 +75,8 @@ class HTML5HistoryManager implements HistoryManager {
         return e.navigationType === 'traverse' && e.canIntercept;
     }
 
-    getCurrentUrl(): string {
+    getCurrentUrl(destination?: NavigationDestination): string {
+        if (destination) return destination.getState()?.navigationLink || this.getUrl(new URL(destination.url));
         return window.history.state?.navigationLink || window.navigation?.currentEntry.getState()?.navigationLink || this.getUrl(window.location);
     }
 
