@@ -15,7 +15,7 @@ const SceneViewInner = ({children}) => children;
 const SceneView = ({active, name, refetch, pending, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const {state, stateNavigator: {stateContext}} = navigationEvent;
-    const {url, oldUrl, historyAction} = stateContext;
+    const {oldUrl, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
     const {deserialize} = useContext(RefetchContext);
     const ancestorFetchingFn = useContext(FetchingContext);
@@ -28,9 +28,10 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     );
     const cacheIgnorable = navigationEvent['ignoreCache'];
     const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
-    const cachedHistory = !ignoreCache && !!historyCache.get(navigationEvent, sceneViewKey);
+    const cachedHistory = !ignoreCache && historyCache.get(navigationEvent, sceneViewKey);
     if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = {};
     const cachedSceneViews = navigationEvent['rscCache'];
+    if (cachedHistory) cachedSceneViews[sceneViewKey] = cachedHistory;
     const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
     const fetchingFn = useCallback(((navigationEvent) => {
         const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
@@ -47,12 +48,11 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     }), [sceneViewKey, refetch]);
     const fetching = fetchingFn(navigationEvent);
     const firstScene = !oldUrl && !ignoreCache;
-    if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && !ancestorFetching && fetching) {
+    if (!cachedSceneViews[sceneViewKey] && !firstScene && !ancestorFetching && fetching) {
         cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey);
     }
     const sceneView = (() => {
         if (!getShow(state?.key)) return null;
-        if (cachedHistory) return historyCache.get(navigationEvent, sceneViewKey);
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
         return renderedSceneView.current.sceneView;
