@@ -7,7 +7,7 @@ import RefetchContext from './RefetchContext.js';
 
 const SceneViewInner = ({children}) => children;
 
-const SceneView = ({active, errorFallback, children}: SceneViewProps) => {
+const SceneView = ({active, errorFallback, client, children}: SceneViewProps) => {
     const {state, stateNavigator} = useContext(NavigationContext);
     const {registerSceneView} = useContext(RefetchContext);
     const show = active != null && state && (
@@ -29,8 +29,8 @@ const SceneView = ({active, errorFallback, children}: SceneViewProps) => {
                 if (children) registerSceneViews(children);
             }
         }
-        registerSceneViews();
-    }, [registerSceneView, children]);
+        if (client) registerSceneViews();
+    }, [registerSceneView, client, children]);
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <SceneViewInner>
