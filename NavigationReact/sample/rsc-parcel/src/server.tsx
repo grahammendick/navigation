@@ -42,6 +42,7 @@ app.post('*', async (req, res) => {
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url, historyAction, history);
   let data = null; let refetch = null;
+    serverNavigator.navigate('people');
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);
     const scene = {
