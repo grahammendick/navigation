@@ -10,7 +10,7 @@ const SceneView = ({active, client, children, ...props}: SceneViewProps & {activ
         typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
     );
     return !client
-        ? <SceneRSCView active={active} {...props}>{show ? children : null}</SceneRSCView>
-        : <SceneViewClient active={active} {...props}>{children}</SceneViewClient>;
+        ? <SceneRSCView active={active} {...{...props, __scene: true}}>{show ? children : null}</SceneRSCView>
+        : <SceneViewClient active={active} client {...props}>{children}</SceneViewClient>;
 }
 export default SceneView;

@@ -5,7 +5,7 @@ const Scene = ({stateKey, children, ...props}) => {
     const {state} = useNavigationEvent();
     return (
         <SceneView active={stateKey} name={stateKey} {...{...props, stateKey, __scene: true}}>
-            {stateKey === state.key ? children : null}
+            {children}
         </SceneView>
     );
 }

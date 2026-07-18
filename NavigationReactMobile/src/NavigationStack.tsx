@@ -121,9 +121,20 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         return () => clearTimeout(timer);
     }, [pause]);
     useEffect(() => {
+        const registerSceneViews = (elements) => {
+            for(const sceneView of React.Children.toArray(elements) as any) {
+                const {name, active, __scene, children} = sceneView.props;
+                if (__scene) {
+                    const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
+                    registerRootView(sceneViewKey, active);
+                }
+                if (children) registerSceneViews(children);
+            }
+        }
         for(const key of Object.keys(allScenes) as any) {
-            const {props: {stateKey}} = allScenes[key];
-            registerRootView(stateKey, stateKey);
+            const {props: {stateKey, client, children}} = allScenes[key];
+            if (!client) registerRootView(stateKey, stateKey);
+            else registerSceneViews(children);
         }
     }, [registerRootView, allScenes]);
     const {instance: historyCacheInstance, set: setHistory} = useContext(HistoryCacheContext);
