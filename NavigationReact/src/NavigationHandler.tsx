@@ -106,7 +106,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         registerSceneView: (sceneViewKey: string, active: string | string[]) => {
             rootViews.current[sceneViewKey] = active;
         },
-        deserialize: async (sceneViewKey: string, actionId: string = null, args: any[] = null) => {
+        deserialize: async (rscContext: NavigationHandlerState, sceneViewKey: string, actionId: string = null, args: any[] = null) => {
+            if (rscContext !== navigationEvent.data) return null;
             const currentStateContext = navigationEvent.stateNavigator.stateContext;
             const {stateContext: nextStateContext, historyManager} = navigationEvent.data.stateNavigator
             const {url, nextCrumb, historyAction, history} = nextStateContext;

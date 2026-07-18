@@ -49,7 +49,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     const fetching = fetchingFn(navigationEvent);
     const firstScene = !oldUrl && !ignoreCache;
     if (!cachedSceneViews[sceneViewKey] && !firstScene && !ancestorFetching && fetching) {
-        cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey);
+        cachedSceneViews[sceneViewKey] = deserialize(navigationEvent, sceneViewKey);
     }
     const sceneView = (() => {
         if (!getShow(state?.key)) return null;
