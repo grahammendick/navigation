@@ -128,7 +128,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
                     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
                     registerRootView(sceneViewKey, active);
                 }
-                if (children) registerSceneViews(children);
+                if (children?.props) registerSceneViews(children);
             }
         }
         for(const key of Object.keys(allScenes) as any) {
