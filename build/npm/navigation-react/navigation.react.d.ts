@@ -226,6 +226,10 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      */
     refetch?: string[];
     /**
+     * Indicates whether the RSC View is a client component
+     */
+    client?: boolean;
+    /**
      * The content to show when the View errors
      */
     errorFallback?: ReactNode | ComponentType;

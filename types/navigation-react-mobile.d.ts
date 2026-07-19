@@ -178,6 +178,10 @@ export interface NavigationStackProps {
      */
     refetch?: string[];
     /**
+     * Indicates whether the RSC Scene is a client component
+     */
+    client?: boolean;
+    /**
      * The content to show when the Scene errors
      */
     errorFallback?: ReactNode | ComponentType;
