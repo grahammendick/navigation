@@ -25,8 +25,7 @@ const SceneView = ({active, errorFallback, client, children}: SceneViewProps) =>
                 if (__scene) {
                     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
                     registerSceneView(sceneViewKey, active);
-                }
-                if (children?.props) registerSceneViews(children);
+                } else if (children?.props) registerSceneViews(children);
             }
         }
         if (client) registerSceneViews();
