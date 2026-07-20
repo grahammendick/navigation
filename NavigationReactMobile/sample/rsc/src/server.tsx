@@ -65,9 +65,6 @@ app.post('*', async (req, res) => {
       if (show) activeRoots.push(rootKey);
       return activeRoots;
     }, [] as string[]) : ((!actionId || refetch === sceneViewKey) ? [sceneViewKey] : []);
-    await new Promise((res) => {
-      setTimeout(res, 1000)
-    });
   const stream = renderRSC({
     data,
     refetch,
