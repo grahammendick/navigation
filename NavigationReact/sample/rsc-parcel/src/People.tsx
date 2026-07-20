@@ -3,7 +3,7 @@ import { SceneView } from 'navigation-react';
 import Filter from './Filter';
 import List from './List';
 
-const People = ({children}: any) => {
+const People = async () => {
   return (
     <>
       <title>People</title>
