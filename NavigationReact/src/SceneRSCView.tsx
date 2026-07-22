@@ -99,7 +99,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const show =  active != null && state && (
         typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
     );
-    const fetching = (() => {
+    const refetching = (() => {
         if (rendered.current && show && navigationDeferredEvent !== navigationEvent) {
             if (!refetch) return true;
             for(let i = 0; i < refetch.length; i++) {
@@ -109,7 +109,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         return false;
     })();
     return (
-        <NavigationContext.Provider value={fetching ? navigationDeferredEvent : navigationEvent}>
+        <NavigationContext.Provider value={refetching ? navigationDeferredEvent : navigationEvent}>
             <NavigationDeferredContext.Provider value={navigationDeferredEvent}>
                 <RefetchContext.Provider value={refetchControl}>
                     <SceneView {...props} pending={navigationEvent !== navigationDeferredEvent} />
