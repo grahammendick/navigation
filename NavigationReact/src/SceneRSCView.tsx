@@ -77,6 +77,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
 
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, refetch, name} = props;
+    const rendered = useRef(false);
     const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext);
     const navigationEvent = useNavigationEvent();
     const navigationDeferredEvent = useContext(NavigationDeferredContext);
@@ -84,6 +85,9 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     useEffect(() => {
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
+    useEffect(() => {
+        rendered.current = true;
+    }, []);
     const refetchControl = useMemo(() => ({
         sceneViewKey,
         refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
@@ -96,7 +100,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
     );
     const fetching = (() => {
-        if (show && navigationDeferredEvent !== navigationEvent) {
+        if (rendered.current && show && navigationDeferredEvent !== navigationEvent) {
             if (!refetch) return true;
             for(let i = 0; i < refetch.length; i++) {
                 if (data[refetch[i]] !== oldData[refetch[i]]) return true;

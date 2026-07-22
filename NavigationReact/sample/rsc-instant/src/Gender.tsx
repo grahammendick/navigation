@@ -1,4 +1,5 @@
 'use client'
+import { Suspense } from 'react';
 import { useNavigationEvent, RefreshLink } from 'navigation-react';
 
 const Gender = ({children}: any) => {
@@ -18,7 +19,9 @@ const Gender = ({children}: any) => {
                         <option value="female">Female</option>
                         <option value="other">Other</option>
                     </select>
-                    {children}
+                    <Suspense fallback={<h2>loading...</h2>}>
+                        {children}
+                    </Suspense>
                 </div>
             )}
         </>
