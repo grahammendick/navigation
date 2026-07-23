@@ -110,7 +110,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         deserialize: async (sceneViewKey: string, actionId: string = null, args: any[] = null) => {
             const currentStateContext = navigationEvent.stateNavigator.stateContext;
             const {stateContext: nextStateContext, historyManager} = navigationEvent.data.stateNavigator
-            const {url, nextCrumb, historyAction, history} = nextStateContext;
+            const {url, nextCrumb} = nextStateContext;
             const responsePromise = (async () => {
                 let response = null;
                 try {
@@ -118,7 +118,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
                         method: 'post',
                         headers: {Accept: 'text/x-component', ...(!actionId ? {'Content-Type': 'application/json'} : undefined)},
-                        body: await encodeReply({url, sceneViewKey, historyAction, history, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
+                        body: await encodeReply({url, sceneViewKey, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
                         signal: navigationEvent.intercept?.signal
                     });
                 } catch(e) {
