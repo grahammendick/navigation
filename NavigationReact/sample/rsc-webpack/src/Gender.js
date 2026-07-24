@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { useNavigationEvent, RefreshLink } from 'navigation-react';
 
-const Gender = () => {
+const Gender = ({children}) => {
     const {data, stateNavigator} = useNavigationEvent();
     const {gender, show} = data;
     return (
@@ -19,6 +19,7 @@ const Gender = () => {
                         <option value="female">Female</option>
                         <option value="other">Other</option>
                     </select>
+                    {children}
                 </div>
             )}
         </>
