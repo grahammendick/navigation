@@ -23,10 +23,11 @@ const Person = async () => {
           <div>Phone</div>
           <div>{phone}</div>
         </div>
-        <Gender />
-        <SceneView active="person" name="friends">
-          <Friends />
-        </SceneView>
+        <Gender>
+          <SceneView active="person" name="friends">
+            <Friends />
+          </SceneView>
+        </Gender>
       </div>
     </>
   )

@@ -34,9 +34,9 @@ const post = async (request: Request) => {
     person: await import('./Person.tsx'),
     friends: await import('./Friends.tsx')
   };
-  const {url, sceneViewKey, historyAction, rootViews, actionId, args} = await decodeBody(request);
+  const {url, sceneViewKey, rootViews, actionId, args} = await decodeBody(request);
   const serverNavigator = new StateNavigator(stateNavigator);
-  if (url) serverNavigator.navigateLink(url, historyAction);
+  if (url) serverNavigator.navigateLink(url);
   let data = null; let refetch = null;
   if (request.headers.get('content-type') !== 'application/json') {
     const action = await loadServerAction(actionId);
