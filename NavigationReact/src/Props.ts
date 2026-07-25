@@ -1,4 +1,4 @@
-import { AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode } from 'react';
+import { AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, RefObject } from 'react';
 import { FluentNavigator, StateContext, StateNavigator } from 'navigation';
 
 interface LinkProps extends DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {

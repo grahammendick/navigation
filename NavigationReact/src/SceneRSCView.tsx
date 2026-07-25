@@ -18,6 +18,7 @@ const SceneView = ({active, name, refetch, pending, fallback, errorFallback, chi
     const {oldUrl, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
     const {deserialize} = useContext(RefetchContext);
+    const suspended = useRef(null);
     const ancestorFetchingFn = useContext(FetchingContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -40,6 +41,7 @@ const SceneView = ({active, name, refetch, pending, fallback, errorFallback, chi
         const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
         if (!getShow(state?.key)) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
+        if (navigationEvent['rscCache'][sceneViewKey] || suspended.current) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         for(let i = 0; i < refetch.length; i++) {
             if (data[refetch[i]] !== oldData[refetch[i]]) return true;
@@ -74,7 +76,7 @@ const SceneView = ({active, name, refetch, pending, fallback, errorFallback, chi
                         <SceneViewInner>{sceneView}</SceneViewInner>
                     </FetchingContext.Provider>
                 );
-                return fallback ? <Suspense fallback={fallback}>{view}</Suspense> : view;
+                return fallback ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
             })()}
         </ErrorBoundary>
     );
