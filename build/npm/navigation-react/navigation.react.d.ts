@@ -230,6 +230,10 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      */
     client?: boolean;
     /**
+     * The content to show when the RSC View suspends
+     */
+    fallback?: ReactNode;
+    /**
      * The content to show when the View errors
      */
     errorFallback?: ReactNode | ComponentType;
