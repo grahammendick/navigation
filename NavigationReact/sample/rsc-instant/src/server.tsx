@@ -40,7 +40,7 @@ app.post('*', async (req, res) => {
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url);
   await new Promise(res => {
-    setTimeout(res, 3000)
+    setTimeout(res, 5000)
   })
   let data = null; let refetch = null;
   if (req.headers['content-type'] !== 'application/json') {

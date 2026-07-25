@@ -10,7 +10,12 @@ import NavigationContext from './NavigationContext.js';
 
 const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
 
-const SceneViewInner = ({children}) => children;
+const SceneViewInner = ({children, onMount}) => {
+    useEffect(() => {
+        onMount();
+    }, [onMount]);
+    return children
+};
 
 const SceneView = ({active, name, refetch, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
     const navigationEvent = useNavigationEvent();
@@ -59,12 +64,6 @@ const SceneView = ({active, name, refetch, pending, fallback, errorFallback, chi
         if (firstScene || ancestorFetching) return children;
         return renderedSceneView.current;
     })();
-    useEffect(() => {
-        renderedSceneView.current = sceneView;
-        if (pending) return;
-        if (historyAction === 'none') return;
-        if (typeof window !== 'undefined') historyCache.set(navigationEvent, sceneViewKey, renderedSceneView.current);
-    });
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
     ), [ancestorFetchingFn, fetchingFn]);
@@ -73,7 +72,12 @@ const SceneView = ({active, name, refetch, pending, fallback, errorFallback, chi
             {(() => {
                 const view = (
                     <FetchingContext.Provider value={combinedFetchingFn}>
-                        <SceneViewInner>{sceneView}</SceneViewInner>
+                        <SceneViewInner onMount={() => {
+                            renderedSceneView.current = sceneView;
+                            if (pending) return;
+                            if (historyAction === 'none') return;
+                            if (typeof window !== 'undefined') historyCache.set(navigationEvent, sceneViewKey, renderedSceneView.current);
+                        }}>{sceneView}</SceneViewInner>
                     </FetchingContext.Provider>
                 );
                 return fallback ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
