@@ -21,7 +21,7 @@ const Details = async () => {
         <div>{phone}</div>
       </div>
       <Gender>
-        <SceneView active="person" name="friends">
+        <SceneView active="person" name="friends" fallback={<h2>loading...</h2>}>
           <Friends />
         </SceneView>
       </Gender>

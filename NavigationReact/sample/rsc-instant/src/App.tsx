@@ -18,14 +18,14 @@ const App = async ({url}: any) => {
         <NavigationProvider url={url}>
           <SceneView active="people" client>
             <People>
-              <SceneView active="people">
+              <SceneView active="people" fallback={<h2>loading...</h2>}>
                 <List />
               </SceneView>
             </People>
           </SceneView>
           <SceneView active="person" client>
             <Person>
-              <SceneView active="person" refetch={['id']}>
+              <SceneView active="person" refetch={['id']} fallback={<h2>loading...</h2>}>
                 <Details />
               </SceneView>
             </Person>

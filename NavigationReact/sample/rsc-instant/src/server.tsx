@@ -39,6 +39,9 @@ app.post('*', async (req, res) => {
   const {url, sceneViewKey, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url);
+  await new Promise(res => {
+    setTimeout(res, 3000)
+  })
   let data = null; let refetch = null;
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);
