@@ -23,14 +23,14 @@ const App = async ({url}: any) => {
             style={{position: 'fixed', left: '0', right: '0', top: '0', bottom: '0', overflow: 'auto', backgroundColor: '#fff', padding: '8px'}}>
               <Scene stateKey="people" client>
                 <People>
-                  <SceneView active="people">
+                  <SceneView active="people" fallback={<h2>loading...</h2>}>
                     <List />
                   </SceneView>
                 </People>
               </Scene>
               <Scene stateKey="person" client>
                 <Person>
-                  <SceneView active="person" refetch={['id']}>
+                  <SceneView active="person" refetch={['id']} fallback={<h2>loading...</h2>}>
                     <Details />
                   </SceneView>
                 </Person>
