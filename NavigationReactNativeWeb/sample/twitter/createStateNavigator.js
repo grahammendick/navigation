@@ -13,8 +13,6 @@ export default () => {
   ], NavigationStack.HistoryManager && new NavigationStack.HistoryManager(url => {
     const {state, data} = stateNavigator.parseLink(url);
     let fluent = stateNavigator.fluent().navigate('tabs');
-    if (state.key === 'tabs' && data.tab === 'notifications')
-      stateNavigator.historyManager.addHistory(fluent.url, true);
     return fluent.navigate(state.key, data).url;
   }));
 
