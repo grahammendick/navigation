@@ -1,6 +1,7 @@
 ﻿import NavigationContext from './NavigationContext.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import BundlerContext from './BundlerContext.js';
+import HistoryCacheContext from './HistoryCacheContext.js';
 import NavigationHandler from './NavigationHandler.js';
 import NavigationBackLink from './NavigationBackLink.js';
 import NavigationLink from './NavigationLink.js';
@@ -12,4 +13,4 @@ import useSceneView from './useSceneView.js';
 import useRefetch from './useRefetch.js';
 import useRootViewRegistry from './useRootViewRegistry.js';
 
-export { NavigationContext, NavigationDeferredContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView, useRefetch, useRootViewRegistry };
+export { NavigationContext, NavigationDeferredContext, BundlerContext, HistoryCacheContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView, useRefetch, useRootViewRegistry };

@@ -1,4 +1,3 @@
-'use server-entry'
 import { SceneView } from 'navigation-react';
 import Filter from './Filter';
 import List from './List';

@@ -79,9 +79,9 @@ app.post('*', async function (req, res) {
     person: await import('../src/Person.js'),
     friends: await import('../src/Friends.js')
   };
-  const {url, sceneViewKey, historyAction, rootViews, actionId, args} = await decodeBody(req);
+  const {url, sceneViewKey, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator.default);
-  if (url) serverNavigator.navigateLink(url, historyAction);
+  if (url) serverNavigator.navigateLink(url);
   let data = null; let refetch = null;
   if (req.headers['content-type'] !== 'application/json') {
     const [filepath, name] = actionId.split('#');

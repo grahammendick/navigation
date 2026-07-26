@@ -1,5 +1,5 @@
 import { State, StateNavigator, FluentNavigator, StateContext } from 'navigation';
-import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType } from 'react';
+import { Component, Context, AnchorHTMLAttributes, DetailedHTMLProps, MouseEvent, ReactNode, ComponentType, RefObject } from 'react';
 
 /**
  * Navigation event data
@@ -58,6 +58,11 @@ export var BundlerContext: Context<{
      */
     onHmrReload: (hmrReload: () => void) => () => void;
 }>;
+
+/**
+ * The history cache context
+ */
+export var HistoryCacheContext: Context<{instance: RefObject<any>, get: (navigationEvent: NavigationEvent<any, any>, sceneViewKey: string) => any, set: (navigationEvent: NavigationEvent<any, any>, sceneViewKey: string, sceneView: any) => void}>;
 
 /**
  * The hook that provides the current navigation event data
@@ -220,6 +225,14 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      * A function or the data keys that determine when to refetch the RSC View
      */
     refetch?: string[];
+    /**
+     * Indicates whether the RSC View is a client component
+     */
+    client?: boolean;
+    /**
+     * The content to show when the RSC View suspends
+     */
+    fallback?: ReactNode;
     /**
      * The content to show when the View errors
      */

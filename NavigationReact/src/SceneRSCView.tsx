@@ -1,5 +1,5 @@
 'use client'
-import React, { createContext, useContext, useEffect, useRef, useMemo, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useMemo, useCallback, Suspense } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import RefetchContext from './RefetchContext.js';
@@ -7,18 +7,23 @@ import HistoryCacheContext from './HistoryCacheContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
 import NavigationDeferredContext from './NavigationDeferredContext.js';
 import NavigationContext from './NavigationContext.js';
-import supportsPrecommitNavigation from './supportsPrecommitNavigation.js';
 
 const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
 
-const SceneViewInner = ({children}) => children;
+const SceneViewInner = ({children, onMount}) => {
+    useEffect(() => {
+        onMount();
+    }, [onMount]);
+    return children
+};
 
-const SceneView = ({active, name, refetch, pending, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
+const SceneView = ({active, name, refetch, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const {state, stateNavigator: {stateContext}} = navigationEvent;
-    const {url, oldUrl, history, historyAction} = stateContext;
+    const {oldUrl, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
     const {deserialize} = useContext(RefetchContext);
+    const suspended = useRef(null);
     const ancestorFetchingFn = useContext(FetchingContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -29,10 +34,11 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     );
     const cacheIgnorable = navigationEvent['ignoreCache'];
     const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
-    const cachedHistory = !ignoreCache && history && !!historyCache[url]?.[sceneViewKey] && (!supportsPrecommitNavigation || !!navigationEvent['hasUAVisualTransition']);
+    const cachedHistory = !ignoreCache && historyCache.get(navigationEvent, sceneViewKey);
     if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = {};
     const cachedSceneViews = navigationEvent['rscCache'];
-    const renderedSceneView = useRef({sceneView: undefined, navigationEvent: undefined});
+    if (cachedHistory) cachedSceneViews[sceneViewKey] = cachedHistory;
+    const renderedSceneView = useRef(null);
     const fetchingFn = useCallback(((navigationEvent) => {
         const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
         const {crumbs, oldUrl, oldData} = stateContext;
@@ -40,6 +46,7 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
         const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
         if (!getShow(state?.key)) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
+        if (navigationEvent['rscCache'][sceneViewKey] || suspended.current) return true;
         if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         for(let i = 0; i < refetch.length; i++) {
             if (data[refetch[i]] !== oldData[refetch[i]]) return true;
@@ -48,39 +55,40 @@ const SceneView = ({active, name, refetch, pending, errorFallback, children}: Sc
     }), [sceneViewKey, refetch]);
     const fetching = fetchingFn(navigationEvent);
     const firstScene = !oldUrl && !ignoreCache;
-    if (!cachedSceneViews[sceneViewKey] && !cachedHistory && !firstScene && !ancestorFetching && fetching) {
+    if (!cachedSceneViews[sceneViewKey] && !firstScene && !ancestorFetching && fetching) {
         cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey);
     }
     const sceneView = (() => {
         if (!getShow(state?.key)) return null;
-        if (cachedHistory) return historyCache[url][sceneViewKey];
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
-        return renderedSceneView.current.sceneView;
+        return renderedSceneView.current;
     })();
-    useEffect(() => {
-        renderedSceneView.current = {sceneView, navigationEvent};
-        if (pending) return;
-        if (historyAction === 'none') return;
-        if (typeof window !== 'undefined') {
-            if (!historyCache[url]) historyCache[url] = {};
-            historyCache[url][sceneViewKey] = renderedSceneView.current.sceneView;
-        }
-    });
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
     ), [ancestorFetchingFn, fetchingFn]);
     return (
         <ErrorBoundary errorFallback={errorFallback}>
-            <FetchingContext.Provider value={combinedFetchingFn}>
-                <SceneViewInner>{sceneView}</SceneViewInner>
-            </FetchingContext.Provider>
+            {(() => {
+                const view = (
+                    <FetchingContext.Provider value={combinedFetchingFn}>
+                        <SceneViewInner onMount={() => {
+                            renderedSceneView.current = sceneView;
+                            if (pending) return;
+                            if (historyAction === 'none') return;
+                            if (typeof window !== 'undefined') historyCache.set(navigationEvent, sceneViewKey, renderedSceneView.current);
+                        }}>{sceneView}</SceneViewInner>
+                    </FetchingContext.Provider>
+                );
+                return fallback ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
+            })()}
         </ErrorBoundary>
     );
 };
 
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, refetch, name} = props;
+    const rendered = useRef(false);
     const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext);
     const navigationEvent = useNavigationEvent();
     const navigationDeferredEvent = useContext(NavigationDeferredContext);
@@ -88,6 +96,9 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     useEffect(() => {
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
+    useEffect(() => {
+        rendered.current = true;
+    }, []);
     const refetchControl = useMemo(() => ({
         sceneViewKey,
         refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
@@ -99,8 +110,8 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const show =  active != null && state && (
         typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
     );
-    const fetching = (() => {
-        if (show && navigationDeferredEvent !== navigationEvent) {
+    const refetching = (() => {
+        if (rendered.current && show && navigationDeferredEvent !== navigationEvent) {
             if (!refetch) return true;
             for(let i = 0; i < refetch.length; i++) {
                 if (data[refetch[i]] !== oldData[refetch[i]]) return true;
@@ -109,7 +120,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         return false;
     })();
     return (
-        <NavigationContext.Provider value={fetching ? navigationDeferredEvent : navigationEvent}>
+        <NavigationContext.Provider value={refetching ? navigationDeferredEvent : navigationEvent}>
             <NavigationDeferredContext.Provider value={navigationDeferredEvent}>
                 <RefetchContext.Provider value={refetchControl}>
                     <SceneView {...props} pending={navigationEvent !== navigationDeferredEvent} />
