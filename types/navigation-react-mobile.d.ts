@@ -182,6 +182,10 @@ export interface NavigationStackProps {
      */
     client?: boolean;
     /**
+     * The content to show when the RSC Scene suspends
+     */
+    fallback?: ReactNode;
+    /**
      * The content to show when the Scene errors
      */
     errorFallback?: ReactNode | ComponentType;
