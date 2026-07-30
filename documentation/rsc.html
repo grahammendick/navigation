@@ -92,6 +92,13 @@ const Mail = async () => {
   const {id, expand} = data;
   const mail = await fetchMail(id);
 };</code></pre>
+            <p>
+                RSCs mean you don't ever have to show a loading state. React renders the new scene in the background, leaving the app fully interactive on the old scene in the meantime. In our example, when a user selects an email they remain in their inbox with the navigation delayed until the 'mail' scene completes. But we can choose to navigate sooner by adding a fallback UI to the incoming scene. React shows the fallback instead of the inbox while the 'mail' scene loads.
+            </p>
+            <pre><code class="language-jsx">&lt;SceneView active="mail" fallback={&lt;h2>loading...&lt;/h2>}>
+  &lt;Mail />
+&lt;/SceneView>
+</code></pre>
             <h2>Refetching Scenes</h2>
             <p>
                 Our email app loads fast because we've removed the data-fetching waterfalls. But we've accidentally made it slower when the user expands an email. We used to handle this client-side but now we're expanding the email on the server. We move this back to the client by extracting the expansion code into a client component.
@@ -138,6 +145,26 @@ const send = useSceneView(sendReply);
   // send mail
   stateNavigator.navigate('inbox');
 }</code></pre>
+            <h2>Navigating Instantly</h2>
+            <p>
+                Even with a fallback prop on the incoming scene, navigations aren't instant. They still require a round trip to the server. To make them truly instant you wrap them in a client component and another <code>SceneView</code> with its 'client' prop set to true. In our email example, we wrap our mail scene in a client <code>Shell</code>. Now, when the user selects a mail, they'll immediately see a link back to their inbox and a loading message while their mail streams in.
+            </p>
+            <pre><code class="language-jsx">'use client'
+const Shell = ({children}) => (
+  &lt;>
+    &lt;NavigationLink stateKey="inbox">Inbox&lt;/NavigaitonLink>
+    {children}
+  &lt;/>
+); 
+
+&lt;SceneView active="mail" client>
+  &lt;Shell>
+    &lt;SceneView active="mail" fallback={&lt;h2>loading...&lt;/h2>}>
+      &lt;Mail />
+    &lt;/SceneView>
+  &lt;/Shell>
+&lt;/SceneView>
+</code></pre>
         </div>
     </div>
     <script type="text/javascript" src="../js/prism.js"></script>
