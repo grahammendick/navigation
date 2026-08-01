@@ -10,7 +10,7 @@ type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 
 const supportsPrecommitNavigation = typeof window !== 'undefined' && !!window.NavigationPrecommitController
-    && !!(window.navigator as any).userAgentData?.brands?.some(({brand}) => brand === 'Microsoft Edge' || brand === 'Google Chrome');
+    && !!(window.navigator as any).userAgentData?.brands?.some(({brand}) => brand === 'Microsoft Edge');
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
