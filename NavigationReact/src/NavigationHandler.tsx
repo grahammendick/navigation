@@ -197,7 +197,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             for(let i =0; i < historyKeys.length; i ++) {
                 if (!historyUrls[historyKeys[i]]) delete historyCacheRef.current[url];
             }
-            if (window.navigation.transition) window.history.replaceState({...window.history.state}, null);
+            if (window.navigation.transition) {
+                const state = {...window.navigation.currentEntry.getState()};
+                window.history.replaceState({...window.history.state}, null);
+                window.navigation.updateCurrentEntry({state});
+            }
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
     useEffect(() => {
