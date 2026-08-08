@@ -173,6 +173,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const title = typeof document !== 'undefined' ? document.title : null;
             const oldTitle = navigationEvent.intercept?.title;
             if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
+            if (typeof window !== 'undefined' && window.navigation?.transition) {
+                const state = {...window.navigation.currentEntry.getState()};
+                window.history.replaceState({...window.history.state}, null);
+                window.navigation.updateCurrentEntry({state});
+            }
             navigationEvent.intercept?.resume?.();
             if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
             if (navigationEvent.intercept?.hasUAVisualTransition)
@@ -189,11 +194,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             historyUrls[url] = true;
             for(let i =0; i < historyKeys.length; i ++) {
                 if (!historyUrls[historyKeys[i]]) delete historyCacheRef.current[url];
-            }
-            if (window.navigation.transition) {
-                const state = {...window.navigation.currentEntry.getState()};
-                window.history.replaceState({...window.history.state}, null);
-                window.navigation.updateCurrentEntry({state});
             }
         }
     }, [isPending, navigationEvent, navigationDeferredEvent]);
