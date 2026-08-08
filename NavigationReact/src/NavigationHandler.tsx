@@ -57,7 +57,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         startTran(() => {
                             raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
                         });
-                        raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
                     })
                 }, currentContext);
                 if (!navigating) intercept?.commit?.();
