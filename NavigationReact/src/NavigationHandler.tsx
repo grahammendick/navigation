@@ -19,6 +19,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const historyCacheRef = useRef({});
     const historyCache = useMemo(() => ({
         instance: historyCacheRef,
+        supportsPrecommitNavigation,
         get: ({hasUAVisualTransition, stateNavigator: {stateContext: {url, history}}}: NavigationHandlerState, sceneViewKey: string) => {
             return (history && (!supportsPrecommitNavigation || !!hasUAVisualTransition)) ? historyCacheRef.current[url]?.[sceneViewKey] : null;
         },

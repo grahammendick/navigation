@@ -136,9 +136,11 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             else registerSceneViews(children);
         }
     }, [registerRootView, allScenes]);
-    const {instance: historyCacheInstance, set: setHistory} = useContext(HistoryCacheContext);
+    const defaultHistoryCache = useContext(HistoryCacheContext);
+    const {instance: historyCacheInstance, supportsPrecommitNavigation, set: setHistory} = defaultHistoryCache;
     const historyCache = useMemo(() => ({
         instance: historyCacheInstance,
+        supportsPrecommitNavigation,
         get: ({stateNavigator: {stateContext: {url, history, crumbs, oldUrl}}}: NavigationEvent, sceneViewKey: string) => {
             if (!oldUrl) return null;
             const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
@@ -148,7 +150,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     }), [historyCacheInstance, setHistory]);
     const sceneData = getScenes();
     return (stateContext.state &&
-        <HistoryCacheContext.Provider value={historyCache}>
+        <HistoryCacheContext.Provider value={!supportsPrecommitNavigation ? defaultHistoryCache : historyCache}>
             <SharedElementContext.Provider value={sharedElementRegistry as any}>
                 <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
                     {scenes => (
