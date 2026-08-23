@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import React, { useCallback, useContext, useOptimistic, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
@@ -14,8 +14,9 @@ const supportsPrecommitNavigation = typeof window !== 'undefined' && !!window.Na
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
-    const navigationDeferredEvent = useDeferredValue?.(navigationEvent) || navigationEvent;
+    const [optimisticNavigationEvent, setOptimisticNavigationEvent] = useOptimistic?.(navigationEvent);
     const [isPending, startTransition] = useTransition?.() || [false];
+    const optimisticNavigation = useMemo(() => ({navigationEvent: navigationEvent?.data, optimisticNavigationEvent: optimisticNavigationEvent?.data}), [navigationEvent, optimisticNavigationEvent]);
     const historyCacheRef = useRef({});
     const historyCache = useMemo(() => ({
         instance: historyCacheRef,
@@ -50,9 +51,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
                     suspendNavigation(stateContext, () => {
                         navigating = true;
-                        const {oldState, state, crumbs} = stateContext;
-                        const refresh = oldState === state && crumbs.length === this.stateContext.crumbs.length;
-                        const startTran = (!refresh && startTransition) || ((transition) => transition());
+                        const startTran = startTransition || ((transition) => transition());
                         intercept.title = typeof document !== 'undefined' && createFromFetch ? document.title : null;
                         intercept.resume = resumeNavigation;
                         startTran(() => {
@@ -65,7 +64,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
         const asyncNavigator = new AsyncStateNavigator()
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
-        setNavigationEvent({data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept});
+        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept};
+        setNavigationEvent(nextNavigationEvent);
+        if (intercept.resume) setOptimisticNavigationEvent(nextNavigationEvent);
         if (typeof window !== 'undefined' && intercept.resume && supportsPrecommitNavigation && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             if (!intercept.controller) {
                 window.navigation.addEventListener('navigate', e => {
@@ -158,7 +159,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [stateNavigator, navigationEvent, raiseNavigationEvent]);
     React.useInsertionEffect?.(() => {
         const commit = navigationEvent.intercept?.commit;
-        if (!isPending && navigationEvent === navigationDeferredEvent && commit) {
+        if (!isPending && commit) {
             commit();
             const title = typeof document !== 'undefined' ? document.title : null;
             const oldTitle = navigationEvent.intercept?.title;
@@ -167,9 +168,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
             }, {once: true});
         }
-    }, [isPending, navigationEvent, navigationDeferredEvent]);
+    }, [isPending, navigationEvent]);
     useEffect(() => {
-        if (!isPending && navigationEvent === navigationDeferredEvent) {
+        if (!isPending) {
             const {stateContext: {url, historyAction, history}} = navigationEvent.data.stateNavigator;
             const title = typeof document !== 'undefined' ? document.title : null;
             const oldTitle = navigationEvent.intercept?.title;
@@ -197,7 +198,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 if (!historyUrls[historyKeys[i]]) delete historyCacheRef.current[url];
             }
         }
-    }, [isPending, navigationEvent, navigationDeferredEvent]);
+    }, [isPending, navigationEvent]);
     useEffect(() => {
         if (typeof window === 'undefined' || !createFromFetch || !supportsPrecommitNavigation) return;
         stateNavigator.historyManager.interceptHistory((navigationLink: string, {signal, hasUAVisualTransition}: NavigateEvent) => (
@@ -221,8 +222,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         return offHmrReload;
     }, [navigationEvent, onHmrReload]);
     return (
-        <NavigationContext.Provider value={navigationEvent?.data}>
-            <NavigationDeferredContext.Provider value={navigationDeferredEvent?.data}>
+        <NavigationContext.Provider value={optimisticNavigationEvent?.data}>
+            <NavigationDeferredContext.Provider value={optimisticNavigation}>
                 <RefetchContext.Provider value={refetchControl}>
                     <HistoryCacheContext.Provider value={historyCache}>
                         {children}

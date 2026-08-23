@@ -88,44 +88,39 @@ const SceneView = ({active, name, refetch, pending, fallback, errorFallback, chi
 
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, refetch, name} = props;
-    const rendered = useRef(false);
     const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext);
-    const navigationEvent = useNavigationEvent();
-    const navigationDeferredEvent = useContext(NavigationDeferredContext);
+    const ancestorNavigationEvent = useNavigationEvent();
+    const {navigationEvent, optimisticNavigationEvent} = useContext(NavigationDeferredContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     useEffect(() => {
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
-    useEffect(() => {
-        rendered.current = true;
-    }, []);
     const refetchControl = useMemo(() => ({
         sceneViewKey,
         refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
         registerSceneView: () => {},
         deserialize,
-    }), [navigationEvent, refetcher, deserialize]);
-    const {state, data, stateNavigator: {stateContext}} = navigationEvent;
+    }), [sceneViewKey, refetcher, deserialize]);
+    const {state, data, oldState, stateNavigator: {stateContext}} = optimisticNavigationEvent;
     const {oldData} = stateContext;
-    const show =  active != null && state && (
-        typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
+    const getShow = (stateKey: string) => (
+        active != null && state && (
+            typeof active === 'string' ? stateKey === active : active.indexOf(stateKey) !== -1
+        )
     );
-    const refetching = (() => {
-        if (rendered.current && show && navigationDeferredEvent !== navigationEvent) {
-            if (!refetch) return true;
-            for(let i = 0; i < refetch.length; i++) {
-                if (data[refetch[i]] !== oldData[refetch[i]]) return true;
-            }
+    const navEvent = (() => {
+        if (!getShow(state?.key) || !getShow(oldState?.key)) return navigationEvent;
+        if (!refetch) return navigationEvent;
+        for(let i = 0; i < refetch.length; i++) {
+            if (data[refetch[i]] !== oldData[refetch[i]]) return navigationEvent;
         }
-        return false;
+        return ancestorNavigationEvent;
     })();
     return (
-        <NavigationContext.Provider value={refetching ? navigationDeferredEvent : navigationEvent}>
-            <NavigationDeferredContext.Provider value={navigationDeferredEvent}>
-                <RefetchContext.Provider value={refetchControl}>
-                    <SceneView {...props} pending={navigationEvent !== navigationDeferredEvent} />
-                </RefetchContext.Provider>
-            </NavigationDeferredContext.Provider>
+        <NavigationContext.Provider value={navEvent}>
+            <RefetchContext.Provider value={refetchControl}>
+                <SceneView {...props} pending={navigationEvent !== optimisticNavigationEvent} />
+            </RefetchContext.Provider>
         </NavigationContext.Provider>
     )
 }

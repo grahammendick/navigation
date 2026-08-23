@@ -1,4 +1,5 @@
 import { createContext } from 'react';
 import { StateNavigator } from 'navigation';
 
-export default createContext({ oldState: null, state: null, data: {}, stateNavigator: new StateNavigator() });
+const navigationEvent = {oldState: null, state: null, data: {}, stateNavigator: new StateNavigator()};
+export default createContext({navigationEvent, optimisticNavigationEvent: navigationEvent});
