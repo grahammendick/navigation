@@ -176,7 +176,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [isPending, navigationEvent]);
     useEffect(() => {
         if (!isPending) {
-            const {stateContext: {url, historyAction, history}} = navigationEvent.data.stateNavigator;
+            const {stateContext: {url, historyAction}} = navigationEvent.data.stateNavigator;
             const title = typeof document !== 'undefined' ? document.title : null;
             const oldTitle = navigationEvent.intercept?.title;
             if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
