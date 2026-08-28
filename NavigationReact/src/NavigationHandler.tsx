@@ -14,9 +14,9 @@ const supportsPrecommitNavigation = typeof window !== 'undefined' && !!window.Na
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
-    const [, setTransitionAborted] = useState({});
     const [nextNavigationEvent, setNextNavigationEvent] = useOptimistic?.(navigationEvent);
     const [isPending, startTransition] = useTransition?.() || [false];
+    const [, setTransitionAborted] = useState({});
     const transitionAborted = nextNavigationEvent?.intercept?.signal?.aborted;
     const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: !transitionAborted ? nextNavigationEvent?.data : navigationEvent?.data}), [navigationEvent, nextNavigationEvent, transitionAborted]);
     const historyCacheRef = useRef({});
