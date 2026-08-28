@@ -4,7 +4,7 @@ import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
-import NavigationDeferredContext from './NavigationDeferredContext.js';
+import TransitionContext from './TransitionContext.js';
 import BundlerContext from './BundlerContext.js';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
@@ -14,9 +14,9 @@ const supportsPrecommitNavigation = typeof window !== 'undefined' && !!window.Na
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
-    const [optimisticNavigationEvent, setOptimisticNavigationEvent] = useOptimistic?.(navigationEvent);
+    const [nextNavigationEvent, setNextNavigationEvent] = useOptimistic?.(navigationEvent);
     const [isPending, startTransition] = useTransition?.() || [false];
-    const optimisticNavigation = useMemo(() => ({navigationEvent: navigationEvent?.data, optimisticNavigationEvent: optimisticNavigationEvent?.data}), [navigationEvent, optimisticNavigationEvent]);
+    const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
     const historyCacheRef = useRef({});
     const historyCache = useMemo(() => ({
         instance: historyCacheRef,
@@ -66,7 +66,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const {url, oldState, state, data, asyncData, historyAction, history} = asyncNavigator.stateContext;
         const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept};
         setNavigationEvent(nextNavigationEvent);
-        if (intercept.resume) setOptimisticNavigationEvent(nextNavigationEvent);
+        if (intercept.resume) setNextNavigationEvent(nextNavigationEvent);
         if (typeof window !== 'undefined' && intercept.resume && supportsPrecommitNavigation && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             if (!intercept.controller) {
                 window.navigation.addEventListener('navigate', e => {
@@ -222,14 +222,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         return offHmrReload;
     }, [navigationEvent, onHmrReload]);
     return (
-        <NavigationContext.Provider value={optimisticNavigationEvent?.data}>
-            <NavigationDeferredContext.Provider value={optimisticNavigation}>
+        <NavigationContext.Provider value={nextNavigationEvent?.data}>
+            <TransitionContext.Provider value={navigationTransition}>
                 <RefetchContext.Provider value={refetchControl}>
                     <HistoryCacheContext.Provider value={historyCache}>
                         {children}
                     </HistoryCacheContext.Provider>
                 </RefetchContext.Provider>
-            </NavigationDeferredContext.Provider>
+            </TransitionContext.Provider>
         </NavigationContext.Provider>
     )
 }

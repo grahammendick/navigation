@@ -5,7 +5,7 @@ import useNavigationEvent from './useNavigationEvent.js';
 import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
-import NavigationDeferredContext from './NavigationDeferredContext.js';
+import NavigationDeferredContext from './TransitionContext.js';
 import NavigationContext from './NavigationContext.js';
 
 const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
@@ -90,7 +90,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, refetch, name} = props;
     const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext);
     const ancestorNavigationEvent = useNavigationEvent();
-    const {navigationEvent, optimisticNavigationEvent} = useContext(NavigationDeferredContext);
+    const {navigationEvent, nextNavigationEvent} = useContext(NavigationDeferredContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     useEffect(() => {
         registerSceneView(sceneViewKey, active);
@@ -101,7 +101,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         registerSceneView: () => {},
         deserialize,
     }), [sceneViewKey, refetcher, deserialize]);
-    const {state, data, oldState, stateNavigator: {stateContext}} = optimisticNavigationEvent;
+    const {state, data, oldState, stateNavigator: {stateContext}} = nextNavigationEvent;
     const {oldData} = stateContext;
     const getShow = (stateKey: string) => (
         active != null && state && (
@@ -119,7 +119,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     return (
         <NavigationContext.Provider value={navEvent}>
             <RefetchContext.Provider value={refetchControl}>
-                <SceneView {...props} pending={navigationEvent !== optimisticNavigationEvent} />
+                <SceneView {...props} pending={navigationEvent !== nextNavigationEvent} />
             </RefetchContext.Provider>
         </NavigationContext.Provider>
     )
