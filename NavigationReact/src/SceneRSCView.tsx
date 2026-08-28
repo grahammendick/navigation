@@ -108,16 +108,15 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
             typeof active === 'string' ? stateKey === active : active.indexOf(stateKey) !== -1
         )
     );
-    const navEvent = (() => {
-        if (!getShow(state?.key) || !getShow(oldState?.key)) return navigationEvent;
-        if (!refetch) return navigationEvent;
+    const hidingOrFetching = (() => {
+        if (!getShow(state?.key) || !getShow(oldState?.key) || !refetch) return true;
         for(let i = 0; i < refetch.length; i++) {
-            if (data[refetch[i]] !== oldData[refetch[i]]) return navigationEvent;
+            if (data[refetch[i]] !== oldData[refetch[i]]) return true;
         }
-        return ancestorNavigationEvent;
+        return false;
     })();
     return (
-        <NavigationContext.Provider value={navEvent}>
+        <NavigationContext.Provider value={hidingOrFetching ? navigationEvent : ancestorNavigationEvent}>
             <RefetchContext.Provider value={refetchControl}>
                 <SceneView {...props} pending={navigationEvent !== nextNavigationEvent} />
             </RefetchContext.Provider>
