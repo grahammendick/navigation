@@ -14,9 +14,11 @@ const supportsPrecommitNavigation = typeof window !== 'undefined' && !!window.Na
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
+    const [, setTransitionAborted] = useState({});
     const [nextNavigationEvent, setNextNavigationEvent] = useOptimistic?.(navigationEvent);
     const [isPending, startTransition] = useTransition?.() || [false];
-    const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
+    const transitionAborted = nextNavigationEvent?.intercept?.signal?.aborted;
+    const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: !transitionAborted ? nextNavigationEvent?.data : navigationEvent?.data}), [navigationEvent, nextNavigationEvent, transitionAborted]);
     const historyCacheRef = useRef({});
     const historyCache = useMemo(() => ({
         instance: historyCacheRef,
@@ -79,7 +81,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                                 intercept.commit = resolve;
                                 intercept.signal = e.signal;
                                 if (e.navigationType !== 'traverse') intercept.controller = controller;
-                                e.signal.addEventListener('abort', () => reject(e.signal.reason));
+                                e.signal.addEventListener('abort', () => {
+                                    reject(e.signal.reason)
+                                    setTransitionAborted({});
+                                });
                             });
                         }
                     });
@@ -205,7 +210,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             new Promise((resolve, reject) => {
                 const intercept = {commit: resolve, signal, hasUAVisualTransition};
                 navigationEvent.data.stateNavigator.navigateLink(navigationLink, undefined, true, undefined, undefined, intercept);
-                signal.addEventListener('abort', () => reject(signal.reason));
+                signal.addEventListener('abort', () => {
+                    reject(signal.reason);
+                    setTransitionAborted({});
+                });
             })
         ));
     }, [navigationEvent, stateNavigator.historyManager, createFromFetch])
@@ -222,7 +230,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         return offHmrReload;
     }, [navigationEvent, onHmrReload]);
     return (
-        <NavigationContext.Provider value={nextNavigationEvent?.data}>
+        <NavigationContext.Provider value={navigationTransition.nextNavigationEvent}>
             <TransitionContext.Provider value={navigationTransition}>
                 <RefetchContext.Provider value={refetchControl}>
                     <HistoryCacheContext.Provider value={historyCache}>
