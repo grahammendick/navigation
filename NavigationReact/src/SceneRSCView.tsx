@@ -17,7 +17,7 @@ const SceneViewInner = ({children, onMount}) => {
     return children
 };
 
-const SceneView = ({active, name, refetch, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean}) => {
+const SceneView = ({active, name, refetch, __checkCrumb, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean, __checkCrumb?: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const {state, stateNavigator: {stateContext}} = navigationEvent;
     const {oldUrl, historyAction} = stateContext;
@@ -47,7 +47,7 @@ const SceneView = ({active, name, refetch, pending, fallback, errorFallback, chi
         if (!getShow(state?.key)) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
         if (navigationEvent['rscCache'][sceneViewKey] || suspended.current) return true;
-        if (oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
+        if (__checkCrumb && oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
         for(let i = 0; i < refetch.length; i++) {
             if (data[refetch[i]] !== oldData[refetch[i]]) return true;
         }
