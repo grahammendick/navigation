@@ -14,11 +14,11 @@ const supportsPrecommitNavigation = typeof window !== 'undefined' && !!window.Na
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept}>();
-    const [nextNavigationEvent, setNextNavigationEvent] = useOptimistic?.(navigationEvent);
+    const [_nextNavigationEvent, setNextNavigationEvent] = useOptimistic?.(navigationEvent);
     const [isPending, startTransition] = useTransition?.() || [false];
     const [, setTransitionAborted] = useState({});
-    const transitionAborted = nextNavigationEvent?.intercept?.signal?.aborted;
-    const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: !transitionAborted ? nextNavigationEvent?.data : navigationEvent?.data}), [navigationEvent, nextNavigationEvent, transitionAborted]);
+    const nextNavigationEvent = !_nextNavigationEvent?.intercept?.signal?.aborted ? _nextNavigationEvent : navigationEvent;
+    const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
     const historyCacheRef = useRef({});
     const historyCache = useMemo(() => ({
         instance: historyCacheRef,
@@ -231,7 +231,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         return offHmrReload;
     }, [navigationEvent, onHmrReload]);
     return (
-        <NavigationContext.Provider value={navigationTransition.nextNavigationEvent}>
+        <NavigationContext.Provider value={nextNavigationEvent?.data}>
             <TransitionContext.Provider value={navigationTransition}>
                 <RefetchContext.Provider value={refetchControl}>
                     <HistoryCacheContext.Provider value={historyCache}>
