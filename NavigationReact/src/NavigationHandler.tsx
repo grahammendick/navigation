@@ -101,7 +101,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         sceneViewKey: null,
         refetcher: (sceneViewKey: string | boolean = true) => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationTransition.navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
         },
         registerSceneView: (sceneViewKey: string, active: string | string[]) => {
@@ -153,7 +153,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
             return !actionId ? !res.url ? res.sceneViews[sceneViewKey] : new Promise(() => {}) : res.data;
         },
-    }), [nextNavigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch]);
+    }), [navigationEvent, nextNavigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch]);
     useEffect(() => {
         const onNavigate = () => {
             if (navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
