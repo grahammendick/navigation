@@ -1,22 +1,22 @@
 import React from 'react';
 import { State } from 'navigation';
-import { NavigationContext, NavigationDeferredContext, NavigationEvent } from 'navigation-react';
+import { NavigationContext, TransitionContext, NavigationEvent } from 'navigation-react';
 import withStateNavigator from './withStateNavigator.js';
 import { SceneProps } from './Props.js';
-type SceneState = { navigationEvent: NavigationEvent, navigationDeferredEvent: NavigationEvent };
+type SceneState = { navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent } };
 
 class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEvent, navigationDeferredEvent: NavigationEvent}, SceneState> {
     constructor(props) {
         super(props);
-        this.state = {navigationEvent: null, navigationDeferredEvent: null};
+        this.state = {navigationEvent: null, navigationTransition: null};
     }
     static defaultProps = {
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props: SceneProps & {navigationEvent: NavigationEvent, navigationDeferredEvent: NavigationEvent}) {
-        var {url, navigationEvent, navigationDeferredEvent} = props;
+    static getDerivedStateFromProps(props: SceneProps & {navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent}}) {
+        var {url, navigationEvent, navigationTransition} = props;
         var {url: currentUrl, state} = navigationEvent.stateNavigator.stateContext;
-        return (!state || url !== currentUrl) ? null : {navigationEvent, navigationDeferredEvent};
+        return (!state || url !== currentUrl) ? null : {navigationEvent, navigationTransition};
     }
     shouldComponentUpdate({crumb, rest, navigationEvent, navigationDeferredEvent}) {
         var {crumbs} = navigationEvent.stateNavigator.stateContext;
@@ -24,14 +24,14 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
         return freezableOrCurrent || navigationEvent !== this.props.navigationEvent || navigationDeferredEvent !== this.props.navigationDeferredEvent;
     }
     render() {
-        var {navigationEvent, navigationDeferredEvent} = this.state;
+        var {navigationEvent, navigationTransition} = this.state;
         var {crumb, navigationEvent: {stateNavigator}, className, style, wrap} = this.props;
         var {crumbs} = stateNavigator.stateContext;
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
         var {state, data} = stateContext || crumbs[crumb] || {};
         return (
             <NavigationContext.Provider value={navigationEvent}>
-                <NavigationDeferredContext.Provider value={navigationDeferredEvent}>
+                <TransitionContext.Provider value={navigationTransition}>
                     {wrap ? (
                         <div data-scene="true" className={className}
                             style={{...style, display: navigationEvent ? style?.display || undefined : 'none'}}>
@@ -40,7 +40,7 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
                     ) : (
                         navigationEvent && this.props.renderScene(state, data)
                     )}
-                </NavigationDeferredContext.Provider>
+                </TransitionContext.Provider>
             </NavigationContext.Provider>
         );
     }

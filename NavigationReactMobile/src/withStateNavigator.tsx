@@ -1,15 +1,15 @@
 'use client'
 import React from 'react';
-import { NavigationContext, NavigationDeferredContext } from 'navigation-react';
+import { NavigationContext, TransitionContext } from 'navigation-react';
 
 export default Component => props => (
     <NavigationContext.Consumer>
         {(navigationEvent) => (
-            <NavigationDeferredContext.Consumer>
-                {(navigationDeferredEvent) => (
-                    <Component stateNavigator={navigationEvent.stateNavigator} navigationEvent={navigationEvent} navigationDeferredEvent={navigationDeferredEvent} {...props} />
+            <TransitionContext.Consumer>
+                {(navigationTransition) => (
+                    <Component stateNavigator={navigationEvent.stateNavigator} navigationEvent={navigationEvent} navigationTransition={navigationTransition} {...props} />
                 )}
-            </NavigationDeferredContext.Consumer>
+            </TransitionContext.Consumer>
         )}
     </NavigationContext.Consumer>
 );

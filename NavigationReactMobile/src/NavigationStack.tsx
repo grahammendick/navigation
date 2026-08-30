@@ -1,7 +1,7 @@
 'use client'
 import React, {useRef, useState, useContext, useMemo, useEffect, ReactElement} from 'react';
 import { State, StateNavigator } from 'navigation';
-import { NavigationContext, HistoryCacheContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
+import { NavigationContext, HistoryCacheContext, TransitionContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
 import Scene from './Scene.js';
 import Freeze from './Freeze.js';
 import SharedElementContext from './SharedElementContext.js';
@@ -11,7 +11,7 @@ import SharedElementAnimation from './SharedElementAnimation.js';
 import useSharedElementRegistry from './useSharedElementRegistry.js';
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, ignorePause: boolean};
 
-const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
+const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
     className: sceneClassName, style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
     const sharedElementRegistry = useSharedElementRegistry();
     const registerRootView = useRootViewRegistry();
@@ -168,6 +168,23 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             </SharedElementContext.Provider>
         </HistoryCacheContext.Provider>
     )
+}
+
+const NavigationStack = (props: NavigationStackProps) => {
+    const ancestorNavigationEvent = useContext(NavigationContext);
+    const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
+    const refresh = navigationEvent.state === nextNavigationEvent.state
+        && navigationEvent.stateNavigator.stateContext.crumbs.length === nextNavigationEvent.stateNavigator.stateContext.crumbs.length;
+    const navigationTransition = useMemo(() => (
+        {navigationEvent, nextNavigationEvent: refresh ? nextNavigationEvent : navigationEvent}
+    ), [navigationEvent, nextNavigationEvent, refresh]);
+    return (
+        <NavigationContext.Provider value={refresh ? ancestorNavigationEvent : navigationEvent}>
+            <TransitionContext.Provider value={navigationTransition}>
+                <NavigationStackInner {...props}/>
+            </TransitionContext.Provider>
+        </NavigationContext.Provider>
+    );
 }
 
 NavigationStack.Scene = ({children}) => children;
