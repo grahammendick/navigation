@@ -17,6 +17,7 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
     const registerRootView = useRootViewRegistry();
     const navigationEvent = useContext(NavigationContext);
     const {stateNavigator} = navigationEvent;
+    const resetLinkStateContext = useRef(null);
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false, ignorePause: false});
     const scenes = {};
     let firstLink;
@@ -42,7 +43,10 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
             let resetLink = !state ? firstLink : undefined;
             if (!resetLink && [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]))
                 resetLink = stackInvalidatedLink != null ? stackInvalidatedLink : firstLink;
-            if (resetLink != null) stateNavigator.navigateLink(resetLink);
+            if (resetLink != null && stateNavigator.stateContext !== resetLinkStateContext.current) {
+                stateNavigator.navigateLink(resetLink);
+                resetLinkStateContext.current = stateNavigator.stateContext;
+            }
         }
         return () => stateNavigator.offBeforeNavigate(validate);
     }, [children, stateNavigator, scenes, allScenes, stackInvalidatedLink]);
