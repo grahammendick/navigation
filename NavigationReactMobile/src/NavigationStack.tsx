@@ -147,12 +147,9 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
         get: (navigationEvent: NavigationEvent, sceneViewKey: string) => {
             const {stateNavigator: {stateContext: {url, history, crumbs, oldUrl}}} = navigationEvent;
             if (!oldUrl) return null;
-            const historyItem = !supportsPrecommitNavigation ? getHistory(navigationEvent, sceneViewKey) : null;
-            if (!historyItem) {
-                const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
-                return ((history && oldCrumbs.length !== crumbs.length) || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
-            }
-            return historyItem;
+            const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
+            const historyItem = ((history && oldCrumbs.length !== crumbs.length) || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
+            return (!historyItem && !supportsPrecommitNavigation) ? getHistory(navigationEvent, sceneViewKey) : historyItem;
         },
         set: setHistory
     }), [historyCacheInstance, getHistory, setHistory]);
