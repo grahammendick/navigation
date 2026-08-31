@@ -19,6 +19,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
     const insets = useRef({top: 0, bottom: 0});
     const navigationEvent = useContext(NavigationContext);
+    const resetLinkStateContext = useRef(null);
     const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
     const scenes = {};
     let firstLink;
@@ -53,7 +54,10 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
             let resetLink = !state ? firstLink : undefined;
             if (!resetLink && [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]))
                 resetLink = stackInvalidatedLink != null ? stackInvalidatedLink : firstLink;
-            if (resetLink != null) stateNavigator.navigateLink(resetLink);
+            if (resetLink != null && stateNavigator.stateContext !== resetLinkStateContext.current) {
+                stateNavigator.navigateLink(resetLink);
+                resetLinkStateContext.current = stateNavigator.stateContext;
+            }
         }
         return () => stateNavigator.offBeforeNavigate(validate);
     }, [children, navigationEvent, scenes, allScenes, stackInvalidatedLink]);
