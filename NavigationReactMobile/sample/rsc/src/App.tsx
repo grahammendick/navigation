@@ -21,7 +21,7 @@ const App = async ({url}: any) => {
               <Scene stateKey="people" refetch={[]}>
                 <People />
               </Scene>
-              <Scene stateKey="person" refetch={['id']}>
+              <Scene stateKey="person" refetch={[]}>
                 <Person />
               </Scene>
           </NavigationStack>

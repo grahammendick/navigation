@@ -17,7 +17,7 @@ const SceneViewInner = ({children, onMount}) => {
     return children
 };
 
-const SceneView = ({active, name, refetch, __checkCrumb, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean, __checkCrumb?: boolean}) => {
+const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean, rendered: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const {state, stateNavigator: {stateContext}} = navigationEvent;
     const {oldUrl, historyAction} = stateContext;
@@ -41,13 +41,13 @@ const SceneView = ({active, name, refetch, __checkCrumb, pending, fallback, erro
     const renderedSceneView = useRef(null);
     const fetchingFn = useCallback(((navigationEvent) => {
         const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
-        const {crumbs, oldUrl, oldData} = stateContext;
+        const {oldData} = stateContext;
         const cacheIgnorable = navigationEvent['ignoreCache'];
         const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
         if (!getShow(state?.key)) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
         if (navigationEvent['rscCache'][sceneViewKey] || suspended.current) return true;
-        if (__checkCrumb && oldUrl && oldUrl.split('crumb=').length - 1 !== crumbs.length) return true;
+        if (!rendered) return true;
         for(let i = 0; i < refetch.length; i++) {
             if (data[refetch[i]] !== oldData[refetch[i]]) return true;
         }
@@ -123,7 +123,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     return (
         <NavigationContext.Provider value={optimistic ? ancestorNavigationEvent : navigationEvent}>
             <RefetchContext.Provider value={refetchControl}>
-                <SceneView {...props} pending={navigationEvent !== nextNavigationEvent} />
+                <SceneView {...props} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
             </RefetchContext.Provider>
         </NavigationContext.Provider>
     )
