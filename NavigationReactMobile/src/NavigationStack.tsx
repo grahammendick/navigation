@@ -140,21 +140,25 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
             else registerSceneViews(children);
         }
     }, [registerRootView, allScenes]);
-    const defaultHistoryCache = useContext(HistoryCacheContext);
-    const {instance: historyCacheInstance, supportsPrecommitNavigation, set: setHistory} = defaultHistoryCache;
+    const {instance: historyCacheInstance, supportsPrecommitNavigation, get: getHistory, set: setHistory} = useContext(HistoryCacheContext);
     const historyCache = useMemo(() => ({
         instance: historyCacheInstance,
         supportsPrecommitNavigation,
-        get: ({stateNavigator: {stateContext: {url, history, crumbs, oldUrl}}}: NavigationEvent, sceneViewKey: string) => {
+        get: (navigationEvent: NavigationEvent, sceneViewKey: string) => {
+            const {stateNavigator: {stateContext: {url, history, crumbs, oldUrl}}} = navigationEvent;
             if (!oldUrl) return null;
-            const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
-            return ((history && oldCrumbs.length !== crumbs.length) || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
+            const historyItem = !supportsPrecommitNavigation ? getHistory(navigationEvent, sceneViewKey) : null;
+            if (!historyItem) {
+                const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
+                return ((history && oldCrumbs.length !== crumbs.length) || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
+            }
+            return historyItem;
         },
         set: setHistory
-    }), [historyCacheInstance, setHistory]);
+    }), [historyCacheInstance, getHistory, setHistory]);
     const sceneData = getScenes();
     return (stateContext.state &&
-        <HistoryCacheContext.Provider value={!supportsPrecommitNavigation ? defaultHistoryCache : historyCache}>
+        <HistoryCacheContext.Provider value={historyCache}>
             <SharedElementContext.Provider value={sharedElementRegistry as any}>
                 <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
                     {scenes => (
