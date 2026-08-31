@@ -52,7 +52,7 @@ const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFal
             if (data[refetch[i]] !== oldData[refetch[i]]) return true;
         }
         return false;
-    }), [sceneViewKey, refetch]);
+    }), [sceneViewKey, refetch, rendered]);
     const fetching = fetchingFn(navigationEvent);
     const firstScene = !oldUrl && !ignoreCache;
     if (!cachedSceneViews[sceneViewKey] && !firstScene && !ancestorFetching && fetching) {
