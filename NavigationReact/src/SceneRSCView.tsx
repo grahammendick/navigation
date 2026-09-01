@@ -5,7 +5,7 @@ import useNavigationEvent from './useNavigationEvent.js';
 import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
-import NavigationDeferredContext from './TransitionContext.js';
+import TransitionContext from './TransitionContext.js';
 import NavigationContext from './NavigationContext.js';
 
 const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
@@ -91,7 +91,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const rendered = useRef(false);
     const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext);
     const ancestorNavigationEvent = useNavigationEvent();
-    const {navigationEvent, nextNavigationEvent} = useContext(NavigationDeferredContext);
+    const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     useEffect(() => {
         registerSceneView(sceneViewKey, active);
