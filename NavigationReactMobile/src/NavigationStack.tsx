@@ -1,7 +1,7 @@
 'use client'
 import React, {useRef, useState, useContext, useMemo, useEffect, ReactElement} from 'react';
 import { State, StateNavigator } from 'navigation';
-import { NavigationContext, HistoryCacheContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
+import { NavigationContext, HistoryCacheContext, TransitionContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
 import Scene from './Scene.js';
 import Freeze from './Freeze.js';
 import SharedElementContext from './SharedElementContext.js';
@@ -11,12 +11,13 @@ import SharedElementAnimation from './SharedElementAnimation.js';
 import useSharedElementRegistry from './useSharedElementRegistry.js';
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, ignorePause: boolean};
 
-const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
+const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
     className: sceneClassName, style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
     const sharedElementRegistry = useSharedElementRegistry();
     const registerRootView = useRootViewRegistry();
     const navigationEvent = useContext(NavigationContext);
     const {stateNavigator} = navigationEvent;
+    const resetLinkStateContext = useRef(null);
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false, ignorePause: false});
     const scenes = {};
     let firstLink;
@@ -42,7 +43,10 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             let resetLink = !state ? firstLink : undefined;
             if (!resetLink && [...crumbs, nextCrumb].find(({state}) => !scenes[state.key]))
                 resetLink = stackInvalidatedLink != null ? stackInvalidatedLink : firstLink;
-            if (resetLink != null) stateNavigator.navigateLink(resetLink);
+            if (resetLink != null && stateNavigator.stateContext !== resetLinkStateContext.current) {
+                stateNavigator.navigateLink(resetLink);
+                resetLinkStateContext.current = stateNavigator.stateContext;
+            }
         }
         return () => stateNavigator.offBeforeNavigate(validate);
     }, [children, stateNavigator, scenes, allScenes, stackInvalidatedLink]);
@@ -136,21 +140,22 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             else registerSceneViews(children);
         }
     }, [registerRootView, allScenes]);
-    const defaultHistoryCache = useContext(HistoryCacheContext);
-    const {instance: historyCacheInstance, supportsPrecommitNavigation, set: setHistory} = defaultHistoryCache;
+    const {instance: historyCacheInstance, supportsPrecommitNavigation, get: getHistory, set: setHistory} = useContext(HistoryCacheContext);
     const historyCache = useMemo(() => ({
         instance: historyCacheInstance,
         supportsPrecommitNavigation,
-        get: ({stateNavigator: {stateContext: {url, history, crumbs, oldUrl}}}: NavigationEvent, sceneViewKey: string) => {
+        get: (navigationEvent: NavigationEvent, sceneViewKey: string) => {
+            const {stateNavigator: {stateContext: {url, history, crumbs, oldUrl}}} = navigationEvent;
             if (!oldUrl) return null;
             const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
-            return ((history && oldCrumbs.length !== crumbs.length) || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
+            const historyItem = ((history && oldCrumbs.length !== crumbs.length) || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
+            return (!historyItem && !supportsPrecommitNavigation) ? getHistory(navigationEvent, sceneViewKey) : historyItem;
         },
         set: setHistory
-    }), [historyCacheInstance, setHistory]);
+    }), [historyCacheInstance, getHistory, setHistory]);
     const sceneData = getScenes();
     return (stateContext.state &&
-        <HistoryCacheContext.Provider value={!supportsPrecommitNavigation ? defaultHistoryCache : historyCache}>
+        <HistoryCacheContext.Provider value={historyCache}>
             <SharedElementContext.Provider value={sharedElementRegistry as any}>
                 <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
                     {scenes => (
@@ -168,6 +173,23 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             </SharedElementContext.Provider>
         </HistoryCacheContext.Provider>
     )
+}
+
+const NavigationStack = (props: NavigationStackProps) => {
+    const ancestorNavigationEvent = useContext(NavigationContext);
+    const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
+    const refresh = navigationEvent.state === nextNavigationEvent.state
+        && navigationEvent.stateNavigator.stateContext.crumbs.length === nextNavigationEvent.stateNavigator.stateContext.crumbs.length;
+    const navigationTransition = useMemo(() => (
+        {navigationEvent, nextNavigationEvent: refresh ? nextNavigationEvent : navigationEvent}
+    ), [navigationEvent, nextNavigationEvent, refresh]);
+    return (
+        <NavigationContext.Provider value={refresh ? ancestorNavigationEvent : navigationEvent}>
+            <TransitionContext.Provider value={navigationTransition}>
+                <NavigationStackInner {...props}/>
+            </TransitionContext.Provider>
+        </NavigationContext.Provider>
+    );
 }
 
 NavigationStack.Scene = ({children}) => children;
