@@ -198,6 +198,11 @@ public class SceneFragment extends Fragment {
         protected void onAttachedToWindow() {
             super.onAttachedToWindow();
             ((ViewGroup) getParent()).addOnLayoutChangeListener(onLayoutChangeListener);
+            ViewGroup stack = (ViewGroup) getParent();
+            measure(
+                MeasureSpec.makeMeasureSpec(stack.getWidth(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(stack.getHeight(), MeasureSpec.EXACTLY));
+            layout(0, 0, stack.getWidth(), stack.getHeight());
         }
 
         @Override
