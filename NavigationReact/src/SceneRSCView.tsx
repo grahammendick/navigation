@@ -18,14 +18,15 @@ const SceneViewInner = ({children, onMount}) => {
 };
 
 const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean, rendered: boolean}) => {
-    const navigationEvent = useNavigationEvent();
+    const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
     const {state, stateNavigator: {stateContext}} = navigationEvent;
     const {oldUrl, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
-    const {deserialize} = useContext(RefetchContext);
+    const {deserialize, trigger} = useContext(RefetchContext) as any;
     const suspended = useRef(null);
     const ancestorFetchingFn = useContext(FetchingContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
+    const ancestorFetchingNext = ancestorFetchingFn(nextNavigationEvent);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     const getShow = (stateKey: string) => (
         active != null && state && (
@@ -54,10 +55,15 @@ const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFal
         return false;
     }), [sceneViewKey, refetch, rendered]);
     const fetching = fetchingFn(navigationEvent);
+    const fetchingNext = fetchingFn(nextNavigationEvent);
     const firstScene = !oldUrl && !ignoreCache;
     if (!cachedSceneViews[sceneViewKey] && !firstScene && !ancestorFetching && fetching) {
         cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey);
     }
+    if (!nextNavigationEvent['rscFetching']) nextNavigationEvent['rscFetching'] = {};
+    if (!ancestorFetching && fetching) navigationEvent['rscFetching'][sceneViewKey] = true;
+    if (!ancestorFetchingNext && fetchingNext) nextNavigationEvent['rscFetching'][sceneViewKey] ||= false;
+    trigger();
     const sceneView = (() => {
         if (!getShow(state?.key)) return null;
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];

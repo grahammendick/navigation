@@ -153,6 +153,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
             return !actionId ? !res.url ? res.sceneViews[sceneViewKey] : new Promise(() => {}) : res.data;
         },
+        trigger: () => {
+            if (navigationEvent === nextNavigationEvent) {
+                const fetching = nextNavigationEvent.data['rscFetching'];
+                const startFetch = Object.keys(fetching).find(key => !fetching[key]);
+                // if (!startFetch) trigger fetch
+            }
+        },
     }), [navigationEvent, nextNavigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch]);
     useEffect(() => {
         const onNavigate = () => {
