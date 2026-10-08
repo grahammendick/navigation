@@ -95,7 +95,7 @@ const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFal
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, refetch, name} = props;
     const rendered = useRef(false);
-    const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext);
+    const {refetcher, registerSceneView, deserialize, trigger} = useContext(RefetchContext) as any;
     const ancestorNavigationEvent = useNavigationEvent();
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -110,7 +110,8 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
         registerSceneView: () => {},
         deserialize,
-    }), [sceneViewKey, refetcher, deserialize]);
+        trigger,
+    }), [sceneViewKey, refetcher, deserialize, trigger]);
     const {state, data, oldState, stateNavigator: {stateContext}} = nextNavigationEvent;
     const {oldData} = stateContext;
     const getShow = (stateKey: string) => (
