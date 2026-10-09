@@ -35,6 +35,7 @@ app.post('*', async (req, res) => {
   const sceneViews: any = {
     people: People,
     list: List,
+    list2: List,
     person: Person,
     friends: Friends,
   };

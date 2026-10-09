@@ -12,6 +12,9 @@ const People = async () => {
       <SceneView active="people" name="list">
         <List />
       </SceneView>
+      <SceneView active="people" name="list2">
+        <List />
+      </SceneView>
     </>
   );
 }
