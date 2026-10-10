@@ -10,6 +10,7 @@ import Person from './Person';
 import People from './People';
 import List from './List';
 import Friends from './Friends';
+import Header from './Header';
 
 const app = express();
 
@@ -35,7 +36,7 @@ app.post('*', async (req, res) => {
   const sceneViews: any = {
     people: People,
     list: List,
-    list2: List,
+    header: Header,
     person: Person,
     friends: Friends,
   };
