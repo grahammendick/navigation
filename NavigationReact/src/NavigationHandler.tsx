@@ -98,13 +98,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
     }, [stateNavigator, createFromFetch]);
     if (!navigationEvent) raiseNavigationEvent();
-    const primeRefetch = (ignoreCache: boolean | string) => {
+    const primeRefetch = (sceneViewKey: string | boolean = true) => {
+        if (sceneViewKey !== true) return {[sceneViewKey as string]: false};
         const {key} = navigationEvent.data.state;
-        if (ignoreCache !== true) return {[ignoreCache as string]: false};
-        return Object.keys(rootViews.current).reduce((rscFetching, sceneViewKey) => {
-            const active = rootViews.current[sceneViewKey];
+        return Object.keys(rootViews.current).reduce((rscFetching, rootKey) => {
+            const active = rootViews.current[rootKey];
             const show = active != null && (typeof active === 'string' ? key === active : active.indexOf(key) !== -1);
-            if (show) rscFetching[sceneViewKey] = false;
+            if (show) rscFetching[rootKey] = false;
             return rscFetching;
         }, {});
     };
@@ -219,7 +219,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             navigationEvent.intercept?.resume?.();
             if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
             if (navigationEvent.intercept?.hasUAVisualTransition)
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(true)}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch()}, stateNavigator: navigationEvent.stateNavigator});
             navigationEvent.intercept = {};
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history || !window.navigation) return;
             const historyKeys = Object.keys(historyCacheRef.current);
@@ -255,7 +255,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         const offHmrReload = onHmrReload?.(() => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(true)}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch()}, stateNavigator: navigationEvent.stateNavigator});
             });
         });
         return offHmrReload;
