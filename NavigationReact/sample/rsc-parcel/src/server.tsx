@@ -67,7 +67,7 @@ app.post('*', async (req, res) => {
     refetch,
     url: oldState ? serverNavigator.stateContext.url : null,
     historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
-    sceneViews: activeViews.reduce((SceneViews, activeKey) => {
+    sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {
       const SceneView = sceneViews[activeKey];
       SceneViews[activeKey] = (
         <NavigationHandler stateNavigator={serverNavigator}>
