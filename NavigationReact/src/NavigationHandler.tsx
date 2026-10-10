@@ -99,7 +99,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [stateNavigator, createFromFetch]);
     if (!navigationEvent) raiseNavigationEvent();
     const primeRefetch = (sceneViewKey: string | boolean = true) => {
-        if (sceneViewKey !== true) return {[sceneViewKey as string]: false};
+        if (typeof sceneViewKey === 'string') return {[sceneViewKey]: false};
         const {key} = navigationEvent.data.state;
         return Object.keys(rootViews.current).reduce((rscFetching, rootKey) => {
             const active = rootViews.current[rootKey];
