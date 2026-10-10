@@ -39,7 +39,7 @@ app.post('*', async (req, res) => {
     person: Person,
     friends: Friends,
   };
-  const {url, sceneViewKey, sceneViewKeys, rootViews, actionId, args} = await decodeBody(req);
+  const {url, sceneViewKeys, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url);
   let data = null; let refetch = null;
@@ -48,7 +48,7 @@ app.post('*', async (req, res) => {
     const scene = {
       stateNavigator: serverNavigator,
       refetch: (scene: boolean = false) => {
-        refetch = scene || sceneViewKey;
+        refetch = scene || sceneViewKeys;
       }
     };
     data = await action.apply(null, url ? [...args, scene] : args);
@@ -61,7 +61,7 @@ app.post('*', async (req, res) => {
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, [] as string[]) : ((!actionId /*|| refetch === sceneViewKey*/) ? sceneViewKeys : []);
+    }, [] as string[]) : ((!actionId || refetch) ? sceneViewKeys : []);
   const stream = renderRSC({
     data,
     refetch,
