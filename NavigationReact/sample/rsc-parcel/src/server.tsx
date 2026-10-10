@@ -34,9 +34,9 @@ app.get('*', async (req, res) => {
 
 app.post('*', async (req, res) => {
   const sceneViews: any = {
+    header: Header,
     people: People,
     list: List,
-    header: Header,
     person: Person,
     friends: Friends,
   };
