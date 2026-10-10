@@ -15,7 +15,7 @@ const App = async ({url}: any) => {
       </head>
       <body>
         <NavigationProvider url={url}>
-          <SceneView active={['people', 'person']} name="header" refetch={['id', 'name']}>
+          <SceneView active={['people', 'person']} name="header" refetch={['id']}>
             <Header />
           </SceneView>
           <SceneView active="people" refetch={[]}>
