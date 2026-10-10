@@ -7,7 +7,7 @@ import HistoryCacheContext from './HistoryCacheContext.js';
 import TransitionContext from './TransitionContext.js';
 import BundlerContext from './BundlerContext.js';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
-type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
+type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, rscFetching?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 type RSCFetch = {sceneViewKeys: string[], resolve: (sceneViewKeys: string[]) => void, sceneViews: Promise<any>};
 
 const supportsPrecommitNavigation = typeof window !== 'undefined' && !!window.NavigationPrecommitController
@@ -98,6 +98,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
     }, [stateNavigator, createFromFetch]);
     if (!navigationEvent) raiseNavigationEvent();
+    const primeRefetch = (ignoreCache: boolean | string, {key}: State) => {
+        if (ignoreCache !== true) return {[ignoreCache as string]: false};
+        return Object.keys(rootViews.current).reduce((rscFetching, sceneViewKey) => {
+            const active = rootViews.current[sceneViewKey];
+            const show = active != null && (typeof active === 'string' ? key === active : active.indexOf(key) !== -1);
+            if (show) rscFetching[sceneViewKey] = false;
+            return rscFetching;
+        }, {});
+    };
     const fetchRSC = useCallback(async (sceneViewKeys: string[], actionId: string = null, args: any[] = null) => {
         const currentStateContext = nextNavigationEvent.stateNavigator.stateContext;
         const {stateContext: nextStateContext, historyManager} = nextNavigationEvent.data.stateNavigator
@@ -139,7 +148,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             nextNavigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext, nextNavigationEvent.intercept);
         } else if (actionId && res.refetch) {
             startTransition(() => {
-                setNavigationEvent({data: {...nextNavigationEvent.data, ignoreCache: res.refetch === true || res.refetch[0], rscCache: res.sceneViews}, stateNavigator: nextNavigationEvent.stateNavigator});
+                const ignoreCache = res.refetch === true || res.refetch[0];
+                setNavigationEvent({data: {...nextNavigationEvent.data, ignoreCache, rscCache: res.sceneViews, rscFetching: primeRefetch(ignoreCache, nextNavigationEvent.data.state)}, stateNavigator: nextNavigationEvent.stateNavigator});
             });
         }
         return !actionId ? !res.url ? res.sceneViews : new Promise(() => {}) : res.data;
@@ -148,7 +158,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         sceneViewKey: null,
         refetcher: (sceneViewKey: string | boolean = true) => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined, rscFetching: primeRefetch(sceneViewKey, navigationEvent.data.state)}, stateNavigator: navigationEvent.stateNavigator});
             });
         },
         registerSceneView: (sceneViewKey: string, active: string | string[]) => {
@@ -209,7 +219,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             navigationEvent.intercept?.resume?.();
             if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
             if (navigationEvent.intercept?.hasUAVisualTransition)
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(true, navigationEvent.data.state)}, stateNavigator: navigationEvent.stateNavigator});
             navigationEvent.intercept = {};
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history || !window.navigation) return;
             const historyKeys = Object.keys(historyCacheRef.current);
@@ -245,7 +255,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         const offHmrReload = onHmrReload?.(() => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(true, navigationEvent.data.state)}, stateNavigator: navigationEvent.stateNavigator});
             });
         });
         return offHmrReload;
