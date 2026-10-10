@@ -18,7 +18,8 @@ const SceneViewInner = ({children, onMount}) => {
 };
 
 const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean, rendered: boolean}) => {
-    const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
+    const navigationEvent = useNavigationEvent();
+    const {nextNavigationEvent} = useContext(TransitionContext);
     const {state, stateNavigator: {stateContext}} = navigationEvent;
     const {oldUrl, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
