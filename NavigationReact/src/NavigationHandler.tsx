@@ -98,7 +98,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
     }, [stateNavigator, createFromFetch]);
     if (!navigationEvent) raiseNavigationEvent();
-    const primeRefetch = (ignoreCache: boolean | string, {key}: State) => {
+    const primeRefetch = (ignoreCache: boolean | string) => {
+        const {key} = navigationEvent.data.state;
         if (ignoreCache !== true) return {[ignoreCache as string]: false};
         return Object.keys(rootViews.current).reduce((rscFetching, sceneViewKey) => {
             const active = rootViews.current[sceneViewKey];
@@ -148,8 +149,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             nextNavigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext, nextNavigationEvent.intercept);
         } else if (actionId && res.refetch) {
             startTransition(() => {
-                const ignoreCache = res.refetch === true || res.refetch[0];
-                setNavigationEvent({data: {...nextNavigationEvent.data, ignoreCache, rscCache: res.sceneViews, rscFetching: primeRefetch(ignoreCache, nextNavigationEvent.data.state)}, stateNavigator: nextNavigationEvent.stateNavigator});
+                setNavigationEvent({data: {...nextNavigationEvent.data, ignoreCache: res.refetch === true || res.refetch[0], rscCache: res.sceneViews, rscFetching: undefined}, stateNavigator: nextNavigationEvent.stateNavigator});
             });
         }
         return !actionId ? !res.url ? res.sceneViews : new Promise(() => {}) : res.data;
@@ -158,7 +158,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         sceneViewKey: null,
         refetcher: (sceneViewKey: string | boolean = true) => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined, rscFetching: primeRefetch(sceneViewKey, navigationEvent.data.state)}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined, rscFetching: primeRefetch(sceneViewKey)}, stateNavigator: navigationEvent.stateNavigator});
             });
         },
         registerSceneView: (sceneViewKey: string, active: string | string[]) => {
@@ -219,7 +219,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             navigationEvent.intercept?.resume?.();
             if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
             if (navigationEvent.intercept?.hasUAVisualTransition)
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(true, navigationEvent.data.state)}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(true)}, stateNavigator: navigationEvent.stateNavigator});
             navigationEvent.intercept = {};
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history || !window.navigation) return;
             const historyKeys = Object.keys(historyCacheRef.current);
@@ -255,7 +255,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         const offHmrReload = onHmrReload?.(() => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(true, navigationEvent.data.state)}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(true)}, stateNavigator: navigationEvent.stateNavigator});
             });
         });
         return offHmrReload;
