@@ -50,7 +50,7 @@ const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFal
         if ((!getShow(oldState?.key) && !cacheIgnorable) || ignoreCache) return true;
         if (navigationEvent['rscCache']?.[sceneViewKey] || suspended.current) return true;
         if (!rendered) return true;
-        if (typeof cacheIgnorable === 'string') return false;
+        if (cacheIgnorable) return false;
         if (!refetch) return true;
         for(let i = 0; i < refetch.length; i++) {
             if (data[refetch[i]] !== oldData[refetch[i]]) return true;
