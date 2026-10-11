@@ -1,15 +1,14 @@
+'use client'
 import { useNavigationEvent } from 'navigation-react';
-import { getPerson } from './data';
 
-const Header = async () => {
-  const {data: {id}} = useNavigationEvent();
-  const title = id ? (await getPerson(id)).name : 'People';
-  return (
+const Header = ({children}: any) => {
+  const {state} = useNavigationEvent();
+  return state.key === 'people' ? (
     <>
-      <title>{title}</title>
-      <h1>{title}</h1>
+      <title>People</title>
+      <h1>People</h1>
     </>
-  );
+  ) : children;
 }
 
 export default Header;
