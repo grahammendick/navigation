@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { useSceneView } from 'navigation-react';
 
-const Name = ({id, name, updateName}) => {
+const Edit = ({id, name, updateName}) => {
   const saveName = useSceneView(updateName);
   return (
     <form action={saveName}>
@@ -14,4 +14,4 @@ const Name = ({id, name, updateName}) => {
   )
 }
 
-export default Name;
+export default Edit;

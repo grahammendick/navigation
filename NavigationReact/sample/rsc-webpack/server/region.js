@@ -74,12 +74,13 @@ app.get('*', async function (req, res) {
 
 app.post('*', async function (req, res) {
   const sceneViews = {
+    header: await import('../src/Header.js'),
     people: await import('../src/People.js'),
     list: await import('../src/List.js'),
     person: await import('../src/Person.js'),
     friends: await import('../src/Friends.js')
   };
-  const {url, sceneViewKey, rootViews, actionId, args} = await decodeBody(req);
+  const {url, sceneViewKeys, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator.default);
   if (url) serverNavigator.navigateLink(url);
   let data = null; let refetch = null;
@@ -89,7 +90,7 @@ app.post('*', async function (req, res) {
     const scene = {
       stateNavigator: serverNavigator,
       refetch: (scene = false) => {
-        refetch = scene || sceneViewKey;
+        refetch = scene || sceneViewKeys;
       }
     };
     data = await action.apply(null, url ? [...args, scene] : args);
@@ -102,7 +103,7 @@ app.post('*', async function (req, res) {
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, []) : ((!actionId || refetch === sceneViewKey) ? [sceneViewKey] : []);
+    }, []) : ((!actionId || refetch) ? sceneViewKeys : []);
   const {renderToPipeableStream} = await import(
     'react-server-dom-webpack/server'
   );
