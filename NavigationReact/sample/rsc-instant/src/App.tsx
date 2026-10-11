@@ -7,7 +7,7 @@ import List from './List';
 import Person from './Person';
 import Details from './Details';
 import Header from './Header';
-import PersonHeader from './PersonHeader';
+import Name from './Name';
 
 const App = async ({url}: any) => {
   return (
@@ -21,7 +21,7 @@ const App = async ({url}: any) => {
           <SceneView active={['people', 'person']} client>
             <Header>
               <SceneView active="person" name="header" refetch={['id']} fallback={<><title>Person</title><h1>Person</h1></>}>
-                <PersonHeader />
+                <Name />
               </SceneView>
             </Header>
           </SceneView>

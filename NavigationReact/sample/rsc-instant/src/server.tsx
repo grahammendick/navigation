@@ -8,7 +8,7 @@ import stateNavigator from './stateNavigator';
 import App from './App';
 import List from './List';
 import Details from './Details';
-import PersonHeader from './PersonHeader';
+import Name from './Name';
 import Friends from './Friends';
 
 const app = express();
@@ -33,7 +33,7 @@ app.get('*', async (req, res) => {
 
 app.post('*', async (req, res) => {
   const sceneViews: any = {
-    header: PersonHeader,
+    header: Name,
     people: List,
     person: Details,
     friends: Friends,

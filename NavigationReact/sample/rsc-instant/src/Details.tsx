@@ -3,7 +3,7 @@ import { SceneView, useNavigationEvent } from 'navigation-react';
 import { getPerson } from './data';
 import Gender from './Gender';
 import Friends from './Friends';
-import Name from './Name';
+import Edit from './Edit';
 
 const Details = async () => {
   const {data: {id}} = useNavigationEvent();
@@ -11,7 +11,7 @@ const Details = async () => {
   return (
     <>
       <div>
-        <Name id={id} name={name} />
+        <Edit id={id} name={name} />
         <div>Date of Birth</div>
         <div>{dateOfBirth}</div>
         <div>Email</div>

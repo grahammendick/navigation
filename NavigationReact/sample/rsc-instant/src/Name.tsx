@@ -1,17 +1,15 @@
-'use client'
-import { useSceneView } from 'navigation-react';
-import updateName from "./updateName";
+import { useNavigationEvent } from 'navigation-react';
+import { getPerson } from './data';
 
-const Name = ({ id, name }: { id: number, name: string }) => {
-  const saveName = useSceneView(updateName);
+const Name = async () => {
+  const {data: {id}} = useNavigationEvent();
+  const {name} = await getPerson(id);
   return (
-    <form action={saveName}>
-      <input type="hidden" name="id" value={id} />
-      <input key={id} type="text" name="name" defaultValue={name} autoFocus />
-      <button type="submit">Save</button>
-      <button type="reset">Reset</button>
-    </form>
-  )
+    <>
+      <title>{name}</title>
+      <h1>{name}</h1>
+    </>
+  );
 }
 
 export default Name;
