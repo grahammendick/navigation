@@ -29,12 +29,13 @@ const get = async (request: Request) => {
 
 const post = async (request: Request) => {
   const sceneViews: any = {
+    header: await import('./Header.tsx'),
     people: await import('./People.tsx'),
     list: await import('./List.tsx'),
     person: await import('./Person.tsx'),
     friends: await import('./Friends.tsx')
   };
-  const {url, sceneViewKey, rootViews, actionId, args} = await decodeBody(request);
+  const {url, sceneViewKeys, rootViews, actionId, args} = await decodeBody(request);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url);
   let data = null; let refetch = null;
@@ -43,7 +44,7 @@ const post = async (request: Request) => {
     const scene = {
       stateNavigator: serverNavigator,
       refetch: (scene: boolean = false) => {
-        refetch = scene || sceneViewKey;
+        refetch = scene || sceneViewKeys;
       }
     };
     data = await action.apply(null, url ? [...args, scene] : args);
@@ -56,14 +57,14 @@ const post = async (request: Request) => {
     );
     if (show) activeRoots.push(rootKey);
     return activeRoots;
-  }, [] as string[]) : ((!actionId || refetch === sceneViewKey) ? [sceneViewKey] : []);
+  }, [] as string[]) : ((!actionId || refetch) ? sceneViewKeys : []);
   const {NavigationHandler} = await import('navigation-react');
   const stream = renderToReadableStream({
     data,
     refetch,
     url: oldState ? serverNavigator.stateContext.url : null,
     historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
-    sceneViews: activeViews.reduce((SceneViews, activeKey) => {
+    sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {
       const SceneView = sceneViews[activeKey].default;
       SceneViews[activeKey] = (
         <NavigationHandler stateNavigator={serverNavigator}>
