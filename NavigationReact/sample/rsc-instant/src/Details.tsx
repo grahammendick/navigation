@@ -10,7 +10,6 @@ const Details = async () => {
   const {name, dateOfBirth, email, phone} = await getPerson(id);
   return (
     <>
-      <title>{name}</title>
       <div>
         <Name id={id} name={name} />
         <div>Date of Birth</div>

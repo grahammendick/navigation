@@ -6,6 +6,7 @@ import People from './People';
 import List from './List';
 import Person from './Person';
 import Details from './Details';
+import Header from './Header';
 
 const App = async ({url}: any) => {
   return (
@@ -16,6 +17,9 @@ const App = async ({url}: any) => {
       </head>
       <body>
         <NavigationProvider url={url}>
+          <SceneView active={['people', 'person']} name="header" refetch={['id']}>
+            <Header />
+          </SceneView>
           <SceneView active="people" client>
             <People>
               <SceneView active="people" fallback={<h2>loading...</h2>}>
