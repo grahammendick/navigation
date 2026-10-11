@@ -10,6 +10,7 @@ const App = async ({url}: any) => {
   return (
     <html>
       <head>
+        <meta charSet="utf-8" />
         <title>Navigation React</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
       </head>
