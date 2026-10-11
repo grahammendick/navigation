@@ -89,7 +89,7 @@ const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFal
                         }}>{sceneView}</SceneViewInner>
                     </FetchingContext.Provider>
                 );
-                return fallback ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
+                return fallback && sceneView ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
             })()}
         </ErrorBoundary>
     );
