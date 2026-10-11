@@ -231,7 +231,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }, {});
             historyUrls[url] = true;
             for(let i =0; i < historyKeys.length; i ++) {
-                if (!historyUrls[historyKeys[i]]) delete historyCacheRef.current[url];
+                if (!historyUrls[historyKeys[i]]) delete historyCacheRef.current[historyKeys[i]];
             }
         }
     }, [isPending, navigationEvent]);
