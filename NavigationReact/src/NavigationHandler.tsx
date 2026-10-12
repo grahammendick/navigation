@@ -176,8 +176,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const sceneViews = await rscFetch.sceneViews;
             return sceneViews[sceneViewKey];
         },
-        trigger: () => {
-            if (navigationEvent === nextNavigationEvent) {
+        trigger: (navigationEventData: NavigationHandlerState) => {
+            if (navigationEvent === nextNavigationEvent && navigationEventData === nextNavigationEvent.data) {
                 const fetching = nextNavigationEvent.data['rscFetching'];
                 const startFetch = Object.keys(fetching).find(key => !fetching[key]);
                 const {rscFetch} = nextNavigationEvent;

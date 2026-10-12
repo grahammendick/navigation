@@ -66,7 +66,7 @@ const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFal
     if (!nextNavigationEvent['rscFetching']) nextNavigationEvent['rscFetching'] = {};
     if (!ancestorFetching && fetching) navigationEvent['rscFetching'][sceneViewKey] = true;
     if (!ancestorFetchingNext && fetchingNext) nextNavigationEvent['rscFetching'][sceneViewKey] ||= false;
-    trigger();
+    trigger(nextNavigationEvent);
     const sceneView = (() => {
         if (!getShow(state?.key)) return null;
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
