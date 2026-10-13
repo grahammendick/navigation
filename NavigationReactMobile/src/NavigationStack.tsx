@@ -12,15 +12,13 @@ import useSharedElementRegistry from './useSharedElementRegistry.js';
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, ignorePause: boolean};
 
 const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
-    className: sceneClassName, style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
+    className: sceneClassName, style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink, optimistic}: NavigationStackProps) => {
     const sharedElementRegistry = useSharedElementRegistry();
     const registerRootView = useRootViewRegistry();
     const navigationEvent = useContext(NavigationContext);
     const transition = useContext(TransitionContext);
-    const optimistic = transition.navigationEvent.state === transition.nextNavigationEvent.state
-        && transition.navigationEvent.stateNavigator.stateContext.crumbs.length === transition.nextNavigationEvent.stateNavigator.stateContext.crumbs.length;
     const navigationTransition = useMemo(() => (
-        {navigationEvent: transition.navigationEvent, nextNavigationEvent: optimistic ? transition.nextNavigationEvent : transition.navigationEvent}
+        optimistic ? transition : {...transition, nextNavigationEvent: transition.navigationEvent}
     ), [transition, optimistic]);
     const {stateNavigator} = navigationEvent;
     const resetLinkStateContext = useRef(null);
@@ -204,7 +202,7 @@ const NavigationStack = (props: NavigationStackProps) => {
         && navigationEvent.stateNavigator.stateContext.crumbs.length === nextNavigationEvent.stateNavigator.stateContext.crumbs.length;
     return (
         <NavigationContext.Provider value={optimistic ? ancestorNavigationEvent : navigationEvent}>
-            <NavigationStackInner {...props}/>
+            <NavigationStackInner {...props} optimistic={optimistic} />
         </NavigationContext.Provider>
     );
 }
