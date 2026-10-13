@@ -8,6 +8,7 @@ import stateNavigator from './stateNavigator';
 import App from './App';
 import List from './List';
 import Details from './Details';
+import Name from './Name';
 import Friends from './Friends';
 
 const app = express();
@@ -36,11 +37,12 @@ app.get('*', async (req, res) => {
 
 app.post('*', async (req, res) => {
   const sceneViews: any = {
+    header: Name,
     people: List,
     person: Details,
     friends: Friends,
   };
-  const {url, sceneViewKey, rootViews, actionId, args} = await decodeBody(req);
+  const {url, sceneViewKeys, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url);
   let data = null; let refetch = null;
@@ -49,7 +51,7 @@ app.post('*', async (req, res) => {
     const scene = {
       stateNavigator: serverNavigator,
       refetch: (scene: boolean = false) => {
-        refetch = scene || sceneViewKey;
+        refetch = scene || sceneViewKeys;
       }
     };
     data = await action.apply(null, url ? [...args, scene] : args);
@@ -62,13 +64,13 @@ app.post('*', async (req, res) => {
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, [] as string[]) : ((!actionId || refetch === sceneViewKey) ? [sceneViewKey] : []);
+    }, [] as string[]) : ((!actionId || refetch) ? sceneViewKeys : []);
   const stream = renderRSC({
     data,
     refetch,
     url: oldState ? serverNavigator.stateContext.url : null,
     historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
-    sceneViews: activeViews.reduce((SceneViews, activeKey) => {
+    sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {
       const SceneView = sceneViews[activeKey];
       SceneViews[activeKey] = (
         <NavigationHandler stateNavigator={serverNavigator}>
