@@ -17,11 +17,11 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
     const registerRootView = useRootViewRegistry();
     const navigationEvent = useContext(NavigationContext);
     const transition = useContext(TransitionContext);
-    const refresh = transition.navigationEvent.state === transition.nextNavigationEvent.state
+    const optimistic = transition.navigationEvent.state === transition.nextNavigationEvent.state
         && transition.navigationEvent.stateNavigator.stateContext.crumbs.length === transition.nextNavigationEvent.stateNavigator.stateContext.crumbs.length;
     const navigationTransition = useMemo(() => (
-        {navigationEvent: transition.navigationEvent, nextNavigationEvent: refresh ? transition.nextNavigationEvent : transition.navigationEvent}
-    ), [transition, refresh]);
+        {navigationEvent: transition.navigationEvent, nextNavigationEvent: optimistic ? transition.nextNavigationEvent : transition.navigationEvent}
+    ), [transition, optimistic]);
     const {stateNavigator} = navigationEvent;
     const resetLinkStateContext = useRef(null);
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false, ignorePause: false});
@@ -53,7 +53,7 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
         findRootViews(children);
         return rootViews;
     };
-    if (!refresh) {
+    if (!optimistic) {
         const {nextNavigationEvent} = transition;
         const {key} = nextNavigationEvent.state;
         if (allScenes[key]) {
@@ -200,10 +200,10 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
 const NavigationStack = (props: NavigationStackProps) => {
     const ancestorNavigationEvent = useContext(NavigationContext);
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
-    const refresh = navigationEvent.state === nextNavigationEvent.state
+    const optimistic = navigationEvent.state === nextNavigationEvent.state
         && navigationEvent.stateNavigator.stateContext.crumbs.length === nextNavigationEvent.stateNavigator.stateContext.crumbs.length;
     return (
-        <NavigationContext.Provider value={refresh ? ancestorNavigationEvent : navigationEvent}>
+        <NavigationContext.Provider value={optimistic ? ancestorNavigationEvent : navigationEvent}>
             <NavigationStackInner {...props}/>
         </NavigationContext.Provider>
     );
