@@ -40,17 +40,19 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
     findScenes();
     const prevScenes = useRef({});
     const allScenes = {...prevScenes.current, ...scenes};
-    const findRootViews = (elements, rootViews: {key: string, active: string | string[]}[] = []) => {
-        for(const sceneView of React.Children.toArray(elements) as any) {
-            const {name, active, __scene, children} = sceneView.props || {};
-            if (__scene) rootViews.push({key: name || (typeof active === 'string' ? active : active[0]), active});
-            else if (children) findRootViews(children, rootViews);
+    const getRootViews = ({props: {stateKey, client, children}}) => {
+        if (!client) return [{key: stateKey, active: stateKey}];
+        const rootViews: {key: string, active: string | string[]}[] = [];
+        const findRootViews = (elements) => {
+            for(const sceneView of React.Children.toArray(elements) as any) {
+                const {name, active, __scene, children} = sceneView.props || {};
+                if (__scene) rootViews.push({key: name || (typeof active === 'string' ? active : active[0]), active});
+                else if (children) findRootViews(children);
+            }
         }
+        findRootViews(children);
         return rootViews;
-    }
-    const getRootViews = ({props: {stateKey, client, children}}) => (
-        !client ? [{key: stateKey, active: stateKey}] : findRootViews(children)
-    );
+    };
     if (!refresh) {
         const {nextNavigationEvent} = transition;
         const {key} = nextNavigationEvent.state;
