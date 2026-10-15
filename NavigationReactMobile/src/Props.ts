@@ -54,6 +54,7 @@ interface NavigationMotionProps {
     style?: any;
     duration?: number;
     stackInvalidatedLink?: string;
+    optimistic?: boolean;
     sharedElementMotion?: (props: SharedElementNavigationMotionProps) => ReactElement<SharedElementMotion>;
     renderScene: (state: State, data: any) => ReactNode,
     stateNavigator?: StateNavigator;

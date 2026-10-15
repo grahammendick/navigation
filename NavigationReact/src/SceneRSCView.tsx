@@ -19,13 +19,15 @@ const SceneViewInner = ({children, onMount}) => {
 
 const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean, rendered: boolean}) => {
     const navigationEvent = useNavigationEvent();
+    const {nextNavigationEvent} = useContext(TransitionContext);
     const {state, stateNavigator: {stateContext}} = navigationEvent;
     const {oldUrl, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
-    const {deserialize} = useContext(RefetchContext);
+    const {deserialize, trigger} = useContext(RefetchContext) as any;
     const suspended = useRef(null);
     const ancestorFetchingFn = useContext(FetchingContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
+    const ancestorFetchingNext = ancestorFetchingFn(nextNavigationEvent);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
     const getShow = (stateKey: string) => (
         active != null && state && (
@@ -45,19 +47,26 @@ const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFal
         const cacheIgnorable = navigationEvent['ignoreCache'];
         const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
         if (!getShow(state?.key)) return false;
-        if ((!getShow(oldState?.key) && !cacheIgnorable) || !refetch || ignoreCache) return true;
-        if (navigationEvent['rscCache'][sceneViewKey] || suspended.current) return true;
+        if ((!getShow(oldState?.key) && !cacheIgnorable) || ignoreCache) return true;
+        if (navigationEvent['rscCache']?.[sceneViewKey] || suspended.current) return true;
         if (!rendered) return true;
+        if (cacheIgnorable) return false;
+        if (!refetch) return true;
         for(let i = 0; i < refetch.length; i++) {
             if (data[refetch[i]] !== oldData[refetch[i]]) return true;
         }
         return false;
     }), [sceneViewKey, refetch, rendered]);
     const fetching = fetchingFn(navigationEvent);
+    const fetchingNext = fetchingFn(nextNavigationEvent);
     const firstScene = !oldUrl && !ignoreCache;
     if (!cachedSceneViews[sceneViewKey] && !firstScene && !ancestorFetching && fetching) {
         cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey);
     }
+    if (!nextNavigationEvent['rscFetching']) nextNavigationEvent['rscFetching'] = {};
+    if (!ancestorFetching && fetching) navigationEvent['rscFetching'][sceneViewKey] = true;
+    if (!ancestorFetchingNext && fetchingNext) nextNavigationEvent['rscFetching'][sceneViewKey] ||= false;
+    trigger(nextNavigationEvent);
     const sceneView = (() => {
         if (!getShow(state?.key)) return null;
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
@@ -80,7 +89,7 @@ const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFal
                         }}>{sceneView}</SceneViewInner>
                     </FetchingContext.Provider>
                 );
-                return fallback ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
+                return fallback && sceneView ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
             })()}
         </ErrorBoundary>
     );
@@ -89,7 +98,7 @@ const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFal
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, refetch, name} = props;
     const rendered = useRef(false);
-    const {refetcher, registerSceneView, deserialize} = useContext(RefetchContext);
+    const {refetcher, registerSceneView, deserialize, trigger} = useContext(RefetchContext);
     const ancestorNavigationEvent = useNavigationEvent();
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -104,7 +113,8 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
         registerSceneView: () => {},
         deserialize,
-    }), [sceneViewKey, refetcher, deserialize]);
+        trigger,
+    }), [sceneViewKey, refetcher, deserialize, trigger]);
     const {state, data, oldState, stateNavigator: {stateContext}} = nextNavigationEvent;
     const {oldData} = stateContext;
     const getShow = (stateKey: string) => (

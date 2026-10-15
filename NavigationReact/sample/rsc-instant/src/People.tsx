@@ -6,8 +6,6 @@ const People = ({children}: any) => {
   const { name } = data;
   return (
     <>
-      <title>People</title>
-      <h1>People</h1>
       <div>
         <label htmlFor="name">Name</label>
         <input id="name" autoComplete="off" value={name || ''} autoFocus onChange={({ target: { value } }) => {

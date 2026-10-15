@@ -3,19 +3,17 @@ import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-re
 import { getPerson } from './data';
 import Gender from './Gender';
 import Friends from './Friends';
-import Name from './Name';
+import Edit from './Edit';
 
 const Person = async () => {
   const {data: {id}} = useNavigationEvent();
   const {name, dateOfBirth, email, phone} = await getPerson(id);
   return (
     <>
-      <title>{name}</title>
-      <h1>Person</h1>
       <div>
         <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
         <div>
-          <Name id={id} name={name} />
+          <Edit id={id} name={name} />
           <div>Date of Birth</div>
           <div>{dateOfBirth}</div>
           <div>Email</div>

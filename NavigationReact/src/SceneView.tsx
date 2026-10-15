@@ -21,11 +21,11 @@ const SceneView = ({active, errorFallback, client, children}: SceneViewProps) =>
     useEffect(() => {
         const registerSceneViews = (elements = children) => {
             for(const sceneView of React.Children.toArray(elements) as any) {
-                const {name, active, __scene, children} = sceneView.props;
+                const {name, active, __scene, children} = sceneView.props || {};
                 if (__scene) {
                     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
                     registerSceneView(sceneViewKey, active);
-                } else if (children?.props) registerSceneViews(children);
+                } else if (children) registerSceneViews(children);
             }
         }
         if (client) registerSceneViews();
