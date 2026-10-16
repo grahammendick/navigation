@@ -1,8 +1,9 @@
 'use client'
-import { useContext, useLayoutEffect } from 'react';
+import { use, useContext, useLayoutEffect } from 'react';
 import RefetchContext from './RefetchContext.js';
 
-const Refetch = ({keys, children}: {keys: string[], children: any}) => {
+const Refetch = ({keys: keysPromise, children}: {keys: Promise<string[]>, children: any}) => {
+    const keys = use(keysPromise);
     const refetchKeys = useContext(RefetchContext).keys;
     useLayoutEffect(() => {
         refetchKeys.current = keys;

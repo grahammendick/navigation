@@ -1,4 +1,4 @@
-import React, { cloneElement, isValidElement } from 'react';
+import React, { cloneElement, createElement, isValidElement } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.server.js';
 import { getCache } from './NavigationHandler.server.js';
@@ -11,23 +11,44 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
     const show = active != null && state && (
         typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
     );
+    let pending = 0, resolve: (keys: string[]) => void;
+    const keys = new Set<string>();
+    const promise = new Promise<string[]>(res => resolve = res);
+    const done = () => {
+        if (--pending === 0) resolve([...keys]);
+    };
     const render = (node: any) => {
+        if (typeof node?.then === 'function') {
+            pending++;
+            return node.then((tree: any) => {
+                const out = render(tree);
+                done();
+                return out;
+            });
+        }
         if (Array.isArray(node)) return node.map(render);
         if (!isValidElement<any>(node)) return node;
-        const {type, props} = node;
+        const {type, props, key} = node;
         if (type === SceneView) return node;
-        if (typeof type === 'function' && type['$$typeof'] !== Symbol.for('react.client.reference'))
-            return render((type as any)(props));
+        if (typeof type === 'function' && type['$$typeof'] !== Symbol.for('react.client.reference')) {
+            pending++;
+            const Wrapped = (props: any) => {
+                getCache().keys = keys;
+                const out = render((type as any)(props));
+                getCache().keys = null;
+                done();
+                return out;
+            };
+            return createElement(Wrapped, key != null ? {...props, key} : props);
+        }
         if (props.children === undefined) return node;
         return cloneElement(node, undefined, ...[].concat(render(props.children)));
     };
-    const keys = new Set<string>();
-    getCache().keys = keys;
     const content = (show || fetching) ? render(children) : null;
-    getCache().keys = null;
-    if (fetching) return <Refetch keys={[...keys]}>{content}</Refetch>;
+    if (pending === 0) resolve([...keys]);
+    if (fetching) return <Refetch keys={promise}>{content}</Refetch>;
     return !client
-        ? <SceneRSCView active={active} {...{...props, __scene: true}}>{show ? <Refetch keys={[...keys]}>{content}</Refetch> : null}</SceneRSCView>
+        ? <SceneRSCView active={active} {...{...props, __scene: true}}>{show ? <Refetch keys={promise}>{content}</Refetch> : null}</SceneRSCView>
         : <SceneViewClient active={active} client {...props}>{children}</SceneViewClient>;
 }
 export default SceneView;
