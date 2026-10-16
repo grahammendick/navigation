@@ -17,13 +17,13 @@ const SceneViewInner = ({children, onMount}) => {
     return children
 };
 
-const SceneView = ({active, name, keys: refetch, rendered, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], keys: string[], pending: boolean, rendered: boolean}) => {
+const SceneView = ({active, name, rendered, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean, rendered: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const {nextNavigationEvent} = useContext(TransitionContext);
     const {state, stateNavigator: {stateContext}} = navigationEvent;
     const {oldUrl, historyAction} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
-    const {deserialize, trigger} = useContext(RefetchContext) as any;
+    const {deserialize, trigger, keys} = useContext(RefetchContext) as any;
     const suspended = useRef(null);
     const ancestorFetchingFn = useContext(FetchingContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
@@ -44,6 +44,7 @@ const SceneView = ({active, name, keys: refetch, rendered, pending, fallback, er
     const fetchingFn = useCallback(((navigationEvent) => {
         const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
         const {oldData} = stateContext;
+        const refetch = keys.current;
         const cacheIgnorable = navigationEvent['ignoreCache'];
         const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
         if (!getShow(state?.key)) return false;
@@ -56,7 +57,7 @@ const SceneView = ({active, name, keys: refetch, rendered, pending, fallback, er
             if (data[refetch[i]] !== oldData[refetch[i]]) return true;
         }
         return false;
-    }), [sceneViewKey, refetch, rendered]);
+    }), [sceneViewKey, keys, rendered]);
     const fetching = fetchingFn(navigationEvent);
     const fetchingNext = fetchingFn(nextNavigationEvent);
     const firstScene = !oldUrl && !ignoreCache;
@@ -95,9 +96,10 @@ const SceneView = ({active, name, keys: refetch, rendered, pending, fallback, er
     );
 };
 
-const SceneRSCView = (props: SceneViewProps & {active: string | string[], keys: string[]}) => {
-    const {active, keys: refetch, name} = props;
+const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
+    const {active, name} = props;
     const rendered = useRef(false);
+    const keys = useRef(null);
     const {refetcher, registerSceneView, deserialize, trigger} = useContext(RefetchContext);
     const ancestorNavigationEvent = useNavigationEvent();
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
@@ -114,6 +116,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[], keys: 
         registerSceneView: () => {},
         deserialize,
         trigger,
+        keys,
     }), [sceneViewKey, refetcher, deserialize, trigger]);
     const {state, data, oldState, stateNavigator: {stateContext}} = nextNavigationEvent;
     const {oldData} = stateContext;
@@ -122,6 +125,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[], keys: 
             typeof active === 'string' ? stateKey === active : active.indexOf(stateKey) !== -1
         )
     );
+    const refetch = keys.current;
     const optimistic = (() => {
         if (!rendered.current) return true;
         if (!getShow(state?.key) || !getShow(oldState?.key) || !refetch) return false;
