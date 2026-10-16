@@ -1,7 +1,7 @@
 import React, { cloneElement, createElement, isValidElement } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.server.js';
-import { getCache } from './NavigationHandler.server.js';
+import asyncNavigationStorage from './AsyncNavigationStorage.js';
 import SceneRSCView from './SceneRSCView.js';
 import SceneViewClient from './SceneView.js';
 import Refetch from './Refetch.js';
@@ -33,9 +33,7 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
         if (typeof type === 'function' && type['$$typeof'] !== Symbol.for('react.client.reference')) {
             pending++;
             const Wrapped = (props: any) => {
-                getCache().keys = keys;
-                const out = render((type as any)(props));
-                getCache().keys = null;
+                const out = asyncNavigationStorage.run(keys, () => render((type as any)(props)));
                 done();
                 return out;
             };
