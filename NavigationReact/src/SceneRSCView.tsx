@@ -17,7 +17,7 @@ const SceneViewInner = ({children, onMount}) => {
     return children
 };
 
-const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], pending: boolean, rendered: boolean}) => {
+const SceneView = ({active, name, keys: refetch, rendered, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], keys: string[], pending: boolean, rendered: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const {nextNavigationEvent} = useContext(TransitionContext);
     const {state, stateNavigator: {stateContext}} = navigationEvent;
@@ -95,8 +95,8 @@ const SceneView = ({active, name, refetch, rendered, pending, fallback, errorFal
     );
 };
 
-const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
-    const {active, refetch, name} = props;
+const SceneRSCView = (props: SceneViewProps & {active: string | string[], keys: string[]}) => {
+    const {active, keys: refetch, name} = props;
     const rendered = useRef(false);
     const {refetcher, registerSceneView, deserialize, trigger} = useContext(RefetchContext);
     const ancestorNavigationEvent = useNavigationEvent();
