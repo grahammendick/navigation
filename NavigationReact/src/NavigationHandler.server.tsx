@@ -10,6 +10,10 @@ const NavigationHandler = ({ stateNavigator, children }: { stateNavigator: State
         get(target, key) {
             if (typeof key === 'string') asyncNavigationStorage.getStore()?.data.add(key);
             return target[key];
+        },
+        has(target, key) {
+            if (typeof key === 'string') asyncNavigationStorage.getStore()?.data.add(key);
+            return key in target;
         }
     });
     const getState = () => {
