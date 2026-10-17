@@ -36,7 +36,13 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
         if (typeof type === 'function' && type['$$typeof'] !== Symbol.for('react.client.reference')) {
             pending++;
             const Wrapped = (props: any) => {
-                const out = asyncNavigationStorage.run(keys, () => render((type as any)(props)));
+                let out;
+                try {
+                    out = asyncNavigationStorage.run(keys, () => render((type as any)(props)));
+                } catch (e) {
+                    if (e?.message?.indexOf('Suspense Exception') !== 0) done();
+                    throw e;
+                }
                 done();
                 return out;
             };
