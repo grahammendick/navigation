@@ -30,7 +30,13 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
             });
         }
         if (Array.isArray(node)) return node.map(render);
-        if (!isValidElement<any>(node)) return node;
+        if (!isValidElement<any>(node)) {
+            if (!node || typeof node !== 'object' || node['$$typeof'] !== undefined) return node;
+            if ([Object.prototype, null].indexOf(Object.getPrototypeOf(node)) === -1) return node;
+            const out: any = {};
+            for (const name in node) out[name] = render(node[name]);
+            return out;
+        }
         const {type, props, key} = node;
         if (type === SceneView) return node;
         if (type?.['$$typeof'] === Symbol.for('react.memo') || type?.['$$typeof'] === Symbol.for('react.forward_ref'))
@@ -50,10 +56,8 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
             };
             return createElement(Wrapped, key != null ? {...props, key} : props);
         }
-        const config: any = {};
-        for (const name in props)
-            if (name !== 'children') config[name] = render(props[name]);
-        return cloneElement(node, config, ...(props.children !== undefined ? [].concat(render(props.children)) : []));
+        const {children, ...rest} = props;
+        return cloneElement(node, render(rest), ...(children !== undefined ? [].concat(render(children)) : []));
     };
     const content = (show || fetching) ? render(children) : null;
     if (pending === 0) resolve([...keys]);

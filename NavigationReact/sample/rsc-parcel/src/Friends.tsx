@@ -9,7 +9,7 @@ const Friends = () => {
     const friends = await getFriends(data.id);
     return friends.filter(friend => !data.gender || friend.gender === data.gender);
   })();
-  return data.show && <FriendList friends={friends} />;
+  return data.show && <FriendList list={{friends}} />;
 }
 
 export default memo(Friends);
