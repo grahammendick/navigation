@@ -43,7 +43,7 @@ const getPerson = async (id: number) => {
     })
 }
 
-const getFriends = async (id: number, gender?: 'male' | 'female' | 'other') => {
+const getFriends = async (id: number, gender: 'male' | 'female' | 'other') => {
     return new Promise((res: ((friends: Person[]) => void)) => {
         const person = people.find(({id: personId}) => personId == id)!
         setTimeout(() => {

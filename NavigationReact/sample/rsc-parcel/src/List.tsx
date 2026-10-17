@@ -3,8 +3,8 @@ import { searchPeople } from './data';
 import Pager from './Pager';
 
 const List = async () => {
-  const {data: {name, size, sort}} = useNavigationEvent();
-  const {people, count} = await searchPeople(name, 1, size, sort);
+  const {data: {name, page, size, sort}} = useNavigationEvent();
+  const {people, count} = await searchPeople(name, page, size, sort);
   return (
     <>
       <table>
