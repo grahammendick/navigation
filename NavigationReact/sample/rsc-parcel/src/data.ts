@@ -43,7 +43,7 @@ const getPerson = async (id: number) => {
     })
 }
 
-const getFriends = async (id: number, gender?: 'male' | 'female' | 'other') => {
+const getFriends = async (id: number, gender: 'male' | 'female' | 'other') => {
     return new Promise((res: ((friends: Person[]) => void)) => {
         const person = people.find(({id: personId}) => personId == id)!
         setTimeout(() => {
@@ -54,12 +54,4 @@ const getFriends = async (id: number, gender?: 'male' | 'female' | 'other') => {
     })
 }
 
-const getAddress = async (id: number) => {
-    return new Promise((res: ((address: string) => void)) => {
-        setTimeout(() => {
-            res(`${id} Navigation Street`);
-        }, 2000);
-    })
-}
-
-export {searchPeople, getPerson, getFriends, getAddress};
+export {searchPeople, getPerson, getFriends};
