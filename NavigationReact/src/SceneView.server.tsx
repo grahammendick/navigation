@@ -18,17 +18,6 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
         if (--pending === 0) resolve({data: [...keys.data], state: keys.state});
     };
     const render = (node: any) => {
-        if (typeof node?.then === 'function') {
-            pending++;
-            return node.then((tree: any) => {
-                const out = render(tree);
-                done();
-                return out;
-            }, (err: any) => {
-                done();
-                throw err;
-            });
-        }
         if (Array.isArray(node)) return node.map(render);
         if (!isValidElement<any>(node)) {
             if (!node || typeof node !== 'object' || node['$$typeof'] !== undefined) return node;
@@ -50,6 +39,16 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
                 } catch (e) {
                     if (e?.message?.indexOf('Suspense Exception') !== 0) done();
                     throw e;
+                }
+                if (typeof out?.then === 'function') {
+                    const promise = out;
+                    return asyncNavigationStorage.run(keys, async () => {
+                        try {
+                            return render(await promise);
+                        } finally {
+                            done();
+                        }
+                    });
                 }
                 done();
                 return out;

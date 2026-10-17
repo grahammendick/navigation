@@ -1,9 +1,10 @@
 'use server-entry'
 import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-react';
-import { getPerson } from './data';
+import { getPerson, getAddress } from './data';
 import Gender from './Gender';
 import Friends from './Friends';
 import Edit from './Edit';
+import Address from './Address';
 
 const Person = async () => {
   const {data: {id}} = useNavigationEvent();
@@ -20,6 +21,7 @@ const Person = async () => {
           <div>{email}</div>
           <div>Phone</div>
           <div>{phone}</div>
+          <Address address={getAddress(id)} />
         </div>
         <Gender>
           <SceneView active="person" name="friends" fallback={<div />}>

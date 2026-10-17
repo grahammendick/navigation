@@ -54,4 +54,12 @@ const getFriends = async (id: number, gender?: 'male' | 'female' | 'other') => {
     })
 }
 
-export {searchPeople, getPerson, getFriends};
+const getAddress = async (id: number) => {
+    return new Promise((res: ((address: string) => void)) => {
+        setTimeout(() => {
+            res(`${id} Navigation Street`);
+        }, 2000);
+    })
+}
+
+export {searchPeople, getPerson, getFriends, getAddress};
