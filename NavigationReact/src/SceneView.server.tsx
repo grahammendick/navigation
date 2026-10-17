@@ -33,6 +33,8 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
         if (!isValidElement<any>(node)) return node;
         const {type, props, key} = node;
         if (type === SceneView) return node;
+        if (type?.['$$typeof'] === Symbol.for('react.memo') || type?.['$$typeof'] === Symbol.for('react.forward_ref'))
+            return render(createElement((type as any).type || (type as any).render, key != null ? {...props, key} : props));
         if (typeof type === 'function' && type['$$typeof'] !== Symbol.for('react.client.reference')) {
             pending++;
             const Wrapped = (props: any) => {

@@ -1,4 +1,5 @@
 import { useNavigationEvent } from 'navigation-react';
+import { memo } from 'react';
 import { getFriends } from './data';
 import FriendList from './FriendList';
 
@@ -11,4 +12,4 @@ const Friends = () => {
   return data.show && <FriendList friends={friends} />;
 }
 
-export default Friends;
+export default memo(Friends);
