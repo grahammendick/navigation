@@ -1,9 +1,8 @@
 import { useNavigationEvent } from 'navigation-react';
-import { getPerson } from './data';
 
-const Header = async () => {
-  const {data: {id}} = useNavigationEvent();
-  const title = id ? (await getPerson(id)).name : 'People';
+const Header = () => {
+  const {state} = useNavigationEvent();
+  const title = state.key === 'people' ? 'People' : 'Person';
   return (
     <>
       <title>{title}</title>

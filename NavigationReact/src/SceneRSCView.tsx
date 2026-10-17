@@ -53,8 +53,9 @@ const SceneView = ({active, name, rendered, pending, fallback, errorFallback, ch
         if (!rendered) return true;
         if (cacheIgnorable) return false;
         if (!refetch) return true;
-        for(let i = 0; i < refetch.length; i++) {
-            if (data[refetch[i]] !== oldData[refetch[i]]) return true;
+        if (refetch.state && state !== oldState) return true;
+        for(let i = 0; i < refetch.data.length; i++) {
+            if (data[refetch.data[i]] !== oldData[refetch.data[i]]) return true;
         }
         return false;
     }), [sceneViewKey, keys, rendered]);
@@ -129,8 +130,9 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const optimistic = (() => {
         if (!rendered.current) return true;
         if (!getShow(state?.key) || !getShow(oldState?.key) || !refetch) return false;
-        for(let i = 0; i < refetch.length; i++) {
-            if (data[refetch[i]] !== oldData[refetch[i]]) return false;
+        if (refetch.state && state !== oldState) return false;
+        for(let i = 0; i < refetch.data.length; i++) {
+            if (data[refetch.data[i]] !== oldData[refetch.data[i]]) return false;
         }
         return true;
     })();

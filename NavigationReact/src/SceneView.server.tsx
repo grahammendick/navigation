@@ -11,11 +11,11 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
     const show = active != null && state && (
         typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
     );
-    let pending = 0, resolve: (keys: string[]) => void;
-    const keys = new Set<string>();
-    const promise = new Promise<string[]>(res => resolve = res);
+    let pending = 0, resolve: (keys: {data: string[], state: boolean}) => void;
+    const keys = {data: new Set<string>(), state: false};
+    const promise = new Promise<{data: string[], state: boolean}>(res => resolve = res);
     const done = () => {
-        if (--pending === 0) resolve([...keys]);
+        if (--pending === 0) resolve({data: [...keys.data], state: keys.state});
     };
     const render = (node: any) => {
         if (typeof node?.then === 'function') {
@@ -60,7 +60,7 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
         return cloneElement(node, render(rest), ...(children !== undefined ? [].concat(render(children)) : []));
     };
     const content = (show || fetching) ? render(children) : null;
-    if (pending === 0) resolve([...keys]);
+    if (pending === 0) resolve({data: [...keys.data], state: keys.state});
     if (fetching) return <Refetch keys={promise}>{content}</Refetch>;
     return !client
         ? <SceneRSCView active={active} {...{...props, __scene: true}}>{show ? <Refetch keys={promise}>{content}</Refetch> : null}</SceneRSCView>
