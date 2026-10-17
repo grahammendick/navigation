@@ -5,6 +5,7 @@ import NavigationProvider from './NavigationProvider';
 import People from './People';
 import Person from './Person';
 import Header from './Header';
+import PersonFallback from './PersonFallback';
 
 const App = async ({url}: any) => {
   return (
@@ -16,13 +17,13 @@ const App = async ({url}: any) => {
       </head>
       <body>
         <NavigationProvider url={url}>
-          <SceneView active={['people', 'person']} name="header">
+          <SceneView active={['people', 'person']} name="header" errorFallback={<h1>Not found</h1>}>
             <Header />
           </SceneView>
           <SceneView active="people">
             <People />
           </SceneView>
-          <SceneView active="person">
+          <SceneView active="person" errorFallback={<PersonFallback />}>
             <Person />
           </SceneView>
         </NavigationProvider>

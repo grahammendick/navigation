@@ -24,6 +24,9 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
                 const out = render(tree);
                 done();
                 return out;
+            }, (err: any) => {
+                done();
+                throw err;
             });
         }
         if (Array.isArray(node)) return node.map(render);
