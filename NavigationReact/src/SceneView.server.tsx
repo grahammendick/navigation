@@ -48,8 +48,10 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
             };
             return createElement(Wrapped, key != null ? {...props, key} : props);
         }
-        if (props.children === undefined) return node;
-        return cloneElement(node, undefined, ...[].concat(render(props.children)));
+        const config: any = {};
+        for (const name in props)
+            if (name !== 'children') config[name] = render(props[name]);
+        return cloneElement(node, config, ...(props.children !== undefined ? [].concat(render(props.children)) : []));
     };
     const content = (show || fetching) ? render(children) : null;
     if (pending === 0) resolve([...keys]);
