@@ -1,15 +1,16 @@
-import { useNavigationEvent } from 'navigation-react';
-import { memo } from 'react';
+import { RefreshLink, useNavigationEvent } from 'navigation-react';
 import { getFriends } from './data';
-import FriendList from './FriendList';
 
-const Friends = () => {
-  const {data} = useNavigationEvent();
-  const friends = data.show && (async () => {
-    const friends = await getFriends(data.id);
-    return friends.filter(friend => !data.gender || friend.gender === data.gender);
-  })();
-  return data.show && <FriendList list={{friends}} />;
+const Friends = async () => {
+  const {data: {show, id, gender}} = useNavigationEvent();
+  const friends = show ? await getFriends(id, gender) : null;
+  return show && (
+    <ul>
+      {friends?.map(({id, name}) => (
+        <li key={id}><RefreshLink navigationData={{id}} includeCurrentData>{name}</RefreshLink></li>
+      ))}
+    </ul>
+  );
 }
 
-export default memo(Friends);
+export default Friends;
