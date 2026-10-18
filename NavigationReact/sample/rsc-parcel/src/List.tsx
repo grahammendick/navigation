@@ -3,9 +3,7 @@ import { searchPeople } from './data';
 import Pager from './Pager';
 
 const List = async () => {
-  const {data} = useNavigationEvent();
-  if (data.page === 2 && !data.allowed) throw Error();
-  const {name, page, size, sort} = data;
+  const {data: {name, page, size, sort}} = useNavigationEvent();
   const {people, count} = await searchPeople(name, page, size, sort);
   return (
     <>
