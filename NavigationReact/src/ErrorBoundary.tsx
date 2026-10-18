@@ -1,8 +1,8 @@
-import { Component, ReactNode, cloneElement, createElement } from 'react';
+import React, { Component, ReactNode, RefObject, cloneElement, createElement } from 'react';
 import { StateContext, StateNavigator } from 'navigation';
 import withStateNavigator from './withStateNavigator.js';
 
-type ErrorBoundaryProps = {stateNavigator: StateNavigator, errorFallback: ReactNode, children: any}
+type ErrorBoundaryProps = {stateNavigator: StateNavigator, errorFallback: ReactNode, errorRef?: RefObject<HTMLDivElement>, children: any}
 type ErrorBoundaryState = {error: Error, stateContext: StateContext};
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -18,11 +18,15 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         return {error};
     }
     render() {        
-        const {errorFallback, children} = this.props;
+        const {errorFallback, errorRef, children} = this.props;
         const {error} = this.state;
         if (error) {
             if (!errorFallback) throw error;
-            return typeof errorFallback !== 'function' ? cloneElement(errorFallback as any, {error}) : createElement(errorFallback, {error});
+            return (
+                <div ref={errorRef}>
+                    {typeof errorFallback !== 'function' ? cloneElement(errorFallback as any, {error}) : createElement(errorFallback, {error})}
+                </div>
+            );
         }
         return children;
     }

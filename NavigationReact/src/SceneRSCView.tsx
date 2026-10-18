@@ -25,6 +25,7 @@ const SceneView = ({active, name, rendered, pending, fallback, errorFallback, ch
     const historyCache = useContext(HistoryCacheContext);
     const {deserialize, trigger, keys} = useContext(RefetchContext) as any;
     const suspended = useRef(null);
+    const errored = useRef(null);
     const ancestorFetchingFn = useContext(FetchingContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
     const ancestorFetchingNext = ancestorFetchingFn(nextNavigationEvent);
@@ -49,7 +50,7 @@ const SceneView = ({active, name, rendered, pending, fallback, errorFallback, ch
         const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
         if (!getShow(state?.key)) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || ignoreCache) return true;
-        if (navigationEvent['rscCache']?.[sceneViewKey] || suspended.current) return true;
+        if (navigationEvent['rscCache']?.[sceneViewKey] || suspended.current || errored.current) return true;
         if (!rendered) return true;
         if (cacheIgnorable) return false;
         if (!refetch) return true;
@@ -79,7 +80,7 @@ const SceneView = ({active, name, rendered, pending, fallback, errorFallback, ch
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
     ), [ancestorFetchingFn, fetchingFn]);
     return (
-        <ErrorBoundary errorFallback={errorFallback}>
+        <ErrorBoundary errorFallback={errorFallback} errorRef={errored}>
             {(() => {
                 const view = (
                     <FetchingContext.Provider value={combinedFetchingFn}>
