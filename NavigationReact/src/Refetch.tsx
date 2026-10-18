@@ -7,7 +7,7 @@ const Refetch = ({keys: keysPromise, children}: {keys: Promise<{data: string[], 
     const refetchKeys = useContext(RefetchContext).keys;
     useLayoutEffect(() => {
         refetchKeys.current = keys;
-    });
+    }, [keys, refetchKeys]);
     return children;
 };
 export default Refetch;
