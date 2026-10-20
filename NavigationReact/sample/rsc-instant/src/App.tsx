@@ -21,7 +21,7 @@ const App = async ({url}: any) => {
         <NavigationProvider url={url}>
           <SceneView active={['people', 'person']} client>
             <Header>
-              <SceneView active="person" name="header" refetch={['id']} fallback={<h1>Person</h1>}>
+              <SceneView active="person" name="header" fallback={<h1>Person</h1>}>
                 <Name />
               </SceneView>
             </Header>
@@ -35,7 +35,7 @@ const App = async ({url}: any) => {
           </SceneView>
           <SceneView active="person" client>
             <Person>
-              <SceneView active="person" refetch={['id']} fallback={<h2>loading...</h2>}>
+              <SceneView active="person" fallback={<h2>loading...</h2>}>
                 <Details />
               </SceneView>
             </Person>
