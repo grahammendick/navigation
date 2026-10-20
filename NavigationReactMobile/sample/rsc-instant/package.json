@@ -29,8 +29,9 @@
     "navigation-react-mobile": "^3.17.0",
     "parcel": "^2.14.1",
     "process": "^0.11.10",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-server-dom-parcel": "19.2.6"
   },
   "@parcel/resolver-default": {
     "packageExports": true
