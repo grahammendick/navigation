@@ -364,7 +364,7 @@ describe('SceneViewTest', function () {
                 );
             });
             console.error = err;
-            assert.equal(container.innerHTML, '<h1>error</h1>');
+            assert.equal(container.innerHTML, '<div><h1>error</h1></div>');
         })
     });
 
@@ -432,7 +432,7 @@ describe('SceneViewTest', function () {
             console.error = () => {};
             act(() => Simulate.click(button));
             console.error = err;            
-            assert.equal(container.innerHTML, '<h1>error</h1>');
+            assert.equal(container.innerHTML, '<div><h1>error</h1></div>');
         })
     });
 
@@ -536,12 +536,12 @@ describe('SceneViewTest', function () {
                     </NavigationHandler>
                 );
             });
-            assert.equal(container.innerHTML, '<h1>error 0</h1>');
+            assert.equal(container.innerHTML, '<div><h1>error 0</h1></div>');
             act(() => {
                 stateNavigator.navigate('s1')
             });
             console.error = err;
-            assert.equal(container.innerHTML, '<h1>error 1</h1>');
+            assert.equal(container.innerHTML, '<div><h1>error 1</h1></div>');
         })
     });
 
