@@ -15,13 +15,13 @@ const App = async ({url}) => {
       </head>
       <body>
         <NavigationProvider url={url}>
-          <SceneView active={['people', 'person']} name="header" refetch={['id']}>
+          <SceneView active={['people', 'person']} name="header">
             <Header />
           </SceneView>
-          <SceneView active="people" refetch={[]}>
+          <SceneView active="people">
             <People />
           </SceneView>
-          <SceneView active="person" refetch={['id']}>
+          <SceneView active="person">
             <Person />
           </SceneView>
         </NavigationProvider>
