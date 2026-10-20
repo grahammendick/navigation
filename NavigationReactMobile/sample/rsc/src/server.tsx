@@ -3,7 +3,7 @@ import { Readable } from 'stream';
 import { renderRequest, renderRSC } from '@parcel/rsc/node';
 import { createTemporaryReferenceSet, decodeReply, loadServerAction } from 'react-server-dom-parcel/server.edge';
 import { StateNavigator } from 'navigation';
-import { NavigationHandler } from 'navigation-react';
+import { NavigationHandler, SceneView } from 'navigation-react';
 import stateNavigator from './stateNavigator';
 import App from './App';
 import Person from './Person';
@@ -71,10 +71,10 @@ app.post('*', async (req, res) => {
     url: oldState ? serverNavigator.stateContext.url : null,
     historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
     sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {
-      const SceneView = sceneViews[activeKey];
+      const Content = sceneViews[activeKey];
       SceneViews[activeKey] = (
         <NavigationHandler stateNavigator={serverNavigator}>
-          <SceneView />
+          <SceneView fetching><Content /></SceneView>
         </NavigationHandler>
       );
       return SceneViews;
