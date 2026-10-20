@@ -58,7 +58,7 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
         const {children, ...rest} = props;
         return cloneElement(node, render(rest), ...(children !== undefined ? [].concat(render(children)) : []));
     };
-    const content = !client && (show || fetching) ? render(children) : null;
+    const content = !client && show ? render(children) : null;
     if (pending === 0) resolve({data: [...keys.data], state: keys.state});
     if (fetching) return <Refetch keys={promise}>{content}</Refetch>;
     return !client

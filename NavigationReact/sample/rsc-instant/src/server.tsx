@@ -70,7 +70,7 @@ app.post('*', async (req, res) => {
       const Content = sceneViews[activeKey];
       SceneViews[activeKey] = (
         <NavigationHandler stateNavigator={serverNavigator}>
-          <SceneView fetching><Content /></SceneView>
+          <SceneView fetching active={[state.key]}><Content /></SceneView>
         </NavigationHandler>
       );
       return SceneViews;

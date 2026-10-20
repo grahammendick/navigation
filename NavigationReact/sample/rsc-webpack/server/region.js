@@ -117,7 +117,7 @@ app.post('*', async function (req, res) {
     sceneViews: activeViews.reduce((SceneViews, activeKey) => {
       const Content = sceneViews[activeKey].default;
       SceneViews[activeKey] = (
-        renderSceneView(React.createElement(SceneView, {fetching: true}, React.createElement(Content)), serverNavigator)
+        renderSceneView(React.createElement(SceneView, {fetching: true, active: [state.key]}, React.createElement(Content)), serverNavigator)
       );
       return SceneViews;
     }, {})
