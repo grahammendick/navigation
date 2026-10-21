@@ -118,7 +118,7 @@ const Thread = ({mail}) => {
   &lt;Mail />
 &lt;/SceneView></code></pre>
             <p>
-                The problem with a fallback is that it's only temporary UI. React replaces it when the real UI loads so you can only place non-interactive elements inside. To create instant navigation with interactive elements you wrap scenes in a client component and another <code>SceneView</code> with its 'client' prop set to true. In our email example, we wrap our mail scene in a client <code>Shell</code>. Now, when the user selects a mail, they'll immediately see a reply button they can press while their mail streams in.
+                The problem with a fallback is that it's only temporary. React replaces it when the real UI loads so you can only place non-interactive elements inside. To create instant navigation with interactive elements you wrap scenes in a client component and another <code>SceneView</code> with its 'client' prop set to true. In our email example, we wrap our mail scene in a client <code>Shell</code>. Now, when the user selects a mail, they'll immediately see a reply button they can press while their mail streams in.
             </p>
             <pre><code class="language-jsx">'use client'
 const Shell = ({children}) => (
