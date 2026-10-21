@@ -94,7 +94,7 @@ const Mail = async () => {
 };</code></pre>
             <h2>Refetching Scenes</h2>
             <p>
-                Our email app loads fast because we've removed the data-fetching waterfalls. But we've accidentally made it slower when the user expands an email. We used to handle this client-side but now we're expanding the email on the server. We move this back to the client by extracting the expansion code into a client component and wrapping it in another <code>SceneView</code>.
+                Our email app loads fast because we've removed the data-fetching waterfalls. But we've accidentally made it slower when the user expands an email. We used to handle this client-side but now we're expanding the email on the server. We move this back to the client by extracting the expansion code into a client component. Scene views that don't access a piece of navigation data aren't refetched when it changes.
             </p>
             <pre><code class="language-jsx">'use client'
 
@@ -109,10 +109,7 @@ const Thread = ({mail}) => {
       )}
     &lt;/ul>
   )
-};
-
-&lt;SceneView active="mail">&lt;Thread />&lt;/SceneView>
-</code></pre>
+};</code></pre>
             <h2>Navigating Instantly</h2>
             <p>
                 RSCs mean you don't ever have to show a loading state. React renders the new scene in the background, leaving the app fully interactive on the old scene in the meantime. In our example, when a user selects an email they remain in their inbox with the navigation delayed until the 'mail' scene completes. But we can choose to navigate instantly by adding a fallback UI to the incoming scene. React shows the fallback while the 'mail' scene loads.
