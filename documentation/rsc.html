@@ -94,7 +94,7 @@ const Mail = async () => {
 };</code></pre>
             <h2>Refetching Scenes</h2>
             <p>
-                Our email app loads fast because we've removed the data-fetching waterfalls. But we've accidentally made it slower when the user expands an email. We used to handle this client-side but now we're expanding the email on the server. We move this back to the client by extracting the expansion code into a client component. Scene views that don't access a piece of navigation data aren't refetched when it changes.
+                Our email app loads fast because we've removed the data-fetching waterfalls. But we've accidentally made it slower when the user expands an email. We used to handle this client-side but now we're expanding the email on the server. We move this back to the client by extracting the expansion code into a client component. If there aren't any server components that access a piece of navigation data then there's nothing to refetch when it changes.
             </p>
             <pre><code class="language-jsx">'use client'
 
