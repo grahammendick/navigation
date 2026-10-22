@@ -107,6 +107,7 @@ app.post('*', async function (req, res) {
   const {renderToPipeableStream} = await import(
     'react-server-dom-webpack/server'
   );
+  const {SceneView} = await import('navigation-react');
   const moduleMap = await getModuleMap();
   const {pipe} = renderToPipeableStream({
     data,
@@ -114,9 +115,9 @@ app.post('*', async function (req, res) {
     url: oldState ? serverNavigator.stateContext.url : null,
     historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
     sceneViews: activeViews.reduce((SceneViews, activeKey) => {
-      const SceneView = sceneViews[activeKey].default;
+      const Content = sceneViews[activeKey].default;
       SceneViews[activeKey] = (
-        renderSceneView(React.createElement(SceneView), serverNavigator)
+        renderSceneView(React.createElement(SceneView, {fetching: true, active: [state.key]}, React.createElement(Content)), serverNavigator)
       );
       return SceneViews;
     }, {})

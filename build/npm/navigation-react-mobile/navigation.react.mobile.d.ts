@@ -174,10 +174,6 @@ export interface NavigationStackProps {
      */
     stateKey: keyof NavigationInfo & string;
     /**
-     * The NavigationData keys that determine when to refetch the RSC Scene
-     */
-    refetch?: string[];
-    /**
      * Indicates whether the RSC Scene is a client component
      */
     client?: boolean;

@@ -222,9 +222,9 @@ export interface SceneViewProps<NavigationInfo extends { [index: string]: any } 
      */
     name?: string;
     /**
-     * A function or the data keys that determine when to refetch the RSC View
+     * Indicates whether the RSC View is being fetched
      */
-    refetch?: string[];
+    fetching?: boolean;
     /**
      * Indicates whether the RSC View is a client component
      */

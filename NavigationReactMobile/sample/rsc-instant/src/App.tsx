@@ -32,10 +32,10 @@ const App = async ({url}: any) => {
               </Scene>
               <Scene stateKey="person" client>
                 <Person>
-                  <SceneView active="person" name="header" refetch={['id']} fallback={<h1>Person</h1>}>
+                  <SceneView active="person" name="header" fallback={<h1>Person</h1>}>
                     <Name />
                   </SceneView>
-                  <SceneView active="person" refetch={['id']} fallback={<h2>loading...</h2>}>
+                  <SceneView active="person" fallback={<h2>loading...</h2>}>
                     <Details />
                   </SceneView>
                 </Person>

@@ -58,17 +58,17 @@ const post = async (request: Request) => {
     if (show) activeRoots.push(rootKey);
     return activeRoots;
   }, [] as string[]) : ((!actionId || refetch) ? sceneViewKeys : []);
-  const {NavigationHandler} = await import('navigation-react');
+  const {NavigationHandler, SceneView} = await import('navigation-react');
   const stream = renderToReadableStream({
     data,
     refetch,
     url: oldState ? serverNavigator.stateContext.url : null,
     historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
     sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {
-      const SceneView = sceneViews[activeKey].default;
+      const Content = sceneViews[activeKey].default;
       SceneViews[activeKey] = (
         <NavigationHandler stateNavigator={serverNavigator}>
-          <SceneView />
+          <SceneView fetching active={[state.key]}><Content /></SceneView>
         </NavigationHandler>
       );
       return SceneViews;
