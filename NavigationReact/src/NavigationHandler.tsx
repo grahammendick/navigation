@@ -293,7 +293,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         ));
     }, [navigationEvent, stateNavigator.historyManager, createFromFetch])
     useEffect(() => {
-        if (typeof window === 'undefined' || !createFromFetch || !supportsPrecommitNavigation) return;
+        if (!createFromFetch || !window.navigation?.currentEntry) return;
         const onScroll = () => window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), scrollY: window.scrollY}});
         onScroll();
         window.addEventListener('scroll', onScroll);
