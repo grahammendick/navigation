@@ -8,7 +8,7 @@ import TransitionContext from './TransitionContext.js';
 import BundlerContext from './BundlerContext.js';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, rscFetching?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
-type RSCFetch = {sceneViewKeys: string[], resolve: (sceneViewKeys: string[]) => void, sceneViews: Promise<any>};
+type RSCFetch = {sceneViewKeys: string[], resolve: (sceneViewKeys: string[]) => void, sceneViews: Promise<any>, timeout?: ReturnType<typeof setTimeout>};
 
 const supportsPrecommitNavigation = typeof window !== 'undefined' && !!window.NavigationPrecommitController
     && !!(window.navigator as any).userAgentData?.brands?.some(({brand}) => brand === 'Microsoft Edge' || brand === 'Google Chrome' || brand === 'Opera' || brand === 'Opera GX');
@@ -181,10 +181,17 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 const fetching = nextNavigationEvent.data['rscFetching'];
                 const startFetch = Object.keys(fetching).find(key => !fetching[key]);
                 const {rscFetch} = nextNavigationEvent;
-                if (!startFetch && rscFetch) {
+                if (!rscFetch) return;
+                const send = () => {
                     rscFetch.resolve(rscFetch.sceneViewKeys);
                     nextNavigationEvent.rscFetch = undefined;
-                }
+                };
+                clearTimeout(rscFetch.timeout);
+                if (!startFetch) send();
+                else rscFetch.timeout = setTimeout(() => {
+                    for (const key in fetching) fetching[key] = true;
+                    send();
+                }, 100);
             }
         },
     }), [navigationEvent, nextNavigationEvent, fetchRSC]);

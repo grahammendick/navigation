@@ -10,6 +10,7 @@ import Person from './Person';
 import People from './People';
 import List from './List';
 import Friends from './Friends';
+import Summary from './Summary';
 import Header from './Header';
 
 const app = express();
@@ -39,6 +40,7 @@ app.post('*', async (req, res) => {
     list: List,
     person: Person,
     friends: Friends,
+    summary: Summary,
   };
   const {url, sceneViewKeys, rootViews, actionId, args} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
