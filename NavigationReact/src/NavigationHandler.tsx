@@ -181,7 +181,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 const fetching = nextNavigationEvent.data['rscFetching'];
                 const startFetch = Object.keys(fetching).find(key => !fetching[key]);
                 const {rscFetch} = nextNavigationEvent;
-                if (!startFetch && rscFetch) rscFetch.resolve(rscFetch.sceneViewKeys);
+                if (!startFetch && rscFetch) {
+                    rscFetch.resolve(rscFetch.sceneViewKeys);
+                    nextNavigationEvent.rscFetch = undefined;
+                }
             }
         },
     }), [navigationEvent, nextNavigationEvent, fetchRSC]);
