@@ -179,7 +179,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         trigger: (navigationEventData: NavigationHandlerState) => {
             if (navigationEvent === nextNavigationEvent && navigationEventData === nextNavigationEvent.data) {
                 const fetching = nextNavigationEvent.data['rscFetching'];
-                const startFetch = Object.keys(fetching).find(key => !fetching[key]);
+                const startFetch = Object.values(fetching).every(fetched => fetched);
                 const {rscFetch} = nextNavigationEvent;
                 if (!rscFetch) return;
                 const send = () => {
@@ -187,7 +187,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     nextNavigationEvent.rscFetch = undefined;
                 };
                 clearTimeout(rscFetch.timeout);
-                if (!startFetch) send();
+                if (startFetch) send();
                 else rscFetch.timeout = setTimeout(() => {
                     for (const key in fetching) fetching[key] = true;
                     send();
