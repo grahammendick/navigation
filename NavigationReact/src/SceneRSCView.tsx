@@ -20,8 +20,8 @@ const SceneViewInner = ({children, onMount}) => {
 const SceneView = ({active, name, parent, rendered, pending, fallback, errorFallback, children}: SceneViewProps & {active: string | string[], parent: string, pending: boolean, rendered: boolean}) => {
     const navigationEvent = useNavigationEvent();
     const {nextNavigationEvent} = useContext(TransitionContext);
-    const {state, stateNavigator: {stateContext}} = navigationEvent;
-    const {oldUrl, historyAction} = stateContext;
+    const {state, oldState, stateNavigator: {stateContext}} = navigationEvent;
+    const {oldUrl, historyAction, history, crumbs} = stateContext;
     const historyCache = useContext(HistoryCacheContext);
     const {deserialize, trigger, keys} = useContext(RefetchContext) as any;
     const suspended = useRef(null);
@@ -42,6 +42,11 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
     const cachedSceneViews = navigationEvent['rscCache'];
     if (cachedHistory) cachedSceneViews[sceneViewKey] = cachedHistory;
     const renderedSceneView = useRef(null);
+    const renderedSuspense = useRef(true);
+    const suspense = !rendered || !getShow(oldState?.key) ? !history || (state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length) : renderedSuspense.current;
+    useEffect(() => {
+        renderedSuspense.current = suspense;
+    }, [suspense]);
     const fetchingFn = useCallback(((navigationEvent) => {
         const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
         const {oldData} = stateContext;
@@ -98,7 +103,7 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
                         }}>{sceneView}</SceneViewInner>
                     </FetchingContext.Provider>
                 );
-                return fallback && sceneView ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
+                return fallback && sceneView && suspense ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
             })()}
         </ErrorBoundary>
     );
