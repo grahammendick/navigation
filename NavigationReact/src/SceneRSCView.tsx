@@ -93,7 +93,7 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
                             if (!window.navigation?.currentEntry) return;
                             const state = window.navigation.currentEntry.getState() || {};
                             const {[sceneViewKey]: _, ...sceneViews} = state['sceneViews'] || {};
-                            if (sceneView) sceneViews[sceneViewKey] = {parent, active, keys: keys.current};
+                            if (sceneView) sceneViews[sceneViewKey] = {parent, keys: keys.current};
                             window.navigation.updateCurrentEntry({state: {...state, sceneViews}});
                         }}>{sceneView}</SceneViewInner>
                     </FetchingContext.Provider>

@@ -35,12 +35,12 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const rootViews = useRef({});
     const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
     const primeHistory = (sceneViews: any, {state, oldState, data, oldData}: StateContext) => {
-        const getShow = (active: string | string[], stateKey: string) => active != null && (typeof active === 'string' ? stateKey === active : active.indexOf(stateKey) !== -1);
+        const oldSceneViews = window.navigation.currentEntry.getState()?.['sceneViews'] || {};
         const children = {};
         for (const sceneViewKey in sceneViews) (children[sceneViews[sceneViewKey].parent] ||= []).push(sceneViewKey);
         const fetching = (sceneViewKey: string) => {
-            const {active, keys: refetch} = sceneViews[sceneViewKey];
-            if (!getShow(active, oldState?.key)) return true;
+            const {keys: refetch} = sceneViews[sceneViewKey];
+            if (!oldSceneViews[sceneViewKey]) return true;
             if (!refetch) return true;
             if (refetch.state && state !== oldState) return true;
             for(let i = 0; i < refetch.data.length; i++) {
@@ -51,7 +51,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const rscFetching = {};
         const prime = (parent: string) => {
             for (const sceneViewKey of children[parent] || []) {
-                if (!getShow(sceneViews[sceneViewKey].active, state.key)) continue;
                 if (fetching(sceneViewKey)) rscFetching[sceneViewKey] = false;
                 else prime(sceneViewKey);
             }
