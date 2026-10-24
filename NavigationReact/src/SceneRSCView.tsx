@@ -43,7 +43,7 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
     if (cachedHistory) cachedSceneViews[sceneViewKey] = cachedHistory;
     const renderedSceneView = useRef(null);
     useEffect(() => () => {
-        if (!window.navigation?.currentEntry) return;
+        if (!window.navigation?.currentEntry || window.navigation.transition) return;
         const state = window.navigation.currentEntry.getState() || {};
         const {[sceneViewKey]: _, ...sceneViews} = state['sceneViews'] || {};
         window.navigation.updateCurrentEntry({state: {...state, sceneViews}});
