@@ -1,12 +1,12 @@
 'use client'
-import React, { useCallback, useContext, useOptimistic, useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import React, { useCallback, useContext, useOptimistic, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
 import HistoryCacheContext from './HistoryCacheContext.js';
 import TransitionContext from './TransitionContext.js';
 import BundlerContext from './BundlerContext.js';
-type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean, sceneViews?: any};
+type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean, sceneViews?: any, scrollY?: number};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, rscFetching?: any, hasUAVisualTransition?: boolean, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 type RSCFetch = {sceneViewKeys: string[], resolve: (sceneViewKeys: string[]) => void, sceneViews: Promise<any>, timeout?: ReturnType<typeof setTimeout>};
 
@@ -241,6 +241,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }, {once: true});
         }
     }, [isPending, navigationEvent]);
+    useLayoutEffect(() => {
+        const {commit, scrollY} = navigationEvent.intercept || {};
+        if (isPending || !commit) return;
+        const {state, oldState, crumbs, oldUrl} = navigationEvent.data.stateNavigator.stateContext;
+        if (state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length) return;
+        window.scrollTo(0, scrollY || 0);
+    }, [isPending, navigationEvent]);
     useEffect(() => {
         if (!isPending) {
             const {stateContext: {url, historyAction}} = navigationEvent.data.stateNavigator;
@@ -275,7 +282,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (typeof window === 'undefined' || !createFromFetch || !supportsPrecommitNavigation) return;
         stateNavigator.historyManager.interceptHistory((navigationLink: string, {signal, hasUAVisualTransition, destination}: NavigateEvent) => (
             new Promise((resolve, reject) => {
-                const intercept = {commit: resolve, signal, hasUAVisualTransition, sceneViews: destination.getState()?.['sceneViews']};
+                const {sceneViews, scrollY} = destination.getState() as any || {};
+                const intercept = {commit: resolve, signal, hasUAVisualTransition, sceneViews, scrollY};
                 navigationEvent.data.stateNavigator.navigateLink(navigationLink, undefined, true, undefined, undefined, intercept);
                 signal.addEventListener('abort', () => {
                     reject(signal.reason);
@@ -284,6 +292,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             })
         ));
     }, [navigationEvent, stateNavigator.historyManager, createFromFetch])
+    useEffect(() => {
+        if (typeof window === 'undefined' || !createFromFetch || !supportsPrecommitNavigation) return;
+        const onScroll = () => window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), scrollY: window.scrollY}});
+        onScroll();
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+    }, [createFromFetch])
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent(undefined, undefined, {});
