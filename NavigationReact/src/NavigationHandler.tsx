@@ -34,6 +34,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }), []);
     const rootViews = useRef({});
     const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
+    const scrollPaused = useRef(false);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -236,8 +237,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const title = typeof document !== 'undefined' ? document.title : null;
             const oldTitle = navigationEvent.intercept?.title;
             if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
+            scrollPaused.current = true;
             window.navigation?.addEventListener('navigatesuccess', () => {
                 if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
+                scrollPaused.current = false;
+                window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), scrollY: window.scrollY}});
             }, {once: true});
         }
     }, [isPending, navigationEvent]);
@@ -294,7 +298,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [navigationEvent, stateNavigator.historyManager, createFromFetch])
     useEffect(() => {
         if (!createFromFetch || !window.navigation?.currentEntry) return;
-        const onScroll = () => window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), scrollY: window.scrollY}});
+        const onScroll = () => {
+            if (!scrollPaused.current) window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), scrollY: window.scrollY}});
+        };
         onScroll();
         window.addEventListener('scroll', onScroll);
         return () => window.removeEventListener('scroll', onScroll);
