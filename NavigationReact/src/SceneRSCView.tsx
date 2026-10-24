@@ -42,8 +42,10 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
     const cachedSceneViews = navigationEvent['rscCache'];
     if (cachedHistory) cachedSceneViews[sceneViewKey] = cachedHistory;
     const renderedSceneView = useRef(null);
+    const recordedEntry = useRef(null);
     useEffect(() => () => {
-        if (!window.navigation?.currentEntry || window.navigation.transition) return;
+        if (!window.navigation?.currentEntry || window.navigation.currentEntry !== recordedEntry.current
+            || window.navigation.transition?.from === window.navigation.currentEntry) return;
         const state = window.navigation.currentEntry.getState() || {};
         const {[sceneViewKey]: _, ...sceneViews} = state['sceneViews'] || {};
         window.navigation.updateCurrentEntry({state: {...state, sceneViews}});
@@ -101,11 +103,12 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
                             if (historyAction === 'none') return;
                             if (typeof window === 'undefined') return;
                             historyCache.set(navigationEvent, sceneViewKey, renderedSceneView.current);
-                            if (!window.navigation?.currentEntry) return;
+                            if (!window.navigation?.currentEntry || window.navigation.transition?.from === window.navigation.currentEntry) return;
                             const state = window.navigation.currentEntry.getState() || {};
                             const {[sceneViewKey]: _, ...sceneViews} = state['sceneViews'] || {};
                             if (sceneView) sceneViews[sceneViewKey] = {parent, keys: keys.current};
                             window.navigation.updateCurrentEntry({state: {...state, sceneViews}});
+                            recordedEntry.current = window.navigation.currentEntry;
                         }}>{sceneView}</SceneViewInner>
                     </FetchingContext.Provider>
                 );
