@@ -92,9 +92,9 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
                             historyCache.set(navigationEvent, sceneViewKey, renderedSceneView.current);
                             if (!window.navigation?.currentEntry) return;
                             const state = window.navigation.currentEntry.getState() || {};
-                            const {[sceneViewKey]: _, ...scenes} = state['scenes'] || {};
-                            if (sceneView) scenes[sceneViewKey] = {parent, active, keys: keys.current};
-                            window.navigation.updateCurrentEntry({state: {...state, scenes}});
+                            const {[sceneViewKey]: _, ...sceneViews} = state['sceneViews'] || {};
+                            if (sceneView) sceneViews[sceneViewKey] = {parent, active, keys: keys.current};
+                            window.navigation.updateCurrentEntry({state: {...state, sceneViews}});
                         }}>{sceneView}</SceneViewInner>
                     </FetchingContext.Provider>
                 );
