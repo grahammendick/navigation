@@ -42,6 +42,12 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
     const cachedSceneViews = navigationEvent['rscCache'];
     if (cachedHistory) cachedSceneViews[sceneViewKey] = cachedHistory;
     const renderedSceneView = useRef(null);
+    useEffect(() => () => {
+        if (!window.navigation?.currentEntry) return;
+        const state = window.navigation.currentEntry.getState() || {};
+        const {[sceneViewKey]: _, ...sceneViews} = state['sceneViews'] || {};
+        window.navigation.updateCurrentEntry({state: {...state, sceneViews}});
+    }, []);
     const renderedSuspense = useRef(true);
     const suspense = !rendered || !getShow(oldState?.key) ? !history || (state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length) : renderedSuspense.current;
     useEffect(() => {
