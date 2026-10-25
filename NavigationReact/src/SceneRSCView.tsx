@@ -49,7 +49,7 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
         window.navigation.updateCurrentEntry({state: {...state, sceneViews}});
     }, []);
     const renderedSuspense = useRef(true);
-    const suspense = !rendered || !getShow(oldState?.key) ? !history || (state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length) : renderedSuspense.current;
+    const suspense = !rendered || !getShow(oldState?.key) ? !history || (state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length) || !historyManager.refetch : renderedSuspense.current;
     useEffect(() => {
         renderedSuspense.current = suspense;
     }, [suspense]);

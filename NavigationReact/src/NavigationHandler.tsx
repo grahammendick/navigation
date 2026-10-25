@@ -72,7 +72,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const rscFetching = history && !refresh && intercept.sceneViews ? primeHistory(intercept.sceneViews, asyncNavigator.stateContext) : undefined;
         const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, rscFetching, hasUAVisualTransition: intercept.hasUAVisualTransition}, stateNavigator, intercept};
         setNavigationEvent(nextNavigationEvent);
-        if (intercept.resume && (!history || refresh)) setNextNavigationEvent(nextNavigationEvent);
+        if (intercept.resume && (!history || refresh || !stateNavigator.historyManager.refetch)) setNextNavigationEvent(nextNavigationEvent);
         if (typeof window !== 'undefined' && intercept.resume && supportsPrecommitNavigation && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             if (!intercept.controller) {
                 window.navigation.addEventListener('navigate', e => {
