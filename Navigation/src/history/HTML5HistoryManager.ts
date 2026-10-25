@@ -7,6 +7,7 @@ class HTML5HistoryManager implements HistoryManager {
     private applicationPath: string = '';
     private rewriteUrl: (url: string) => string | undefined;
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
+    refetch = true;
     
     constructor(applicationPath: string = '') {
         this.applicationPath = HTML5HistoryManager.prependSlash(applicationPath);

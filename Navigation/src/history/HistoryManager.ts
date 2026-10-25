@@ -2,6 +2,7 @@
 
 interface HistoryManager {
     disabled: boolean;
+    refetch?: boolean;
     init(navigateHistory: (url?: string) => void, rewriteUrl: (url: string) => string | undefined): void;
     addHistory(url: string, replace: boolean, stateContext: StateContext): void;
     navigate(url: string, replace: boolean, controller: NavigationPrecommitController, stateContext: StateContext): void;

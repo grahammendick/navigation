@@ -7,6 +7,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
     private hash = false;
     private buildCurrentUrl: (url: string) => string;
     private rewriteUrl: (url: string) => string | undefined;
+    refetch = false;
 
     constructor(buildCurrentUrl: (url: string) => string, applicationPath?: string) {
         super(applicationPath || '');

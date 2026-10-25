@@ -265,8 +265,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
             navigationEvent.intercept?.resume?.();
             if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
-            if (navigationEvent.intercept?.hasUAVisualTransition)
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch()}, stateNavigator: navigationEvent.stateNavigator});
+            if (navigationEvent.intercept?.hasUAVisualTransition && stateNavigator.historyManager.refetch) {
+                startTransition(() => {
+                    setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch()}, stateNavigator: navigationEvent.stateNavigator});
+                });
+            }
             navigationEvent.intercept = {};
             if (historyAction === 'none' || typeof window === 'undefined' || !window.history || !window.navigation) return;
             const historyKeys = Object.keys(historyCacheRef.current);
