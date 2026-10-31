@@ -7,6 +7,7 @@ class HTML5HistoryManager implements HistoryManager {
     private applicationPath: string = '';
     private rewriteUrl: (url: string) => string | undefined;
     disabled: boolean = (typeof window === 'undefined') || !(window.history && window.history.pushState);
+    refetch = true;
     
     constructor(applicationPath: string = '') {
         this.applicationPath = HTML5HistoryManager.prependSlash(applicationPath);
@@ -24,12 +25,11 @@ class HTML5HistoryManager implements HistoryManager {
 
     addHistory(url: string, replace: boolean) {
         if (!this.disabled && (window.history.state?.navigationLink || window.navigation?.currentEntry.getState()?.navigationLink || this.getUrl(window.location)) !== url) {
-            const currentState = !replace ? null : window.navigation?.currentEntry.getState();
             if (!replace)
                 window.history.pushState({navigationLink: url}, null, this.getHref(url));
             else
-                window.history.replaceState({...window.history.state, navigationLink: url}, null, this.getHref(url));
-            window.navigation?.updateCurrentEntry({state: {...currentState, navigationLink: url}});
+                window.history.replaceState({navigationLink: url}, null, this.getHref(url));
+            window.navigation?.updateCurrentEntry({state: {navigationLink: url}});
         }
     }
 
@@ -41,9 +41,9 @@ class HTML5HistoryManager implements HistoryManager {
                 controller.redirect(this.getHref(url), {history: 'push', state: {navigationLink: url}});
         } else {
             if (!controller)
-                return window.navigation.navigate(this.getHref(url), {history: 'replace', state: {...window.navigation.currentEntry.getState(), navigationLink: url}, info: {stateContext}});
+                return window.navigation.navigate(this.getHref(url), {history: 'replace', state: {navigationLink: url}, info: {stateContext}});
             else
-                controller.redirect(this.getHref(url), {history: 'replace', state: {...window.navigation.currentEntry.getState(), navigationLink: url}});
+                controller.redirect(this.getHref(url), {history: 'replace', state: {navigationLink: url}});
         }
         return null;
     }

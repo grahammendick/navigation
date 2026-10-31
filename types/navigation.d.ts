@@ -164,6 +164,10 @@ export interface HistoryManager {
      */
     disabled: boolean;
     /**
+     * Gets a value indicating whether to refetch RSC views on browser history
+     */
+    refetch?: boolean;
+    /**
      * Registers browser history event listeners
      * @param navigateHistory The history navigation event handler
      * @param rewriteUrl The function that rewrites a url for history
@@ -235,6 +239,10 @@ export class HTML5HistoryManager implements HistoryManager {
      * outside of a browser environment
      */
     disabled: boolean;
+    /**
+     * Gets a value indicating whether to refetch RSC views on browser history
+     */
+    refetch: boolean;
     /**
      * Initializes a new instance of the HTML5HistoryManager class
      * @param applicationPath The application path
