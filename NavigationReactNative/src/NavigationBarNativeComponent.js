@@ -24,6 +24,7 @@ type NativeProps = $ReadOnly<{|
   backFontSize?: WithDefault<Float, -1>,
   barTintColor: ColorValue,
   largeBarTintColor: ColorValue,
+  statusBarForegroundColor: ColorValue,
   tintColor: ColorValue,
   titleColor: ColorValue,
   largeTitleColor: ColorValue,

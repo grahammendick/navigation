@@ -76,6 +76,7 @@ class NavigationBar extends React.Component<any, any> {
                     {...scrollEdgeProps}
                     shadowColor={shadowColor}
                     barTintColor={!collapsingBar ? scrollEdgeProps.barTintColor : scrollEdgeProps.largeBarTintColor}
+                    statusBarForegroundColor={!collapsingBar ? scrollEdgeProps.barTintColor : null}
                     onOffsetChanged={e => {
                         onOffsetChanged?.(e);
                         this.offset = e.nativeEvent.offset;

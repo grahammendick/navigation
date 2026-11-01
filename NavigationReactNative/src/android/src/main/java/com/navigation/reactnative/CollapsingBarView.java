@@ -116,6 +116,12 @@ public class CollapsingBarView extends CollapsingToolbarLayout {
     }
 
     @Override
+    public void setContentScrim(Drawable drawable) {
+        super.setContentScrim(drawable);
+        setStatusBarScrim(drawable != null ? drawable.getConstantState().newDrawable() : new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         requestLayout();
