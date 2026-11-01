@@ -177,7 +177,7 @@ public class NavigationBarView extends AppBarLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (getChildAt(0) instanceof ToolbarView)
+        if (getChildAt(0) instanceof ToolbarView || getChildAt(0) instanceof SearchToolbarView)
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(heightMeasureSpec), MeasureSpec.UNSPECIFIED);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
