@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {StyleSheet, Text, Image, FlatList, View, TouchableHighlight, Platform} from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context'
 import {NavigationContext} from 'navigation-react';
-import {CoordinatorLayout, NavigationBar, TabBar, TabBarItem} from 'navigation-react-native';
+import {CoordinatorLayout, NavigationBar, StatusBar, TabBar, TabBarItem} from 'navigation-react-native';
 import TweetItem from './TweetItem';
 import {getNotifications} from './data';
 
@@ -22,8 +22,9 @@ export default () => {
       <CoordinatorLayout>
         <NavigationBar
           title="Notifications"
-          barTintColor={Platform.OS === 'android' ? 'rgba(255,255,255, 0)' : null}>
+          barTintColor={Platform.OS === 'android' ? '#fff' : null}>
           <TabBar selectedTintColor="#1da1f2" />
+          <StatusBar tintStyle="dark" />
         </NavigationBar>
         <TabBar primary={false}>
           <TabBarItem title="All">

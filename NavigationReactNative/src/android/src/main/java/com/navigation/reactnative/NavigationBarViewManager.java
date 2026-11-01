@@ -67,6 +67,12 @@ public class NavigationBarViewManager extends ViewGroupManager<NavigationBarView
         }
     }
 
+    @Override
+    @ReactProp(name = "statusBarForegroundColor", customType = "Color")
+    public void setStatusBarForegroundColor(NavigationBarView view, @Nullable Integer statusBarForegroundColor) {
+        view.setStatusBarForeground(statusBarForegroundColor != null && Color.alpha(statusBarForegroundColor) == 255 ? new ColorDrawable(statusBarForegroundColor) : null);
+    }
+
     @ReactProp(name = "shadowColor", customType = "Color")
     public void setShadowColor(@NonNull NavigationBarView view, @Nullable Integer shadowColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

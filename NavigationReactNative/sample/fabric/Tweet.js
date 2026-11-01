@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {StyleSheet, Text, Image, Platform, ScrollView, View, TouchableHighlight} from 'react-native';
 import {NavigationContext} from 'navigation-react';
-import {NavigationBar} from 'navigation-react-native';
+import {NavigationBar, StatusBar} from 'navigation-react-native';
 import Tweets from './Tweets';
 import {getTweet} from './data';
 
@@ -14,7 +14,9 @@ export default () => {
       <NavigationBar
         title="Tweet"
         barTintColor={Platform.OS === 'android' ? '#fff' : null}
-        tintColor={Platform.OS === 'android' ? "#1da1f2" : null} />
+        tintColor={Platform.OS === 'android' ? "#1da1f2" : null}>
+        <StatusBar tintStyle="dark" />
+      </NavigationBar>
       <Tweets tweets={replies} renderHeader={(
         <View>
           <View style={styles.heading}>
