@@ -1,5 +1,5 @@
 'use server-entry'
-import { SceneView, NavigationBackLink, NavigationLink, useNavigationEvent } from 'navigation-react';
+import { SceneView, NavigationBackLink, useNavigationEvent } from 'navigation-react';
 import { getPerson } from './data';
 import Gender from './Gender';
 import Friends from './Friends';
@@ -12,7 +12,6 @@ const Person = async () => {
     <>
       <div>
         <NavigationBackLink distance={1}>Person Search</NavigationBackLink>
-        <NavigationLink id="self" stateKey="person" navigationData={{id}}>Self</NavigationLink>
         <div>
           <Edit id={id} name={name} />
           <div>Date of Birth</div>
