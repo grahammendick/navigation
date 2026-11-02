@@ -6,7 +6,7 @@ const Gender = ({children}: any) => {
     const {gender, show} = data;
     return (
         <>
-            <RefreshLink navigationData={{show: !show}} includeCurrentData>{`${!show ? 'Show' : 'Hide'} Friends`}</RefreshLink>
+            <RefreshLink navigationData={{show: !show}} includeCurrentData historyAction={show ? 'none' : undefined}>{`${!show ? 'Show' : 'Hide'} Friends`}</RefreshLink>
             {show && (
                 <div>
                     <label htmlFor="gender">Gender</label>
