@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.widget.ScrollView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.SharedElementCallback;
@@ -25,6 +26,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.facebook.react.ReactActivity;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
@@ -39,6 +41,7 @@ import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -96,6 +99,11 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
         Activity currentActivity = ((ThemedReactContext) getContext()).getCurrentActivity();
         if (currentActivity == null)
             return;
+        try {
+            Field backPressedCallback = ReactActivity.class.getDeclaredField("mBackPressedCallback");
+            backPressedCallback.setAccessible(true);
+            ((OnBackPressedCallback) backPressedCallback.get(currentActivity)).setEnabled(false);
+        } catch (Exception ignored) {}
         if (mainActivity == null) {
             mainActivity = currentActivity;
             Uri uri = mainActivity.getIntent().getData();
