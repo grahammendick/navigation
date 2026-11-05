@@ -40,6 +40,7 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
     if (!navigationEvent['trackable']) navigationEvent['trackable'] = {};
     if (navigationEvent['uncommitted'] && getShow(state?.key)) navigationEvent['trackable'][sceneViewKey] = true;
     const renderedSceneView = useRef(null);
+    const renderedUrl = useRef(null);
     const renderedSuspense = useRef(true);
     const suspense = !rendered || !getShow(oldState?.key) ? !history || (state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length) || !historyManager.refetch || typeof window === 'undefined' || !window.NavigationPrecommitController : renderedSuspense.current;
     useEffect(() => {
@@ -47,13 +48,14 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
     }, [suspense]);
     const fetchingFn = useCallback(((navigationEvent) => {
         const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
-        const {oldData} = stateContext;
+        const {url, oldData} = stateContext;
         const refetch = keys.current;
         const cacheIgnorable = navigationEvent['ignoreCache'];
         const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
         if (!getShow(state?.key)) return false;
-        if ((!getShow(oldState?.key) && !cacheIgnorable) || ignoreCache) return true;
         if (navigationEvent['rscCache']?.[sceneViewKey] || suspended.current || errored.current) return true;
+        if (!ignoreCache && renderedSceneView.current && renderedUrl.current === url) return false;
+        if ((!getShow(oldState?.key) && !cacheIgnorable) || ignoreCache) return true;
         if (!rendered) return true;
         if (cacheIgnorable) return false;
         if (!refetch) return true;
@@ -89,6 +91,7 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
                     <FetchingContext.Provider value={combinedFetchingFn}>
                         <SceneViewInner onMount={() => {
                             renderedSceneView.current = sceneView;
+                            renderedUrl.current = stateContext.url;
                             if (pending) return;
                             if (historyAction === 'none') return;
                             if (typeof window === 'undefined') return;

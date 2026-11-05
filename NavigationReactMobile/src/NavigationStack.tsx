@@ -1,7 +1,7 @@
 'use client'
 import React, {useRef, useState, useContext, useMemo, useEffect, ReactElement} from 'react';
 import { State, StateNavigator } from 'navigation';
-import { NavigationContext, HistoryCacheContext, TransitionContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
+import { NavigationContext, TransitionContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
 import Scene from './Scene.js';
 import Freeze from './Freeze.js';
 import SharedElementContext from './SharedElementContext.js';
@@ -158,23 +158,9 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
                 registerRootView(sceneViewKey, active);
         }
     }, [registerRootView, allScenes]);
-    const {instance: historyCacheInstance, supportsPrecommitNavigation, get: getHistory, set: setHistory} = useContext(HistoryCacheContext);
-    const historyCache = useMemo(() => ({
-        instance: historyCacheInstance,
-        supportsPrecommitNavigation,
-        get: (navigationEvent: NavigationEvent, sceneViewKey: string) => {
-            const {stateNavigator: {stateContext: {url, history, crumbs, oldUrl}}} = navigationEvent;
-            if (!oldUrl) return null;
-            const {crumbs: oldCrumbs} = stateNavigator.parseLink(oldUrl);
-            const historyItem = ((history && oldCrumbs.length !== crumbs.length) || oldCrumbs.length > crumbs.length) ? historyCacheInstance.current[url]?.[sceneViewKey] : null;
-            return (!historyItem && !supportsPrecommitNavigation) ? getHistory(navigationEvent, sceneViewKey) : historyItem;
-        },
-        set: setHistory
-    }), [historyCacheInstance, getHistory, setHistory]);
     const sceneData = getScenes();
     return (stateContext.state &&
         <TransitionContext.Provider value={navigationTransition}>
-            <HistoryCacheContext.Provider value={historyCache}>
                 <SharedElementContext.Provider value={sharedElementRegistry as any}>
                     <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
                         {scenes => (
@@ -190,7 +176,6 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
                         )}
                     </NavigationAnimation>
                 </SharedElementContext.Provider>
-            </HistoryCacheContext.Provider>
         </TransitionContext.Provider>
     )
 }
