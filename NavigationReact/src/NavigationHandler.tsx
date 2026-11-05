@@ -3,7 +3,6 @@ import React, { useCallback, useContext, useOptimistic, useEffect, useLayoutEffe
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
-import HistoryCacheContext from './HistoryCacheContext.js';
 import TransitionContext from './TransitionContext.js';
 import BundlerContext from './BundlerContext.js';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean, sceneViews?: any, scrollY?: number};
@@ -20,18 +19,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const [, setTransitionAborted] = useState({});
     const nextNavigationEvent = !_nextNavigationEvent?.intercept?.signal?.aborted ? _nextNavigationEvent : navigationEvent;
     const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
-    const historyCacheRef = useRef({});
-    const historyCache = useMemo(() => ({
-        instance: historyCacheRef,
-        supportsPrecommitNavigation,
-        get: ({hasUAVisualTransition, stateNavigator: {stateContext: {url, history}}}: NavigationHandlerState, sceneViewKey: string) => {
-            return (history && (!supportsPrecommitNavigation || !!hasUAVisualTransition)) ? historyCacheRef.current[url]?.[sceneViewKey] : null;
-        },
-        set: ({stateNavigator: {stateContext: {url}}}: NavigationHandlerState, sceneViewKey: string, sceneView: any) => {
-            if (!historyCacheRef.current[url]) historyCacheRef.current[url] = {};
-            historyCacheRef.current[url][sceneViewKey] = sceneView;
-        }
-    }), []);
     const rootViews = useRef({});
     const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
@@ -253,7 +240,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [isPending, navigationEvent]);
     useEffect(() => {
         if (!isPending) {
-            const {stateContext: {url, historyAction}} = navigationEvent.data.stateNavigator;
             const title = typeof document !== 'undefined' ? document.title : null;
             const oldTitle = navigationEvent.intercept?.title;
             if (typeof document !== 'undefined' && oldTitle) document.title = oldTitle;
@@ -264,24 +250,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
             navigationEvent.intercept?.resume?.();
             if (typeof document !== 'undefined' && document.title === oldTitle && title) document.title = title;
-            if (navigationEvent.intercept?.hasUAVisualTransition && stateNavigator.historyManager.refetch) {
-                startTransition(() => {
-                    setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(), trackable: undefined}, stateNavigator: navigationEvent.stateNavigator});
-                });
-            }
             navigationEvent.intercept = {};
-            if (historyAction === 'none' || typeof window === 'undefined' || !window.history || !window.navigation) return;
-            const historyKeys = Object.keys(historyCacheRef.current);
-            const historyUrls = window.navigation.entries().reduce((entries, entry) => {
-                if (!entry.url) return entries;
-                const historyUrl = navigationEvent.stateNavigator.historyManager.getCurrentUrl(entry);
-                entries[historyUrl] = true;
-                return entries;
-            }, {});
-            historyUrls[url] = true;
-            for(let i =0; i < historyKeys.length; i ++) {
-                if (!historyUrls[historyKeys[i]]) delete historyCacheRef.current[historyKeys[i]];
-            }
         }
     }, [isPending, navigationEvent]);
     useEffect(() => {
@@ -314,9 +283,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         <NavigationContext.Provider value={nextNavigationEvent?.data}>
             <TransitionContext.Provider value={navigationTransition}>
                 <RefetchContext.Provider value={refetchControl}>
-                    <HistoryCacheContext.Provider value={historyCache}>
-                        {children}
-                    </HistoryCacheContext.Provider>
+                    {children}
                 </RefetchContext.Provider>
             </TransitionContext.Provider>
         </NavigationContext.Provider>

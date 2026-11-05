@@ -3,7 +3,6 @@ import React, { createContext, useContext, useEffect, useRef, useMemo, useCallba
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import RefetchContext from './RefetchContext.js';
-import HistoryCacheContext from './HistoryCacheContext.js';
 import ErrorBoundary from './ErrorBoundary.js';
 import TransitionContext from './TransitionContext.js';
 import NavigationContext from './NavigationContext.js';
@@ -22,7 +21,6 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
     const {nextNavigationEvent} = useContext(TransitionContext);
     const {state, oldState, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {oldUrl, historyAction, history, crumbs} = stateContext;
-    const historyCache = useContext(HistoryCacheContext);
     const {deserialize, trigger, keys} = useContext(RefetchContext) as any;
     const suspended = useRef(null);
     const errored = useRef(null);
@@ -37,10 +35,8 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
     );
     const cacheIgnorable = navigationEvent['ignoreCache'];
     const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
-    const cachedHistory = !ignoreCache && historyCache.get(navigationEvent, sceneViewKey);
     if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = {};
     const cachedSceneViews = navigationEvent['rscCache'];
-    if (cachedHistory) cachedSceneViews[sceneViewKey] = cachedHistory;
     if (!navigationEvent['trackable']) navigationEvent['trackable'] = {};
     if (navigationEvent['uncommitted'] && getShow(state?.key)) navigationEvent['trackable'][sceneViewKey] = true;
     const renderedSceneView = useRef(null);
@@ -96,7 +92,6 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
                             if (pending) return;
                             if (historyAction === 'none') return;
                             if (typeof window === 'undefined') return;
-                            historyCache.set(navigationEvent, sceneViewKey, renderedSceneView.current);
                             if (!sceneView || !navigationEvent['trackable'][sceneViewKey] || !historyManager.refetch || !window.navigation?.currentEntry) return;
                             const state = window.navigation.currentEntry.getState() || {};
                             const sceneViews = {...state['sceneViews'], [sceneViewKey]: {parent, keys: keys.current}};
