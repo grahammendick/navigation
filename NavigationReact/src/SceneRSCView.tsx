@@ -41,7 +41,7 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
     if (navigationEvent['uncommitted'] && getShow(state?.key)) navigationEvent['trackable'][sceneViewKey] = true;
     const renderedSceneView = useRef(null);
     const renderedSuspense = useRef(true);
-    const suspense = !rendered || !getShow(oldState?.key) ? !history || (state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length) || !historyManager.refetch : renderedSuspense.current;
+    const suspense = !rendered || !getShow(oldState?.key) ? !history || (state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length) || !historyManager.refetch || typeof window === 'undefined' || !window.NavigationPrecommitController : renderedSuspense.current;
     useEffect(() => {
         renderedSuspense.current = suspense;
     }, [suspense]);

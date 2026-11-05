@@ -56,12 +56,11 @@ class HTML5HistoryManager implements HistoryManager {
                 if (!this.canInterceptHistory(e)) return;
                 const navigationLink = e.destination.getState()?.navigationLink || this.getUrl(new URL(e.destination.url));
                 if (e.cancelable) {
+                    const handler = async () => intercept(navigationLink, e);
                     e.intercept({
                         focusReset: 'manual',
                         scroll: 'manual',
-                        async precommitHandler() {
-                            return intercept(navigationLink, e);
-                        }
+                        ...(window.NavigationPrecommitController ? {precommitHandler: handler} : {handler})
                     });
                 } else {
                     intercept(navigationLink, e);
