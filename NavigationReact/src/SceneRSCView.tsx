@@ -142,6 +142,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const refetch = keys.current;
     const optimistic = (() => {
         if (!rendered.current) return true;
+        if (nextNavigationEvent['clientRevealed'] && getShow(oldState?.key) && !getShow(state?.key)) return true;
         if (!getShow(state?.key) || !getShow(oldState?.key) || !refetch) return false;
         if (refetch.state && state !== oldState) return false;
         for(let i = 0; i < refetch.data.length; i++) {
