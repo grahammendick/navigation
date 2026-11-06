@@ -9,7 +9,7 @@ type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, rscFetching?: any, hasUAVisualTransition?: boolean, uncommitted?: boolean, trackable?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 type RSCFetch = {sceneViewKeys: string[], resolve: (sceneViewKeys: string[]) => void, sceneViews: Promise<any>, timeout?: ReturnType<typeof setTimeout>};
 
-const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
+const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavigator: StateNavigator, cacheTimeout?: number, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept, rscFetch?: RSCFetch, time?: number}>();
     const [_nextNavigationEvent, setNextNavigationEvent] = useOptimistic?.(navigationEvent) || [navigationEvent, () => {}];
     const [isPending, startTransition] = useTransition?.() || [false];
@@ -18,6 +18,12 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
     const rootViews = useRef({});
     const cache = useRef({});
+    const fresh = ({lifetime, time}) => {
+        const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
+        const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
+        const seconds = typeof lifetime === 'number' ? lifetime : cacheTimeout;
+        return (typeof lifetime === 'number' || refresh) && (seconds == null || nextNavigationEvent.time - time < seconds * 1000);
+    };
     const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
@@ -190,11 +196,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             return sceneViews[sceneViewKey];
         },
         getCache: (sceneViewKey: string, navigationData: any) => {
-            const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
-            const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-            return cache.current[sceneViewKey]?.find(({data, lifetime, time}) => (
-                (typeof lifetime === 'number' ? nextNavigationEvent.time - time < lifetime * 1000 : refresh)
-                && Object.keys(data).every(key => data[key] === navigationData[key])
+            return cache.current[sceneViewKey]?.find(entry => (
+                fresh(entry) && Object.keys(entry.data).every(key => entry.data[key] === navigationData[key])
             ))?.sceneView;
         },
         setCache: (sceneViewKey: string, navigationData: any, sceneView: any, lifetime: 'refresh' | number) => {
@@ -221,7 +224,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 }, 100);
             }
         },
-    }), [navigationEvent, nextNavigationEvent, fetchRSC]);
+    }), [navigationEvent, nextNavigationEvent, fetchRSC, cacheTimeout]);
     useEffect(() => {
         const onNavigate = () => {
             if (navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
@@ -233,13 +236,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     React.useInsertionEffect?.(() => {
         const commit = navigationEvent.intercept?.commit;
         if (!isPending) navigationEvent.data.uncommitted = false;
-        const {state, oldState, oldUrl, crumbs} = navigationEvent.data.stateNavigator.stateContext;
-        const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
         if (!isPending) {
             for (const sceneViewKey in cache.current) {
-                cache.current[sceneViewKey] = cache.current[sceneViewKey].filter(({lifetime, time}) => (
-                    typeof lifetime === 'number' ? navigationEvent.time - time < lifetime * 1000 : refresh
-                ));
+                cache.current[sceneViewKey] = cache.current[sceneViewKey].filter(fresh);
             }
         }
         if (!isPending && commit) {
