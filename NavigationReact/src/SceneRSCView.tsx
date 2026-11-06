@@ -100,7 +100,7 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
                             if (cache && sceneView && keys.current) {
                                 const navigationData = {};
                                 for (const key of keys.current.data) navigationData[key] = navigationEvent.data[key];
-                                setCache(sceneViewKey, navigationData, sceneView, cache);
+                                setCache(sceneViewKey, navigationData, sceneView);
                             }
                             if (historyAction === 'none') return;
                             if (typeof window === 'undefined') return;
@@ -151,7 +151,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     })();
     return (
         <NavigationContext.Provider value={optimistic ? ancestorNavigationEvent : navigationEvent}>
-            <SceneView {...props} cache={cache ?? ancestorCache} keys={keys} parent={parent} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
+            <SceneView {...props} cache={cache || ancestorCache} keys={keys} parent={parent} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
         </NavigationContext.Provider>
     )
 }

@@ -19,10 +19,10 @@ const App = async ({url}: any) => {
           <SceneView active={['people', 'person']} name="header">
             <Header />
           </SceneView>
-          <SceneView active="people" cache={60}>
+          <SceneView active="people" cache>
             <People />
           </SceneView>
-          <SceneView active="person" cache="refresh">
+          <SceneView active="person" cache>
             <Person />
           </SceneView>
         </NavigationProvider>
