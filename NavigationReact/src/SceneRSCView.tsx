@@ -1,13 +1,13 @@
 'use client'
-import React, { createContext, useContext, useEffect, useRef, useMemo, useCallback, Suspense } from 'react';
+import React, { useContext, useEffect, useRef, useMemo, useCallback, Suspense } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import RefetchContext from './RefetchContext.js';
+import SceneViewContext from './SceneViewContext.js';
+import useRootViewRegistry from './useRootViewRegistry.js';
 import ErrorBoundary from './ErrorBoundary.js';
 import TransitionContext from './TransitionContext.js';
 import NavigationContext from './NavigationContext.js';
-
-const FetchingContext = createContext<(navigationEvent: any) => boolean>(() => false);
 
 const SceneViewInner = ({children, onMount}) => {
     useEffect(() => {
@@ -16,15 +16,15 @@ const SceneViewInner = ({children, onMount}) => {
     return children
 };
 
-const SceneView = ({active, name, parent, rendered, pending, fallback, errorFallback, cache, children}: SceneViewProps & {active: string | string[], parent: string, pending: boolean, rendered: boolean}) => {
+const SceneView = ({active, name, parent, rendered, pending, fallback, errorFallback, cache, keys, children}: SceneViewProps & {active: string | string[], parent: string, pending: boolean, rendered: boolean, keys: any}) => {
     const navigationEvent = useNavigationEvent();
     const {nextNavigationEvent} = useContext(TransitionContext);
     const {state, oldState, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {oldUrl, historyAction, history, crumbs} = stateContext;
-    const {deserialize, trigger, getCache, setCache, keys} = useContext(RefetchContext) as any;
+    const {deserialize, trigger, getCache, setCache} = useContext(RefetchContext);
     const suspended = useRef(null);
     const errored = useRef(null);
-    const ancestorFetchingFn = useContext(FetchingContext);
+    const {fetchingFn: ancestorFetchingFn} = useContext(SceneViewContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
     const ancestorFetchingNext = ancestorFetchingFn(nextNavigationEvent);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -85,11 +85,14 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
     ), [ancestorFetchingFn, fetchingFn]);
+    const sceneViewContext = useMemo(() => ({
+        sceneViewKey, fetchingFn: combinedFetchingFn, keys, cache
+    }), [sceneViewKey, combinedFetchingFn, keys, cache]);
     return (
         <ErrorBoundary errorFallback={errorFallback} errorRef={errored}>
             {(() => {
                 const view = (
-                    <FetchingContext.Provider value={combinedFetchingFn}>
+                    <SceneViewContext.Provider value={sceneViewContext}>
                         <SceneViewInner onMount={() => {
                             renderedSceneView.current = sceneView;
                             renderedUrl.current = stateContext.url;
@@ -106,7 +109,7 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
                             const sceneViews = {...state['sceneViews'], [sceneViewKey]: {parent, keys: keys.current}};
                             window.navigation.updateCurrentEntry({state: {...state, sceneViews}});
                         }}>{sceneView}</SceneViewInner>
-                    </FetchingContext.Provider>
+                    </SceneViewContext.Provider>
                 );
                 return fallback && sceneView && suspense ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
             })()}
@@ -118,7 +121,8 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, name} = props;
     const rendered = useRef(false);
     const keys = useRef(null);
-    const {sceneViewKey: parent, refetcher, registerSceneView, deserialize, trigger, getCache, setCache, cache: ancestorCache} = useContext(RefetchContext);
+    const {sceneViewKey: parent, cache: ancestorCache} = useContext(SceneViewContext);
+    const registerSceneView = useRootViewRegistry();
     const cache = props.cache !== undefined ? props.cache : ancestorCache;
     const ancestorNavigationEvent = useNavigationEvent();
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
@@ -129,17 +133,6 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     useEffect(() => {
         rendered.current = true;
     }, []);    
-    const refetchControl = useMemo(() => ({
-        sceneViewKey,
-        refetcher: (scene: boolean) => refetcher(scene || sceneViewKey),
-        registerSceneView: () => {},
-        deserialize,
-        trigger,
-        getCache,
-        setCache,
-        keys,
-        cache,
-    }), [sceneViewKey, refetcher, deserialize, trigger, getCache, setCache, cache]);
     const {state, data, oldState, stateNavigator: {stateContext}} = nextNavigationEvent;
     const {oldData} = stateContext;
     const getShow = (stateKey: string) => (
@@ -159,9 +152,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     })();
     return (
         <NavigationContext.Provider value={optimistic ? ancestorNavigationEvent : navigationEvent}>
-            <RefetchContext.Provider value={refetchControl}>
-                <SceneView {...props} cache={cache} parent={parent} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
-            </RefetchContext.Provider>
+            <SceneView {...props} cache={cache} keys={keys} parent={parent} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
         </NavigationContext.Provider>
     )
 }

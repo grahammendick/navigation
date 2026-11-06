@@ -169,7 +169,6 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         return !actionId ? !res.url ? res.sceneViews : new Promise(() => {}) : res.data;
     }, [stateNavigator, nextNavigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch]);
     const refetchControl = useMemo(() => ({
-        sceneViewKey: null,
         refetcher: (sceneViewKey: string | boolean = true) => {
             startTransition(() => {
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined, rscFetching: primeRefetch(sceneViewKey), trackable: undefined}, stateNavigator: navigationEvent.stateNavigator});
