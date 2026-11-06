@@ -123,6 +123,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const keys = useRef(null);
     const {sceneViewKey: parent, cache: ancestorCache} = useContext(SceneViewContext);
     const registerSceneView = useRootViewRegistry();
+    const {getCache} = useContext(RefetchContext);
     const ancestorNavigationEvent = useNavigationEvent();
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -143,6 +144,8 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const optimistic = (() => {
         if (!rendered.current) return true;
         if (nextNavigationEvent['clientRevealed'] && getShow(oldState?.key) && !getShow(state?.key)) return true;
+        const ignoreCache = nextNavigationEvent['ignoreCache'] === true || nextNavigationEvent['ignoreCache'] === sceneViewKey;
+        if (getShow(state?.key) && !ignoreCache && (cache ?? ancestorCache) && getCache(sceneViewKey, data)) return true;
         if (!getShow(state?.key) || !getShow(oldState?.key) || !refetch) return false;
         if (refetch.state && state !== oldState) return false;
         for(let i = 0; i < refetch.data.length; i++) {

@@ -70,6 +70,7 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
         const shows = (active: string | string[], key: string) => typeof active === 'string' ? active === key : active.indexOf(key) !== -1;
         const clientRevealed = Object.keys(clientViews.current).some(key => shows(clientViews.current[key], state?.key) && !shows(clientViews.current[key], oldState?.key));
         const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, rscFetching: undefined, clientRevealed, hasUAVisualTransition: intercept.hasUAVisualTransition, uncommitted: !oldUrl}, stateNavigator, intercept, time: Date.now()};
+        nextNavigationEvent.data.clientRevealed ||= !rscCache && Object.keys(rootViews.current).some(key => shows(rootViews.current[key], state?.key) && !shows(rootViews.current[key], oldState?.key) && !!getCache(key, data, nextNavigationEvent));
         if (prime && intercept.sceneViews) nextNavigationEvent.data.rscFetching = primeHistory(intercept.sceneViews, nextNavigationEvent);
         setNavigationEvent(nextNavigationEvent);
         if (intercept.resume && !prime) setNextNavigationEvent(nextNavigationEvent);
