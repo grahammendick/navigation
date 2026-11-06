@@ -17,6 +17,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const nextNavigationEvent = !_nextNavigationEvent?.intercept?.signal?.aborted ? _nextNavigationEvent : navigationEvent;
     const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
     const rootViews = useRef({});
+    const cache = useRef({});
     const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
@@ -189,6 +190,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const sceneViews = await rscFetch.sceneViews;
             return sceneViews[sceneViewKey];
         },
+        getCache: (sceneViewKey: string, navigationData: any) => {
+            const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
+            if (state !== oldState || oldUrl?.split('crumb=').length - 1 !== crumbs.length) return null;
+            return cache.current[sceneViewKey]?.find(({data}) => Object.keys(data).every(key => data[key] === navigationData[key]))?.sceneView;
+        },
+        setCache: (sceneViewKey: string, navigationData: any, sceneView: any) => {
+            const entries = (cache.current[sceneViewKey] || []).filter(({data}) => !Object.keys(data).every(key => data[key] === navigationData[key]));
+            cache.current[sceneViewKey] = [...entries, {data: navigationData, sceneView}];
+        },
         trigger: (navigationEventData: NavigationHandlerState) => {
             if (navigationEvent === nextNavigationEvent && navigationEventData === nextNavigationEvent.data) {
                 const fetching = nextNavigationEvent.data['rscFetching'];
@@ -219,6 +229,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     React.useInsertionEffect?.(() => {
         const commit = navigationEvent.intercept?.commit;
         if (!isPending) navigationEvent.data.uncommitted = false;
+        const {state, oldState, oldUrl, crumbs} = navigationEvent.data.stateNavigator.stateContext;
+        if (!isPending && (state !== oldState || oldUrl?.split('crumb=').length - 1 !== crumbs.length)) cache.current = {};
         if (!isPending && commit) {
             commit();
             const title = typeof document !== 'undefined' ? document.title : null;
