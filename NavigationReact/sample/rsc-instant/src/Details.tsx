@@ -1,5 +1,5 @@
 'use server-entry'
-import { SceneView, useNavigationEvent, NavigationBackLink } from 'navigation-react';
+import { SceneView, useNavigationEvent } from 'navigation-react';
 import { getPerson } from './data';
 import Gender from './Gender';
 import Friends from './Friends';
@@ -11,7 +11,6 @@ const Details = async () => {
   return (
     <>
       <div>
-        <NavigationBackLink distance={1}>Back Push</NavigationBackLink>
         <Edit id={id} name={name} />
         <div>Date of Birth</div>
         <div>{dateOfBirth}</div>

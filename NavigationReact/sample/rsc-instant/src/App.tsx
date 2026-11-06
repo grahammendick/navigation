@@ -33,9 +33,11 @@ const App = async ({url}: any) => {
               </SceneView>
             </People>
           </SceneView>
-          <SceneView active="person" fallback={<h2>loading...</h2>}>
+          <SceneView active="person" client>
             <Person>
-              <Details />
+              <SceneView active="person" fallback={<h2>loading...</h2>}>
+                <Details />
+              </SceneView>
             </Person>
           </SceneView>
         </NavigationProvider>
