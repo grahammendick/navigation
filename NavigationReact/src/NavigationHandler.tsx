@@ -18,12 +18,17 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
     const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
     const rootViews = useRef({});
     const cache = useRef({});
-    const fresh = ({lifetime, time}) => {
-        const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
+    const fresh = ({lifetime, time}, navigationEvent = nextNavigationEvent) => {
+        const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = navigationEvent.data;
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
         const seconds = typeof lifetime === 'number' ? lifetime : cacheTimeout;
-        return (typeof lifetime === 'number' || refresh) && (seconds == null || nextNavigationEvent.time - time < seconds * 1000);
+        return (typeof lifetime === 'number' || refresh) && (seconds == null || navigationEvent.time - time < seconds * 1000);
     };
+    const getCache = (sceneViewKey: string, navigationData: any, navigationEvent = nextNavigationEvent) => (
+        cache.current[sceneViewKey]?.find(entry => (
+            fresh(entry, navigationEvent) && Object.keys(entry.data).every(key => entry.data[key] === navigationData[key])
+        ))?.sceneView
+    );
     const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
@@ -61,8 +66,8 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
         const {url, oldState, state, data, asyncData, historyAction, history, crumbs, oldUrl} = asyncNavigator.stateContext;
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
         const prime = history && !refresh && stateNavigator.historyManager.refetch && window.NavigationPrecommitController;
-        const rscFetching = prime && intercept.sceneViews ? primeHistory(intercept.sceneViews, asyncNavigator.stateContext) : undefined;
-        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, rscFetching, hasUAVisualTransition: intercept.hasUAVisualTransition, uncommitted: !oldUrl}, stateNavigator, intercept, time: Date.now()};
+        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, rscFetching: undefined, hasUAVisualTransition: intercept.hasUAVisualTransition, uncommitted: !oldUrl}, stateNavigator, intercept, time: Date.now()};
+        if (prime && intercept.sceneViews) nextNavigationEvent.data.rscFetching = primeHistory(intercept.sceneViews, nextNavigationEvent);
         setNavigationEvent(nextNavigationEvent);
         if (intercept.resume && !prime) setNextNavigationEvent(nextNavigationEvent);
         if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
@@ -92,7 +97,7 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
                 if (!intercept?.signal?.aborted) throw e;
             });
         }
-    }, [stateNavigator, createFromFetch]);
+    }, [stateNavigator, createFromFetch, cacheTimeout]);
     if (!navigationEvent) raiseNavigationEvent();
     const primeRefetch = (sceneViewKey: string | boolean = true) => {
         if (typeof sceneViewKey === 'string') return {[sceneViewKey]: false};
@@ -104,7 +109,8 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
             return rscFetching;
         }, {});
     };
-    const primeHistory = (sceneViews: any, {state, oldState, data, oldData}: StateContext) => {
+    const primeHistory = (sceneViews: any, navigationEvent: any) => {
+        const {state, oldState, data, oldData} = navigationEvent.data.stateNavigator.stateContext;
         const oldSceneViews = window.navigation.currentEntry.getState()?.['sceneViews'] || {};
         const children = {};
         for (const sceneViewKey in sceneViews) (children[sceneViews[sceneViewKey].parent] ||= []).push(sceneViewKey);
@@ -121,7 +127,7 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
         const rscFetching = {};
         const prime = (parent: string) => {
             for (const sceneViewKey of children[parent] || []) {
-                if (fetching(sceneViewKey)) rscFetching[sceneViewKey] = false;
+                if (!getCache(sceneViewKey, data, navigationEvent) && fetching(sceneViewKey)) rscFetching[sceneViewKey] = false;
                 else prime(sceneViewKey);
             }
         };
@@ -195,11 +201,7 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
             const sceneViews = await rscFetch.sceneViews;
             return sceneViews[sceneViewKey];
         },
-        getCache: (sceneViewKey: string, navigationData: any) => {
-            return cache.current[sceneViewKey]?.find(entry => (
-                fresh(entry) && Object.keys(entry.data).every(key => entry.data[key] === navigationData[key])
-            ))?.sceneView;
-        },
+        getCache,
         setCache: (sceneViewKey: string, navigationData: any, sceneView: any, lifetime: 'refresh' | number) => {
             const entries = cache.current[sceneViewKey] || [];
             const matches = ({data}) => Object.keys(data).every(key => data[key] === navigationData[key]);
@@ -238,7 +240,7 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
         if (!isPending) navigationEvent.data.uncommitted = false;
         if (!isPending) {
             for (const sceneViewKey in cache.current) {
-                cache.current[sceneViewKey] = cache.current[sceneViewKey].filter(fresh);
+                cache.current[sceneViewKey] = cache.current[sceneViewKey].filter(entry => fresh(entry));
             }
         }
         if (!isPending && commit) {
