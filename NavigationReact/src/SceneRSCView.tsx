@@ -118,7 +118,8 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, name} = props;
     const rendered = useRef(false);
     const keys = useRef(null);
-    const {sceneViewKey: parent, refetcher, registerSceneView, deserialize, trigger, getCache, setCache} = useContext(RefetchContext);
+    const {sceneViewKey: parent, refetcher, registerSceneView, deserialize, trigger, getCache, setCache, cache: ancestorCache} = useContext(RefetchContext);
+    const cache = props.cache !== undefined ? props.cache : ancestorCache;
     const ancestorNavigationEvent = useNavigationEvent();
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -137,7 +138,8 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
         getCache,
         setCache,
         keys,
-    }), [sceneViewKey, refetcher, deserialize, trigger, getCache, setCache]);
+        cache,
+    }), [sceneViewKey, refetcher, deserialize, trigger, getCache, setCache, cache]);
     const {state, data, oldState, stateNavigator: {stateContext}} = nextNavigationEvent;
     const {oldData} = stateContext;
     const getShow = (stateKey: string) => (
@@ -158,7 +160,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     return (
         <NavigationContext.Provider value={optimistic ? ancestorNavigationEvent : navigationEvent}>
             <RefetchContext.Provider value={refetchControl}>
-                <SceneView {...props} parent={parent} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
+                <SceneView {...props} cache={cache} parent={parent} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
             </RefetchContext.Provider>
         </NavigationContext.Provider>
     )

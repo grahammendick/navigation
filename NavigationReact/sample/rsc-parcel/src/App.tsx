@@ -22,7 +22,7 @@ const App = async ({url}: any) => {
           <SceneView active="people">
             <People />
           </SceneView>
-          <SceneView active="person">
+          <SceneView active="person" cache="refresh">
             <Person />
           </SceneView>
         </NavigationProvider>
