@@ -28,6 +28,7 @@ const List = async () => {
         </tbody>
       </table>
       <Pager totalRowCount={count} />
+      <p id="rendered">{Date.now()}</p>
     </>
   )
 }

@@ -16,7 +16,7 @@ const SceneViewInner = ({children, onMount}) => {
     return children
 };
 
-const SceneView = ({active, name, parent, rendered, pending, fallback, errorFallback, cache, keys, children}: SceneViewProps & {active: string | string[], parent: string, pending: boolean, rendered: boolean, keys: any}) => {
+const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorFallback, cache, keys, children}: SceneViewProps & {active: string | string[], ancestors: string[], pending: boolean, rendered: boolean, keys: any}) => {
     const navigationEvent = useNavigationEvent();
     const {nextNavigationEvent} = useContext(TransitionContext);
     const {state, oldState, stateNavigator: {stateContext, historyManager}} = navigationEvent;
@@ -86,8 +86,8 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
     ), [ancestorFetchingFn, fetchingFn]);
     const sceneViewContext = useMemo(() => ({
-        sceneViewKey, fetchingFn: combinedFetchingFn, keys, cache
-    }), [sceneViewKey, combinedFetchingFn, keys, cache]);
+        ancestors: [sceneViewKey, ...ancestors], fetchingFn: combinedFetchingFn, keys, cache
+    }), [sceneViewKey, ancestors, combinedFetchingFn, keys, cache]);
     return (
         <ErrorBoundary errorFallback={errorFallback} errorRef={errored}>
             {(() => {
@@ -100,13 +100,13 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
                             if (cache && sceneView && keys.current) {
                                 const navigationData = {};
                                 for (const key of keys.current.data) navigationData[key] = navigationEvent.data[key];
-                                setCache(sceneViewKey, navigationData, sceneView);
+                                setCache(sceneViewKey, navigationData, sceneView, sceneViewContext.ancestors);
                             }
                             if (historyAction === 'none') return;
                             if (typeof window === 'undefined') return;
                             if (!sceneView || !navigationEvent['trackable'][sceneViewKey] || !historyManager.refetch || !window.navigation?.currentEntry) return;
                             const state = window.navigation.currentEntry.getState() || {};
-                            const sceneViews = {...state['sceneViews'], [sceneViewKey]: {parent, keys: keys.current}};
+                            const sceneViews = {...state['sceneViews'], [sceneViewKey]: {parent: ancestors[0] ?? null, keys: keys.current}};
                             window.navigation.updateCurrentEntry({state: {...state, sceneViews}});
                         }}>{sceneView}</SceneViewInner>
                     </SceneViewContext.Provider>
@@ -121,7 +121,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const {active, name, cache} = props;
     const rendered = useRef(false);
     const keys = useRef(null);
-    const {sceneViewKey: parent, cache: ancestorCache} = useContext(SceneViewContext);
+    const {ancestors, cache: ancestorCache} = useContext(SceneViewContext);
     const registerSceneView = useRootViewRegistry();
     const ancestorNavigationEvent = useNavigationEvent();
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
@@ -151,7 +151,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     })();
     return (
         <NavigationContext.Provider value={optimistic ? ancestorNavigationEvent : navigationEvent}>
-            <SceneView {...props} cache={cache || ancestorCache} keys={keys} parent={parent} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
+            <SceneView {...props} cache={cache || ancestorCache} keys={keys} ancestors={ancestors} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
         </NavigationContext.Provider>
     )
 }

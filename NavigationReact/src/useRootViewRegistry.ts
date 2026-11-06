@@ -6,7 +6,7 @@ const noop = () => {};
 
 const useRootViewRegistry = () => {
     const {registerSceneView} = useContext(RefetchContext);
-    const {sceneViewKey} = useContext(SceneViewContext);
+    const {ancestors: [sceneViewKey]} = useContext(SceneViewContext);
     return sceneViewKey == null ? registerSceneView : noop;
 }
 export default useRootViewRegistry;

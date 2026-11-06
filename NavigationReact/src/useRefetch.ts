@@ -4,7 +4,7 @@ import SceneViewContext from './SceneViewContext.js';
 
 const useRefetch = () => {
     const {refetcher} = useContext(RefetchContext);
-    const {sceneViewKey} = useContext(SceneViewContext);
+    const {ancestors: [sceneViewKey]} = useContext(SceneViewContext);
     return useCallback((scene?: boolean | string) => refetcher(scene || sceneViewKey || true), [refetcher, sceneViewKey]);
 }
 export default useRefetch;
