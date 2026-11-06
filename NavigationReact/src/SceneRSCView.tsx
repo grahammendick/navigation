@@ -100,7 +100,7 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
                             if (cache && sceneView && keys.current) {
                                 const navigationData = {};
                                 for (const key of keys.current.data) navigationData[key] = navigationEvent.data[key];
-                                setCache(sceneViewKey, navigationData, sceneView);
+                                setCache(sceneViewKey, navigationData, sceneView, cache);
                             }
                             if (historyAction === 'none') return;
                             if (typeof window === 'undefined') return;

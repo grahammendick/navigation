@@ -19,7 +19,7 @@ const App = async ({url}: any) => {
           <SceneView active={['people', 'person']} name="header">
             <Header />
           </SceneView>
-          <SceneView active="people">
+          <SceneView active="people" cache={60}>
             <People />
           </SceneView>
           <SceneView active="person" cache="refresh">

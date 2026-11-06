@@ -7,7 +7,7 @@ const People = async () => {
   return (
     <>
       <Filter />
-      <SceneView active="people" name="list" cache="refresh">
+      <SceneView active="people" name="list">
         <List />
       </SceneView>
     </>
