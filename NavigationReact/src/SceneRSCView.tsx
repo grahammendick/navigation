@@ -118,12 +118,11 @@ const SceneView = ({active, name, parent, rendered, pending, fallback, errorFall
 };
 
 const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
-    const {active, name} = props;
+    const {active, name, cache} = props;
     const rendered = useRef(false);
     const keys = useRef(null);
     const {sceneViewKey: parent, cache: ancestorCache} = useContext(SceneViewContext);
     const registerSceneView = useRootViewRegistry();
-    const cache = props.cache !== undefined ? props.cache : ancestorCache;
     const ancestorNavigationEvent = useNavigationEvent();
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
@@ -152,7 +151,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     })();
     return (
         <NavigationContext.Provider value={optimistic ? ancestorNavigationEvent : navigationEvent}>
-            <SceneView {...props} cache={cache} keys={keys} parent={parent} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
+            <SceneView {...props} cache={cache ?? ancestorCache} keys={keys} parent={parent} rendered={rendered.current} pending={navigationEvent !== nextNavigationEvent} />
         </NavigationContext.Provider>
     )
 }
