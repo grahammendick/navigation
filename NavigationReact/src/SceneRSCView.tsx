@@ -143,7 +143,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const refetch = keys.current;
     const optimistic = (() => {
         if (!rendered.current) return true;
-        if (nextNavigationEvent['clientRevealed'] && getShow(oldState?.key) && !getShow(state?.key)) return true;
+        if (nextNavigationEvent['optimisticReveal'] && getShow(oldState?.key) && !getShow(state?.key)) return true;
         const ignoreCache = nextNavigationEvent['ignoreCache'] === true || nextNavigationEvent['ignoreCache'] === sceneViewKey;
         if (getShow(state?.key) && !ignoreCache && (cache ?? ancestorCache) && getCache(sceneViewKey, data)) return true;
         if (!getShow(state?.key) || !getShow(oldState?.key) || !refetch) return false;

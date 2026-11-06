@@ -6,7 +6,7 @@ import RefetchContext from './RefetchContext.js';
 import TransitionContext from './TransitionContext.js';
 import BundlerContext from './BundlerContext.js';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean, sceneViews?: any, scrollY?: number};
-type NavigationHandlerState = { clientRevealed?: boolean, ignoreCache?: boolean | string, rscCache?: any, rscFetching?: any, hasUAVisualTransition?: boolean, uncommitted?: boolean, trackable?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
+type NavigationHandlerState = { optimisticReveal?: boolean, ignoreCache?: boolean | string, rscCache?: any, rscFetching?: any, hasUAVisualTransition?: boolean, uncommitted?: boolean, trackable?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 type RSCFetch = {sceneViewKeys: string[], resolve: (sceneViewKeys: string[]) => void, sceneViews: Promise<any>, timeout?: ReturnType<typeof setTimeout>};
 
 const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavigator: StateNavigator, cacheTimeout?: number, children: any}) => {
@@ -68,9 +68,9 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
         const prime = history && !refresh && stateNavigator.historyManager.refetch && window.NavigationPrecommitController;
         const shows = (active: string | string[], key: string) => typeof active === 'string' ? active === key : active.indexOf(key) !== -1;
-        const clientRevealed = Object.keys(clientViews.current).some(key => shows(clientViews.current[key], state?.key) && !shows(clientViews.current[key], oldState?.key));
-        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, rscFetching: undefined, clientRevealed, hasUAVisualTransition: intercept.hasUAVisualTransition, uncommitted: !oldUrl}, stateNavigator, intercept, time: Date.now()};
-        nextNavigationEvent.data.clientRevealed ||= !rscCache && Object.keys(rootViews.current).some(key => shows(rootViews.current[key], state?.key) && !shows(rootViews.current[key], oldState?.key) && !!getCache(key, data, nextNavigationEvent));
+        const optimisticReveal = Object.keys(clientViews.current).some(key => shows(clientViews.current[key], state?.key) && !shows(clientViews.current[key], oldState?.key));
+        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, rscFetching: undefined, optimisticReveal, hasUAVisualTransition: intercept.hasUAVisualTransition, uncommitted: !oldUrl}, stateNavigator, intercept, time: Date.now()};
+        nextNavigationEvent.data.optimisticReveal ||= !rscCache && Object.keys(rootViews.current).some(key => shows(rootViews.current[key], state?.key) && !shows(rootViews.current[key], oldState?.key) && !!getCache(key, data, nextNavigationEvent));
         if (prime && intercept.sceneViews) nextNavigationEvent.data.rscFetching = primeHistory(intercept.sceneViews, nextNavigationEvent);
         setNavigationEvent(nextNavigationEvent);
         if (intercept.resume && !prime) setNextNavigationEvent(nextNavigationEvent);
@@ -179,7 +179,7 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
             nextNavigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext, nextNavigationEvent.intercept);
         } else if (actionId && res.refetch) {
             startTransition(() => {
-                setNavigationEvent({data: {...nextNavigationEvent.data, ignoreCache: res.refetch === true || res.refetch[0], rscCache: res.sceneViews, rscFetching: undefined, trackable: undefined, clientRevealed: undefined}, stateNavigator: nextNavigationEvent.stateNavigator, time: Date.now()});
+                setNavigationEvent({data: {...nextNavigationEvent.data, ignoreCache: res.refetch === true || res.refetch[0], rscCache: res.sceneViews, rscFetching: undefined, trackable: undefined, optimisticReveal: undefined}, stateNavigator: nextNavigationEvent.stateNavigator, time: Date.now()});
             });
         }
         return !actionId ? !res.url ? res.sceneViews : new Promise(() => {}) : res.data;
@@ -187,7 +187,7 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
     const refetchControl = useMemo(() => ({
         refetcher: (sceneViewKey: string | boolean = true) => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined, rscFetching: primeRefetch(sceneViewKey), trackable: undefined, clientRevealed: undefined}, stateNavigator: navigationEvent.stateNavigator, time: Date.now()});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined, rscFetching: primeRefetch(sceneViewKey), trackable: undefined, optimisticReveal: undefined}, stateNavigator: navigationEvent.stateNavigator, time: Date.now()});
             });
         },
         registerSceneView: (sceneViewKey: string, active: string | string[]) => {
@@ -301,7 +301,7 @@ const NavigationHandler = ({stateNavigator, cacheTimeout, children}: {stateNavig
     useEffect(() => {
         const offHmrReload = onHmrReload?.(() => {
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(), trackable: undefined, clientRevealed: undefined}, stateNavigator: navigationEvent.stateNavigator, time: Date.now()});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(), trackable: undefined, optimisticReveal: undefined}, stateNavigator: navigationEvent.stateNavigator, time: Date.now()});
             });
         });
         return offHmrReload;
