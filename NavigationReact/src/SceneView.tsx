@@ -29,8 +29,7 @@ const SceneView = ({active, errorFallback, client, children}: SceneViewProps) =>
             }
         }
         if (client) registerSceneViews();
-        if (client && typeof active !== 'function') registerSceneView(null, active);
-    }, [registerSceneView, client, children, active]);
+    }, [registerSceneView, client, children]);
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <SceneViewInner>
