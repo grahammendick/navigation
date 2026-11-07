@@ -19,7 +19,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
         if (!this.rewriteUrl) this.rewriteUrl = rewriteUrl;
         if (!this.disabled && !this.navigateHistory) {
             this.navigateHistory = e => {
-                if (this.onNavigate) return;
+                if (window.NavigationPrecommitController || (this.onNavigate && this.backCrumb === null)) return;
                 var link = e.state?.navigationLink;
                 if (this.backCrumb !== null) {
                     var distance = link ? this.backCrumb.crumbs - link.split('crumb=').length + 1 : 0;
@@ -84,7 +84,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
             var {oldUrl, crumbs} = stateContext;
             var start = !oldUrl ? 0 : oldUrl.split('crumb=').length;
             distance = crumbs.length - start + 1;
-            for(var i = start + (this.onNavigate ? 1 : 0); i < crumbs.length; i++) {
+            for(var i = start + (window.NavigationPrecommitController ? 1 : 0); i < crumbs.length; i++) {
                 let {url, state} = crumbs[i];
                 super.addHistory(url, i === 0);
                 if (typeof document !== 'undefined' && state.title)
@@ -92,7 +92,7 @@ class MobileHistoryManager extends HTML5HistoryManager {
             }
             if (!this.disabled && distance < 0) {
                 this.backCrumb = {crumbs: crumbs.length, url};
-                if (this.onNavigate) {
+                if (window.NavigationPrecommitController) {
                     var entries = window.navigation.entries();
                     for(var i = entries.length - 2; i >= 0 && distance; i--) {
                         var link = entries[i].getState()?.navigationLink || this.getUrl(new URL(entries[i].url));
