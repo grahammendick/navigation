@@ -252,7 +252,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [isPending, navigationEvent]);
     useLayoutEffect(() => {
         const {commit, scrollY} = navigationEvent.intercept || {};
-        if (isPending || !commit) return;
+        if (isPending || !commit || !window.NavigationPrecommitController) return;
         const {state, oldState, crumbs, oldUrl} = navigationEvent.data.stateNavigator.stateContext;
         if (state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length) return;
         window.scrollTo(0, scrollY || 0);
