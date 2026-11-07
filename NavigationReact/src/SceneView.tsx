@@ -3,13 +3,13 @@ import React, { useContext, useEffect } from 'react';
 import NavigationContext from './NavigationContext.js';
 import { SceneViewProps } from './Props.js';
 import ErrorBoundary from './ErrorBoundary.js';
-import RefetchContext from './RefetchContext.js';
+import useRootViewRegistry from './useRootViewRegistry.js';
 
 const SceneViewInner = ({children}) => children;
 
 const SceneView = ({active, errorFallback, client, children}: SceneViewProps) => {
     const {state, stateNavigator} = useContext(NavigationContext);
-    const {registerSceneView} = useContext(RefetchContext);
+    const registerSceneView = useRootViewRegistry();
     const show = active != null && state && (
         typeof active === 'string'
         ? state.key === active

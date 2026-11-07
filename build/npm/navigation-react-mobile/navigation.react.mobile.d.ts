@@ -178,6 +178,10 @@ export interface NavigationStackProps {
      */
     client?: boolean;
     /**
+     * Indicates whether the RSC Scene is cached for the lifetime of the scene
+     */
+    cache?: boolean;
+    /**
      * The content to show when the RSC Scene suspends
      */
     fallback?: ReactNode;

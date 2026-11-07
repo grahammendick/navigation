@@ -37,6 +37,7 @@ interface SceneViewProps {
     fallback: ReactNode;
     errorFallback: ReactNode;
     client?: boolean;
+    cache?: boolean;
     children: any;
 }
 
