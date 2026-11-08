@@ -30,7 +30,7 @@ class LinkUtility {
         }
     }
 
-    private static areEqual(val: any, currentVal: any): boolean {
+    static areEqual(val: any, currentVal: any): boolean {
         if (currentVal == null)
             return val == null || val === '';
         var valType = Object.prototype.toString.call(val);

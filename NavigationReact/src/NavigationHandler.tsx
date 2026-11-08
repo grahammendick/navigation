@@ -5,6 +5,7 @@ import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
 import TransitionContext from './TransitionContext.js';
 import BundlerContext from './BundlerContext.js';
+import LinkUtility from './LinkUtility.js';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean, sceneViews?: any, scrollY?: number};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, rscFetching?: any, hasUAVisualTransition?: boolean, uncommitted?: boolean, trackable?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 type RSCFetch = {sceneViewKeys: string[], resolve: (sceneViewKeys: string[]) => void, sceneViews: Promise<any>, timeout?: ReturnType<typeof setTimeout>};
@@ -204,13 +205,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const sceneViews = await rscFetch.sceneViews;
             return sceneViews[sceneViewKey];
         },
-        getCache: (sceneViewKey: string, navigationData: any) => {
-            const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
-            const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-            return refresh && cache.current[sceneViewKey]?.entries.find(entry => (
-                Object.keys(entry.navigationData).every(key => entry.navigationData[key] === navigationData[key])
-            ))?.sceneView;
-        },
+        getCache: (sceneViewKey: string, stateKey: string, navigationData: any) => (
+            cache.current[sceneViewKey]?.entries.find(entry => (
+                entry.stateKey === stateKey
+                && Object.keys(entry.navigationData).length === Object.keys(navigationData).length
+                && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
+            ))?.sceneView
+        ),
         setCache: (sceneViewKey: string, navigationData: any, sceneView: any, ancestors: string[]) => {
             const {entries = []} = cache.current[sceneViewKey] || {};
             const matches = entry => Object.keys(entry.navigationData).every(key => entry.navigationData[key] === navigationData[key]);
