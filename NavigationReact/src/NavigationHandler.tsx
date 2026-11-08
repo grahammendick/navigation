@@ -8,9 +8,6 @@ import BundlerContext from './BundlerContext.js';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean, sceneViews?: any, scrollY?: number};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, rscFetching?: any, hasUAVisualTransition?: boolean, uncommitted?: boolean, trackable?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 type RSCFetch = {sceneViewKeys: string[], resolve: (sceneViewKeys: string[]) => void, sceneViews: Promise<any>, timeout?: ReturnType<typeof setTimeout>};
-const getShow = (active: string | string[], key: string) => (
-    active != null && (typeof active === 'string' ? key === active : active.indexOf(key) !== -1)
-);
 
 const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept, rscFetch?: RSCFetch}>();
@@ -20,6 +17,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const nextNavigationEvent = !_nextNavigationEvent?.intercept?.signal?.aborted ? _nextNavigationEvent : navigationEvent;
     const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
     const rootViews = useRef({});
+    const getShow = (active: string | string[], key: string) => (
+        active != null && (typeof active === 'string' ? key === active : active.indexOf(key) !== -1)
+    );
     const cache = useRef({});
     const expire = (sceneViewKey: string | boolean) => {
         for (const key in cache.current) {
