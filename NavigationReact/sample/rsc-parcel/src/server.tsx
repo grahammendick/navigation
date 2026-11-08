@@ -3,7 +3,7 @@ import { Readable } from 'stream';
 import { renderRequest, renderRSC } from '@parcel/rsc/node';
 import { createTemporaryReferenceSet, decodeReply, loadServerAction } from 'react-server-dom-parcel/server.edge';
 import { StateNavigator } from 'navigation';
-import { NavigationHandler, SceneView, createFlattenedSceneViews } from 'navigation-react';
+import { NavigationHandler, SceneView, createSceneViewQueue } from 'navigation-react';
 import stateNavigator from './stateNavigator';
 import App from './App';
 import Person from './Person';
@@ -55,7 +55,7 @@ app.post('*', async (req, res) => {
     data = await action.apply(null, url ? [...args, scene] : args);
   }
   const {state, oldState} = serverNavigator.stateContext;
-  const flattenedSceneViews = prefetch ? createFlattenedSceneViews() : null;
+  const flattenedSceneViews = prefetch ? createSceneViewQueue() : null;
   const activeViews = (oldState || refetch === true || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];
       const show =  active != null && (

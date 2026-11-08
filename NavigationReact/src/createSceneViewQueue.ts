@@ -1,4 +1,4 @@
-const createFlattenedSceneViews = () => {
+const createSceneViewQueue = () => {
     const queue: {key: string, content: any}[] = [];
     let open = 0, wake: () => void = null;
     const notify = () => {
@@ -26,4 +26,4 @@ const createFlattenedSceneViews = () => {
         }
     };
 };
-export default createFlattenedSceneViews;
+export default createSceneViewQueue;

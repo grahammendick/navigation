@@ -6,6 +6,6 @@ import FluentLink from './FluentLink.js';
 import SceneView from './SceneView.server.js';
 import useNavigationEvent from './useNavigationEvent.server.js';
 import useSceneView from './useSceneView.server.js';
-import createFlattenedSceneViews from './createFlattenedSceneViews.js';
+import createSceneViewQueue from './createSceneViewQueue.js';
 
-export { NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView, createFlattenedSceneViews };
+export { NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView, createSceneViewQueue };
