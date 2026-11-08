@@ -132,7 +132,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     useEffect(() => {
         rendered.current = true;
     }, []);    
-    const {state, data, oldState, stateNavigator: {stateContext}} = nextNavigationEvent;
+    const {state, data, stateNavigator: {stateContext}} = nextNavigationEvent;
     const {oldData} = stateContext;
     const getShow = (stateKey: string) => (
         active != null && state && (
@@ -142,8 +142,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const refetch = keys.current;
     const optimistic = (() => {
         if (!rendered.current) return true;
-        if (!getShow(state?.key) || !getShow(oldState?.key) || !refetch) return false;
-        if (refetch.state && state !== oldState) return false;
+        if (!getShow(state?.key) || !refetch) return false;
         for(let i = 0; i < refetch.data.length; i++) {
             if (data[refetch.data[i]] !== oldData[refetch.data[i]]) return false;
         }

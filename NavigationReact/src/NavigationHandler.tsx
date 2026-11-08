@@ -60,9 +60,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const {url, oldState, state, data, asyncData, historyAction, history, crumbs, oldUrl} = asyncNavigator.stateContext;
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
         const prime = history && !refresh && stateNavigator.historyManager.refetch && window.NavigationPrecommitController;
-        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, rscFetching: prime && intercept.sceneViews ? primeHistory(intercept.sceneViews, asyncNavigator.stateContext) : undefined, hasUAVisualTransition: intercept.hasUAVisualTransition, uncommitted: !oldUrl}, stateNavigator, intercept};
+        const rscFetching = prime && intercept.sceneViews ? primeHistory(intercept.sceneViews, asyncNavigator.stateContext) : (oldUrl && !refresh ? primeReveal(asyncNavigator.stateContext) : undefined);
+        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, rscFetching, hasUAVisualTransition: intercept.hasUAVisualTransition, uncommitted: !oldUrl}, stateNavigator, intercept};
         setNavigationEvent(nextNavigationEvent);
-        if (intercept.resume && !prime) setNextNavigationEvent(nextNavigationEvent);
+        if (intercept.resume && refresh) setNextNavigationEvent(nextNavigationEvent);
         if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             nextNavigationEvent.data.uncommitted = true;
             if (!intercept.controller) {
@@ -102,6 +103,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             return rscFetching;
         }, {});
     };
+    const primeReveal = ({state, oldState}: StateContext) => (
+        Object.keys(rootViews.current).reduce((rscFetching, rootKey) => {
+            const active = rootViews.current[rootKey];
+            const getShow = (key: string) => active != null && (typeof active === 'string' ? key === active : active.indexOf(key) !== -1);
+            if (getShow(state.key) && !getShow(oldState?.key)) rscFetching[rootKey] = false;
+            return rscFetching;
+        }, {})
+    );
     const primeHistory = (sceneViews: any, {state, oldState, data, oldData}: StateContext) => {
         const oldSceneViews = window.navigation.currentEntry.getState()?.['sceneViews'] || {};
         const children = {};
