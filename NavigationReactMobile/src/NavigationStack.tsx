@@ -126,17 +126,17 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
             return {keys, rest: refresh, stateNavigator, ignorePause: false};
         })
-    }
-    const {stateContext: {oldState}, stateContext} = stateNavigator;
-    const {state, oldUrl, crumbs} = stateContext;
-    const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-    if (oldUrl && !refresh && allScenes[state?.key]) {
-        if (!navigationEvent['rscFetching']) navigationEvent['rscFetching'] = {};
-        for(const {key: sceneViewKey, active} of getRootViews(allScenes[state.key])) {
-            if (typeof active === 'string' ? active === state.key : active.indexOf(state.key) !== -1)
-                navigationEvent['rscFetching'][sceneViewKey] ||= false;
+        const {state, oldState, oldUrl, crumbs} = stateNavigator.stateContext;
+        const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
+        if (oldUrl && !refresh && allScenes[state.key]) {
+            if (!navigationEvent['rscFetching']) navigationEvent['rscFetching'] = {};
+            for(const {key: sceneViewKey, active} of getRootViews(allScenes[state.key])) {
+                if (typeof active === 'string' ? active === state.key : active.indexOf(state.key) !== -1)
+                    navigationEvent['rscFetching'][sceneViewKey] ||= false;
+            }
         }
     }
+    const {stateContext: {oldState}, stateContext} = stateNavigator;
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
     const {pause, sharedEls} = getSharedElements();
     const {rest, ignorePause} = motionState;
