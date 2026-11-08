@@ -1,7 +1,7 @@
 'use client'
 import React, {useRef, useState, useContext, useEffect, ReactElement} from 'react';
 import { State, StateNavigator } from 'navigation';
-import { NavigationContext, TransitionContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
+import { NavigationContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
 import Scene from './Scene.js';
 import Freeze from './Freeze.js';
 import SharedElementContext from './SharedElementContext.js';
@@ -16,7 +16,6 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
     const sharedElementRegistry = useSharedElementRegistry();
     const registerRootView = useRootViewRegistry();
     const navigationEvent = useContext(NavigationContext);
-    const {nextNavigationEvent} = useContext(TransitionContext);
     const {stateNavigator} = navigationEvent;
     const resetLinkStateContext = useRef(null);
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false, ignorePause: false});
@@ -48,15 +47,6 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         findRootViews(children);
         return rootViews;
     };
-    const {state: nextState, oldState: nextOldState, stateNavigator: {stateContext: {oldUrl, crumbs: nextCrumbs}}} = nextNavigationEvent;
-    const refresh = nextState === nextOldState && oldUrl?.split('crumb=').length - 1 === nextCrumbs.length;
-    if (oldUrl && !refresh && allScenes[nextState?.key]) {
-        if (!nextNavigationEvent['rscFetching']) nextNavigationEvent['rscFetching'] = {};
-        for(const {key: sceneViewKey, active} of getRootViews(allScenes[nextState.key])) {
-            if (typeof active === 'string' ? active === nextState.key : active.indexOf(nextState.key) !== -1)
-                nextNavigationEvent['rscFetching'][sceneViewKey] ||= false;
-        }
-    }
     useEffect(() => {
         prevScenes.current = allScenes;
         const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
@@ -138,6 +128,15 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         })
     }
     const {stateContext: {oldState}, stateContext} = stateNavigator;
+    const {state, oldUrl, crumbs} = stateContext;
+    const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
+    if (oldUrl && !refresh && allScenes[state?.key]) {
+        if (!navigationEvent['rscFetching']) navigationEvent['rscFetching'] = {};
+        for(const {key: sceneViewKey, active} of getRootViews(allScenes[state.key])) {
+            if (typeof active === 'string' ? active === state.key : active.indexOf(state.key) !== -1)
+                navigationEvent['rscFetching'][sceneViewKey] ||= false;
+        }
+    }
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
     const {pause, sharedEls} = getSharedElements();
     const {rest, ignorePause} = motionState;
