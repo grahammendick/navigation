@@ -207,14 +207,28 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         getCache: (sceneViewKey: string, navigationData: any) => {
             const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
             const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-            return refresh && cache.current[sceneViewKey]?.entries.find(({data}) => (
-                Object.keys(data).every(key => data[key] === navigationData[key])
+            return refresh && cache.current[sceneViewKey]?.entries.find(entry => (
+                Object.keys(entry.navigationData).every(key => entry.navigationData[key] === navigationData[key])
             ))?.sceneView;
         },
         setCache: (sceneViewKey: string, navigationData: any, sceneView: any, ancestors: string[]) => {
             const {entries = []} = cache.current[sceneViewKey] || {};
-            const matches = ({data}) => Object.keys(data).every(key => data[key] === navigationData[key]);
-            cache.current[sceneViewKey] = {ancestors: new Set(ancestors), entries: [...entries.filter(entry => !matches(entry)), {data: navigationData, sceneView}]};
+            const matches = entry => Object.keys(entry.navigationData).every(key => entry.navigationData[key] === navigationData[key]);
+            cache.current[sceneViewKey] = {ancestors: new Set(ancestors), entries: [...entries.filter(entry => !matches(entry)), {navigationData, sceneView}]};
+        },
+        prefetcher: async (url: string) => {
+            const {state: {key: stateKey}, data: navigationData} = stateNavigator.parseLink(url);
+            const temporaryReferences = createTemporaryReferenceSet();
+            const response = fetch(stateNavigator.historyManager.getHref(url), {
+                method: 'post',
+                headers: {Accept: 'text/x-component', 'Content-Type': 'application/json'},
+                body: await encodeReply({url, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}, {temporaryReferences})
+            });
+            const {flattenedSceneViews} = await createFromFetch(response);
+            for await (const {key, content: sceneView} of flattenedSceneViews) {
+                const {ancestors = new Set([key]), entries = []} = cache.current[key] || {};
+                cache.current[key] = {ancestors, entries: [...entries, {stateKey, navigationData, sceneView}]};
+            }
         },
         trigger: (navigationEventData: NavigationHandlerState) => {
             if (navigationEvent === nextNavigationEvent && navigationEventData === nextNavigationEvent.data) {
