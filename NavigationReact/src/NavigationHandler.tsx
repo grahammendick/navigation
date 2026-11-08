@@ -17,6 +17,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const nextNavigationEvent = !_nextNavigationEvent?.intercept?.signal?.aborted ? _nextNavigationEvent : navigationEvent;
     const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
     const rootViews = useRef({});
+    const getShow = (active: string | string[], key: string) => (
+        active != null && (typeof active === 'string' ? key === active : active.indexOf(key) !== -1)
+    );
     const cache = useRef({});
     const expire = (sceneViewKey: string | boolean) => {
         for (const key in cache.current) {
@@ -57,12 +60,44 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }
         }
         const asyncNavigator = new AsyncStateNavigator()
-        const {url, oldState, state, data, asyncData, historyAction, history, crumbs, oldUrl} = asyncNavigator.stateContext;
+        const {url, oldState, state, data, oldData, asyncData, historyAction, history, crumbs, oldUrl} = asyncNavigator.stateContext;
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-        const prime = history && !refresh && stateNavigator.historyManager.refetch && window.NavigationPrecommitController;
-        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, rscFetching: prime && intercept.sceneViews ? primeHistory(intercept.sceneViews, asyncNavigator.stateContext) : undefined, hasUAVisualTransition: intercept.hasUAVisualTransition, uncommitted: !oldUrl}, stateNavigator, intercept};
+        const prime = () => {
+            const {sceneViews} = intercept;
+            if (history && sceneViews && stateNavigator.historyManager.refetch && window.NavigationPrecommitController) {
+                const oldSceneViews = window.navigation.currentEntry.getState()?.['sceneViews'] || {};
+                const children = {};
+                for (const sceneViewKey in sceneViews) (children[sceneViews[sceneViewKey].parent] ||= []).push(sceneViewKey);
+                const fetching = (sceneViewKey: string) => {
+                    const {keys: refetch} = sceneViews[sceneViewKey];
+                    if (!oldSceneViews[sceneViewKey]) return true;
+                    if (!refetch) return true;
+                    if (refetch.state && state !== oldState) return true;
+                    for(let i = 0; i < refetch.data.length; i++) {
+                        if (data[refetch.data[i]] !== oldData[refetch.data[i]]) return true;
+                    }
+                    return false;
+                };
+                const rscFetching = {};
+                const primeChildren = (parent: string) => {
+                    for (const sceneViewKey of children[parent] || []) {
+                        if (fetching(sceneViewKey)) rscFetching[sceneViewKey] = false;
+                        else primeChildren(sceneViewKey);
+                    }
+                };
+                primeChildren(null);
+                return rscFetching;
+            }
+            return Object.keys(rootViews.current).reduce((rscFetching, rootKey) => {
+                const active = rootViews.current[rootKey];
+                if (getShow(active, state.key) && !getShow(active, oldState?.key)) rscFetching[rootKey] = false;
+                return rscFetching;
+            }, {});
+        };
+        const rscFetching = oldUrl && !refresh ? prime() : undefined;
+        const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache, rscFetching, hasUAVisualTransition: intercept.hasUAVisualTransition, uncommitted: !oldUrl}, stateNavigator, intercept};
         setNavigationEvent(nextNavigationEvent);
-        if (intercept.resume && !prime) setNextNavigationEvent(nextNavigationEvent);
+        if (intercept.resume && refresh) setNextNavigationEvent(nextNavigationEvent);
         if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             nextNavigationEvent.data.uncommitted = true;
             if (!intercept.controller) {
@@ -96,35 +131,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (typeof sceneViewKey === 'string') return {[sceneViewKey]: false};
         const {key} = navigationEvent.data.state;
         return Object.keys(rootViews.current).reduce((rscFetching, rootKey) => {
-            const active = rootViews.current[rootKey];
-            const show = active != null && (typeof active === 'string' ? key === active : active.indexOf(key) !== -1);
-            if (show) rscFetching[rootKey] = false;
+            if (getShow(rootViews.current[rootKey], key)) rscFetching[rootKey] = false;
             return rscFetching;
         }, {});
-    };
-    const primeHistory = (sceneViews: any, {state, oldState, data, oldData}: StateContext) => {
-        const oldSceneViews = window.navigation.currentEntry.getState()?.['sceneViews'] || {};
-        const children = {};
-        for (const sceneViewKey in sceneViews) (children[sceneViews[sceneViewKey].parent] ||= []).push(sceneViewKey);
-        const fetching = (sceneViewKey: string) => {
-            const {keys: refetch} = sceneViews[sceneViewKey];
-            if (!oldSceneViews[sceneViewKey]) return true;
-            if (!refetch) return true;
-            if (refetch.state && state !== oldState) return true;
-            for(let i = 0; i < refetch.data.length; i++) {
-                if (data[refetch.data[i]] !== oldData[refetch.data[i]]) return true;
-            }
-            return false;
-        };
-        const rscFetching = {};
-        const prime = (parent: string) => {
-            for (const sceneViewKey of children[parent] || []) {
-                if (fetching(sceneViewKey)) rscFetching[sceneViewKey] = false;
-                else prime(sceneViewKey);
-            }
-        };
-        prime(null);
-        return rscFetching;
     };
     const fetchRSC = useCallback(async (sceneViewKeys: string[], actionId: string = null, args: any[] = null) => {
         const currentStateContext = nextNavigationEvent.stateNavigator.stateContext;

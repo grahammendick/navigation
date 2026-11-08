@@ -1,7 +1,7 @@
 'use client'
-import React, {useRef, useState, useContext, useMemo, useEffect, ReactElement} from 'react';
+import React, {useRef, useState, useContext, useEffect, ReactElement} from 'react';
 import { State, StateNavigator } from 'navigation';
-import { NavigationContext, TransitionContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
+import { NavigationContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
 import Scene from './Scene.js';
 import Freeze from './Freeze.js';
 import SharedElementContext from './SharedElementContext.js';
@@ -11,15 +11,11 @@ import SharedElementAnimation from './SharedElementAnimation.js';
 import useSharedElementRegistry from './useSharedElementRegistry.js';
 type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, ignorePause: boolean};
 
-const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
-    className: sceneClassName, style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink, optimistic}: NavigationStackProps) => {
+const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyleStack, sharedElements: sharedElementsStack,
+    className: sceneClassName, style: sceneStyle, duration = 300, renderScene, children, stackInvalidatedLink}: NavigationStackProps) => {
     const sharedElementRegistry = useSharedElementRegistry();
     const registerRootView = useRootViewRegistry();
     const navigationEvent = useContext(NavigationContext);
-    const transition = useContext(TransitionContext);
-    const navigationTransition = useMemo(() => (
-        optimistic ? transition : {...transition, nextNavigationEvent: transition.navigationEvent}
-    ), [transition, optimistic]);
     const {stateNavigator} = navigationEvent;
     const resetLinkStateContext = useRef(null);
     const [motionState, setMotionState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: false, ignorePause: false});
@@ -51,17 +47,6 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
         findRootViews(children);
         return rootViews;
     };
-    if (!optimistic) {
-        const {nextNavigationEvent} = transition;
-        const {key} = nextNavigationEvent.state;
-        if (allScenes[key]) {
-            if (!nextNavigationEvent['rscFetching']) nextNavigationEvent['rscFetching'] = {};
-            for(const {key: sceneViewKey, active} of getRootViews(allScenes[key])) {
-                if (typeof active === 'string' ? active === key : active.indexOf(key) !== -1)
-                    nextNavigationEvent['rscFetching'][sceneViewKey] ||= false;
-            }
-        }
-    }
     useEffect(() => {
         prevScenes.current = allScenes;
         const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
@@ -141,6 +126,15 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
             const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
             return {keys, rest: refresh, stateNavigator, ignorePause: false};
         })
+        const {state, oldState, oldUrl, crumbs} = stateNavigator.stateContext;
+        const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
+        if (oldUrl && !refresh && allScenes[state.key]) {
+            if (!navigationEvent['rscFetching']) navigationEvent['rscFetching'] = {};
+            for(const {key: sceneViewKey, active} of getRootViews(allScenes[state.key])) {
+                if (typeof active === 'string' ? active === state.key : active.indexOf(state.key) !== -1)
+                    navigationEvent['rscFetching'][sceneViewKey] ||= false;
+            }
+        }
     }
     const {stateContext: {oldState}, stateContext} = stateNavigator;
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
@@ -160,36 +154,22 @@ const NavigationStackInner = ({unmountStyle: unmountStyleStack, crumbStyle: crum
     }, [registerRootView, allScenes]);
     const sceneData = getScenes();
     return (stateContext.state &&
-        <TransitionContext.Provider value={navigationTransition}>
-                <SharedElementContext.Provider value={sharedElementRegistry as any}>
-                    <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
-                        {scenes => (
-                            scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
-                                <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted)}>
-                                    <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className}
-                                        style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} />
-                                </Freeze>
-                            )).concat(
-                                <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}
-                                    unmountStyle={sceneData[sceneData.length - 1].unmountStyle} duration={duration} />
-                            )
-                        )}
-                    </NavigationAnimation>
-                </SharedElementContext.Provider>
-        </TransitionContext.Provider>
+        <SharedElementContext.Provider value={sharedElementRegistry as any}>
+            <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
+                {scenes => (
+                    scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
+                        <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted)}>
+                            <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className}
+                                style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} />
+                        </Freeze>
+                    )).concat(
+                        <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}
+                            unmountStyle={sceneData[sceneData.length - 1].unmountStyle} duration={duration} />
+                    )
+                )}
+            </NavigationAnimation>
+        </SharedElementContext.Provider>
     )
-}
-
-const NavigationStack = (props: NavigationStackProps) => {
-    const ancestorNavigationEvent = useContext(NavigationContext);
-    const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
-    const optimistic = navigationEvent.state === nextNavigationEvent.state
-        && navigationEvent.stateNavigator.stateContext.crumbs.length === nextNavigationEvent.stateNavigator.stateContext.crumbs.length;
-    return (
-        <NavigationContext.Provider value={optimistic ? ancestorNavigationEvent : navigationEvent}>
-            <NavigationStackInner {...props} optimistic={optimistic} />
-        </NavigationContext.Provider>
-    );
 }
 
 NavigationStack.Scene = ({children}) => children;
