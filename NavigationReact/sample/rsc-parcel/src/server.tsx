@@ -3,7 +3,7 @@ import { Readable } from 'stream';
 import { renderRequest, renderRSC } from '@parcel/rsc/node';
 import { createTemporaryReferenceSet, decodeReply, loadServerAction } from 'react-server-dom-parcel/server.edge';
 import { StateNavigator } from 'navigation';
-import { NavigationHandler, SceneView } from 'navigation-react';
+import { NavigationHandler, SceneView, createFlattenedSceneViews } from 'navigation-react';
 import stateNavigator from './stateNavigator';
 import App from './App';
 import Person from './Person';
@@ -40,7 +40,7 @@ app.post('*', async (req, res) => {
     person: Person,
     friends: Friends,
   };
-  const {url, sceneViewKeys, rootViews, actionId, args} = await decodeBody(req);
+  const {url, sceneViewKeys, rootViews, actionId, args, prefetch} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (url) serverNavigator.navigateLink(url);
   let data = null; let refetch = null;
@@ -55,7 +55,8 @@ app.post('*', async (req, res) => {
     data = await action.apply(null, url ? [...args, scene] : args);
   }
   const {state, oldState} = serverNavigator.stateContext;
-  const activeViews = (oldState || refetch === true) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+  const flattenedSceneViews = prefetch ? createFlattenedSceneViews() : null;
+  const activeViews = (oldState || refetch === true || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];
       const show =  active != null && (
           typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
@@ -71,12 +72,13 @@ app.post('*', async (req, res) => {
     sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {
       const Content = sceneViews[activeKey];
       SceneViews[activeKey] = (
-        <NavigationHandler stateNavigator={serverNavigator}>
-          <SceneView fetching active={[state.key]}><Content /></SceneView>
+        <NavigationHandler stateNavigator={serverNavigator} flattenedSceneViews={flattenedSceneViews}>
+          <SceneView fetching active={[state.key]} name={activeKey}><Content /></SceneView>
         </NavigationHandler>
       );
       return SceneViews;
-    }, {})
+    }, {}),
+    flattenedSceneViews
   });
   res.set('Content-Type', 'text/x-component');
   stream.pipe(res);

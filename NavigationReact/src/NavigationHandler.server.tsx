@@ -2,9 +2,10 @@ import { cache } from 'react';
 import { StateNavigator } from 'navigation';
 import asyncNavigationStorage from './AsyncNavigationStorage.js';
 
-export const getCache = cache(() => ({ navigationEvent: null }));
+export const getCache = cache(() => ({ navigationEvent: null, flattenedSceneViews: null }));
 
-const NavigationHandler = ({ stateNavigator, children }: { stateNavigator: StateNavigator, children: any }) => {
+const NavigationHandler = ({ stateNavigator, flattenedSceneViews, children }: { stateNavigator: StateNavigator, flattenedSceneViews?: any, children: any }) => {
+    getCache().flattenedSceneViews = flattenedSceneViews || null;
     const { oldState, state, data, asyncData } = stateNavigator.stateContext;
     const dataProxy = new Proxy(data, {
         get(target, key) {
