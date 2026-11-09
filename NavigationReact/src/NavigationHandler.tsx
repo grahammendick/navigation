@@ -210,9 +210,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
             return cache.current[sceneViewKey]?.entries.find(entry => (
                 entry.stateKey ? (
-                    entry.stateKey === stateKey
-                    && Object.keys(entry.navigationData).length === Object.keys(navigationData).length
-                    && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
+                    entry.stateKey === stateKey && ((
+                        Object.keys(entry.navigationData).length === Object.keys(navigationData).length
+                        && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
+                    ) || (
+                        cacheable && refresh && entry.keys
+                        && entry.keys.every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
+                    ))
                 ) : (
                     cacheable && refresh
                     && Object.keys(entry.navigationData).every(key => entry.navigationData[key] === navigationData[key])
@@ -235,7 +239,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const {flattenedSceneViews} = await createFromFetch(response);
             for await (const {key, content: sceneView} of flattenedSceneViews) {
                 const {ancestors = new Set([key]), entries = []} = cache.current[key] || {};
-                cache.current[key] = {ancestors, entries: [...entries, {stateKey, navigationData, sceneView}]};
+                const entry = {stateKey, navigationData, sceneView, keys: null};
+                cache.current[key] = {ancestors, entries: [...entries, entry]};
+                sceneView.props.keys.then(({data}) => entry.keys = data);
             }
         },
         trigger: (navigationEventData: NavigationHandlerState) => {
