@@ -55,7 +55,7 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
         if (!getShow(state?.key)) return false;
         if (navigationEvent['rscCache']?.[sceneViewKey] || suspended.current || errored.current) return true;
         if (!ignoreCache && renderedSceneView.current && renderedUrl.current === url) return false;
-        if (!ignoreCache && getCache(sceneViewKey, state.key, data)) return false;
+        if (!ignoreCache && getCache(sceneViewKey, state.key, data, cache)) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || ignoreCache) return true;
         if (!rendered) return true;
         if (cacheIgnorable) return false;
@@ -80,7 +80,7 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
         if (!getShow(state?.key)) return null;
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
-        return (!ignoreCache && getCache(sceneViewKey, state.key, navigationEvent.data)) || renderedSceneView.current;
+        return (!ignoreCache && getCache(sceneViewKey, state.key, navigationEvent.data, cache)) || renderedSceneView.current;
     })();
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)

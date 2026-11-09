@@ -205,13 +205,20 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const sceneViews = await rscFetch.sceneViews;
             return sceneViews[sceneViewKey];
         },
-        getCache: (sceneViewKey: string, stateKey: string, navigationData: any) => (
-            cache.current[sceneViewKey]?.entries.find(entry => (
-                entry.stateKey === stateKey
-                && Object.keys(entry.navigationData).length === Object.keys(navigationData).length
-                && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
-            ))?.sceneView
-        ),
+        getCache: (sceneViewKey: string, stateKey: string, navigationData: any, cacheable: boolean) => {
+            const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
+            const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
+            return cache.current[sceneViewKey]?.entries.find(entry => (
+                entry.stateKey ? (
+                    entry.stateKey === stateKey
+                    && Object.keys(entry.navigationData).length === Object.keys(navigationData).length
+                    && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
+                ) : (
+                    cacheable && refresh
+                    && Object.keys(entry.navigationData).every(key => entry.navigationData[key] === navigationData[key])
+                )
+            ))?.sceneView;
+        },
         setCache: (sceneViewKey: string, navigationData: any, sceneView: any, ancestors: string[]) => {
             const {entries = []} = cache.current[sceneViewKey] || {};
             const matches = entry => Object.keys(entry.navigationData).every(key => entry.navigationData[key] === navigationData[key]);
