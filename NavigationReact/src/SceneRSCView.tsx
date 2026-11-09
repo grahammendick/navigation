@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useRef, useMemo, useCallback, Suspense } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useMemo, useCallback, Suspense } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import RefetchContext from './RefetchContext.js';
@@ -126,7 +126,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const ancestorNavigationEvent = useNavigationEvent();
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
-    useEffect(() => {
+    useLayoutEffect(() => {
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
     useEffect(() => {

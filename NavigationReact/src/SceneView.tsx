@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useLayoutEffect } from 'react';
 import NavigationContext from './NavigationContext.js';
 import { SceneViewProps } from './Props.js';
 import ErrorBoundary from './ErrorBoundary.js';
@@ -18,7 +18,7 @@ const SceneView = ({active, errorFallback, client, children}: SceneViewProps) =>
             ? active(stateNavigator.stateContext)
             : active.indexOf(state.key) !== -1
         ));
-    useEffect(() => {
+    useLayoutEffect(() => {
         const registerSceneViews = (elements = children) => {
             for(const sceneView of React.Children.toArray(elements) as any) {
                 const {name, active, __scene, children} = sceneView.props || {};
