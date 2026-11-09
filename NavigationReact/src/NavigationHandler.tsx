@@ -209,24 +209,23 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
             const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
             return cache.current[sceneViewKey]?.entries.find(entry => (
-                entry.stateKey ? (
-                    entry.stateKey === stateKey && ((
-                        Object.keys(entry.navigationData).length === Object.keys(navigationData).length
-                        && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
-                    ) || (
-                        cacheable && refresh && entry.keys
-                        && entry.keys.every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
-                    ))
-                ) : (
-                    cacheable && refresh
-                    && Object.keys(entry.navigationData).every(key => entry.navigationData[key] === navigationData[key])
+                (
+                    entry.stateKey === stateKey
+                    && Object.keys(entry.navigationData).length === Object.keys(navigationData).length
+                    && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
+                ) || (
+                    cacheable && refresh && entry.data && (!entry.stateKey || entry.stateKey === stateKey)
+                    && Object.keys(entry.data).every(key => LinkUtility.areEqual(entry.data[key], navigationData[key]))
                 )
             ))?.sceneView;
         },
-        setCache: (sceneViewKey: string, navigationData: any, sceneView: any, ancestors: string[]) => {
+        setCache: (sceneViewKey: string, stateKey: string, data: any, sceneView: any, ancestors: string[]) => {
             const {entries = []} = cache.current[sceneViewKey] || {};
-            const matches = entry => Object.keys(entry.navigationData).every(key => entry.navigationData[key] === navigationData[key]);
-            cache.current[sceneViewKey] = {ancestors: new Set(ancestors), entries: [...entries.filter(entry => !matches(entry)), {navigationData, sceneView}]};
+            const matches = entry => (
+                entry.data && (!entry.stateKey || entry.stateKey === stateKey)
+                && Object.keys(entry.data).every(key => LinkUtility.areEqual(entry.data[key], data[key]))
+            );
+            cache.current[sceneViewKey] = {ancestors: new Set(ancestors), entries: [...entries.filter(entry => !matches(entry)), {data, sceneView}]};
         },
         prefetcher: async (url: string) => {
             const {state: {key: stateKey}, data: navigationData} = stateNavigator.parseLink(url);
@@ -239,9 +238,12 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const {flattenedSceneViews} = await createFromFetch(response);
             for await (const {key, content: sceneView} of flattenedSceneViews) {
                 const {ancestors = new Set([key]), entries = []} = cache.current[key] || {};
-                const entry = {stateKey, navigationData, sceneView, keys: null};
+                const entry = {stateKey, navigationData, data: null, sceneView};
                 cache.current[key] = {ancestors, entries: [...entries, entry]};
-                sceneView.props.keys.then(({data}) => entry.keys = data);
+                sceneView.props.keys.then(({data: keys}) => {
+                    entry.data = {};
+                    for (const key of keys) entry.data[key] = navigationData[key];
+                });
             }
         },
         trigger: (navigationEventData: NavigationHandlerState) => {
