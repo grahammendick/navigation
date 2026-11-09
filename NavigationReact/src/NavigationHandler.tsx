@@ -208,7 +208,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         getCache: (sceneViewKey: string, stateKey: string, navigationData: any, cacheable: boolean) => {
             const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
             const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-            return cache.current[sceneViewKey]?.entries.find(entry => (
+            return [...(cache.current[sceneViewKey]?.entries || [])].reverse().find(entry => (
                 (
                     entry.stateKey === stateKey
                     && Object.keys(entry.navigationData).length === Object.keys(navigationData).length
