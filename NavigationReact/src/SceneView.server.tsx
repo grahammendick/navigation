@@ -71,11 +71,12 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
     };
     const content = !client && show ? render(children) : null;
     const sceneViewKey = props.name || (typeof active === 'string' ? active : active[0]);
-    if (flattened && show) flattenedSceneViews.push({key: sceneViewKey, content: <Refetch keys={promise}>{content}</Refetch>});
+    const refetched = <Refetch keys={promise}>{content}</Refetch>;
+    if (flattened && show) flattenedSceneViews.push({key: sceneViewKey, content: refetched});
     if (pending === 0) complete();
     if (flattened) {
         if (fetching) return null;
-        return <SceneRSCView active={active} {...{...props, __scene: true}}>{show ? undefined : null}</SceneRSCView>;
+        return <SceneRSCView active={active} {...{...props, __scene: true}}>{show ? refetched : null}</SceneRSCView>;
     }
     if (fetching) return <Refetch keys={promise}>{content}</Refetch>;
     return !client
