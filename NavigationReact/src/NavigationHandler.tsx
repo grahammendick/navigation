@@ -22,7 +22,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         active != null && (typeof active === 'string' ? key === active : active.indexOf(key) !== -1)
     );
     const cache = useRef({});
+    const prefetches = useRef([]);
     const expire = (sceneViewKey: string | boolean) => {
+        prefetches.current = [];
         for (const key in cache.current) {
             if (sceneViewKey === true || cache.current[key].ancestors.has(sceneViewKey)) delete cache.current[key];
         }
@@ -195,6 +197,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         },
         deserialize: async (sceneViewKey: string, actionId: string = null, args: any[] = null) => {
             if (actionId) return fetchRSC([sceneViewKey], actionId, args);
+            const {state, data} = nextNavigationEvent.data;
+            const prefetch = prefetches.current.find(({stateKey, navigationData}) => (
+                stateKey === state.key
+                && Object.keys(navigationData).length === Object.keys(data).length
+                && Object.keys(navigationData).every(key => LinkUtility.areEqual(navigationData[key], data[key]))
+            ));
+            if (prefetch) return prefetch.getItem(sceneViewKey);
             if (!nextNavigationEvent.rscFetch) {
                 let resolve: (sceneViewKeys: string[]) => void;
                 const promise = new Promise<string[]>(res => resolve = res);
@@ -208,27 +217,24 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         getCache: (sceneViewKey: string, stateKey: string, navigationData: any, cacheable: boolean) => {
             const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
             const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-            return [...(cache.current[sceneViewKey]?.entries || [])].reverse().find(entry => (
-                (
-                    entry.stateKey === stateKey
-                    && Object.keys(entry.navigationData).length === Object.keys(navigationData).length
-                    && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
-                ) || (
-                    cacheable && refresh && entry.data && (!entry.stateKey || entry.stateKey === stateKey)
-                    && Object.keys(entry.data).every(key => LinkUtility.areEqual(entry.data[key], navigationData[key]))
-                )
+            return cacheable && refresh && [...(cache.current[sceneViewKey]?.entries || [])].reverse().find(entry => (
+                entry.navigationData && (!entry.stateKey || entry.stateKey === stateKey)
+                && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
             ))?.sceneView;
         },
-        setCache: (sceneViewKey: string, stateKey: string, data: any, sceneView: any, ancestors: string[]) => {
+        setCache: (sceneViewKey: string, stateKey: string, navigationData: any, sceneView: any, ancestors: string[]) => {
             const {entries = []} = cache.current[sceneViewKey] || {};
             const matches = entry => (
-                entry.data && (!entry.stateKey || entry.stateKey === stateKey)
-                && Object.keys(entry.data).every(key => LinkUtility.areEqual(entry.data[key], data[key]))
+                entry.navigationData && (!entry.stateKey || entry.stateKey === stateKey)
+                && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
             );
-            cache.current[sceneViewKey] = {ancestors: new Set(ancestors), entries: [...entries.filter(entry => !matches(entry)), {data, sceneView}]};
+            cache.current[sceneViewKey] = {ancestors: new Set(ancestors), entries: [...entries.filter(entry => !matches(entry)), {navigationData, sceneView}]};
         },
         prefetcher: async (url: string) => {
             const {state: {key: stateKey}, data: navigationData} = stateNavigator.parseLink(url);
+            const items = {}, resolvers = {};
+            const getItem = (key: string) => items[key] ||= new Promise(res => resolvers[key] = res);
+            prefetches.current.push({stateKey, navigationData, getItem});
             const temporaryReferences = createTemporaryReferenceSet();
             const response = fetch(stateNavigator.historyManager.getHref(url), {
                 method: 'post',
@@ -237,12 +243,14 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             });
             const {flattenedSceneViews} = await createFromFetch(response);
             for await (const {key, content: sceneView} of flattenedSceneViews) {
+                getItem(key);
+                resolvers[key](sceneView);
                 const {ancestors = new Set([key]), entries = []} = cache.current[key] || {};
-                const entry = {stateKey, navigationData, data: null, sceneView};
+                const entry = {stateKey, navigationData: null, sceneView};
                 cache.current[key] = {ancestors, entries: [...entries, entry]};
                 sceneView.props.keys.then(({data: keys}) => {
-                    entry.data = {};
-                    for (const key of keys) entry.data[key] = navigationData[key];
+                    entry.navigationData = {};
+                    for (const key of keys) entry.navigationData[key] = navigationData[key];
                 });
             }
         },
@@ -279,11 +287,12 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = navigationEvent.data;
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
         if (!isPending && !refresh) {
+            prefetches.current = [];
             for (const key in cache.current) {
                 const {ancestors, entries} = cache.current[key];
                 const converted = entries
-                    .filter(entry => entry.stateKey === state.key && entry.data)
-                    .map(({data, sceneView}) => ({data, sceneView}));
+                    .filter(entry => entry.stateKey === state.key && entry.navigationData)
+                    .map(({navigationData, sceneView}) => ({navigationData, sceneView}));
                 if (converted.length) cache.current[key] = {ancestors, entries: converted};
                 else delete cache.current[key];
             }
