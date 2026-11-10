@@ -1,14 +1,9 @@
 'use client'
-import { useEffect } from 'react';
-import { useSceneView, usePrefetch } from 'navigation-react';
+import { useSceneView } from 'navigation-react';
 import updateName from "./updateName";
 
 const Edit = ({ id, name }: { id: number, name: string }) => {
   const saveName = useSceneView(updateName);
-  const prefetch = usePrefetch();
-  useEffect(() => {
-    prefetch.refresh({ id: 2 });
-  }, []);
   return (
     <form action={saveName}>
       <input type="hidden" name="id" value={id} />

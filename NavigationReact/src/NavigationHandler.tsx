@@ -278,7 +278,16 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (!isPending) navigationEvent.data.uncommitted = false;
         const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = navigationEvent.data;
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-        if (!isPending && !refresh) cache.current = {};
+        if (!isPending && !refresh) {
+            for (const key in cache.current) {
+                const {ancestors, entries} = cache.current[key];
+                const converted = entries
+                    .filter(entry => entry.stateKey === state.key && entry.data)
+                    .map(({data, sceneView}) => ({data, sceneView}));
+                if (converted.length) cache.current[key] = {ancestors, entries: converted};
+                else delete cache.current[key];
+            }
+        }
         if (!isPending && commit) {
             commit();
             const title = typeof document !== 'undefined' ? document.title : null;
