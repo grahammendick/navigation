@@ -140,7 +140,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const fetchRSC = useCallback(async (sceneViewKeys: string[], actionId: string = null, args: any[] = null) => {
         const currentStateContext = nextNavigationEvent.stateNavigator.stateContext;
         const {stateContext: nextStateContext, historyManager} = nextNavigationEvent.data.stateNavigator
-        const {url, nextCrumb} = nextStateContext;
+        const {url, oldUrl, nextCrumb} = nextStateContext;
         const responsePromise = (async () => {
             let response = null;
             try {
@@ -148,7 +148,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
                     method: 'post',
                     headers: {Accept: 'text/x-component', ...(!actionId ? {'Content-Type': 'application/json'} : undefined)},
-                    body: await encodeReply({url, sceneViewKeys, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
+                    body: await encodeReply({url, oldUrl, sceneViewKeys, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
                     signal: nextNavigationEvent.intercept?.signal
                 });
             } catch(e) {

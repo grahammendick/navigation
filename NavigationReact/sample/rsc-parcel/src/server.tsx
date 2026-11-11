@@ -40,9 +40,11 @@ app.post('*', async (req, res) => {
     person: Person,
     friends: Friends,
   };
-  const {url, sceneViewKeys, rootViews, actionId, args, prefetch} = await decodeBody(req);
+  const {url, oldUrl, sceneViewKeys, rootViews, actionId, args, prefetch} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
+  if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
+  const stateContext = serverNavigator.stateContext;
   let data = null; let refetch = null;
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);
@@ -54,9 +56,10 @@ app.post('*', async (req, res) => {
     };
     data = await action.apply(null, url ? [...args, scene] : args);
   }
-  const {state, oldState} = serverNavigator.stateContext;
+  const {state} = serverNavigator.stateContext;
+  const navigated = serverNavigator.stateContext !== stateContext;
   const flattenedSceneViews = prefetch ? createSceneViewQueue() : null;
-  const activeViews = (oldState || refetch === true || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+  const activeViews = (navigated || refetch === true || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];
       const show =  active != null && (
           typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
@@ -67,8 +70,8 @@ app.post('*', async (req, res) => {
   const stream = renderRSC({
     data,
     refetch,
-    url: oldState ? serverNavigator.stateContext.url : null,
-    historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
+    url: navigated ? serverNavigator.stateContext.url : null,
+    historyAction: navigated ? serverNavigator.stateContext.historyAction : null,
     sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {
       const Content = sceneViews[activeKey];
       SceneViews[activeKey] = (

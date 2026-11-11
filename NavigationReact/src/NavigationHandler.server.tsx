@@ -6,7 +6,10 @@ export const getCache = cache(() => ({ navigationEvent: null, flattenedSceneView
 
 const NavigationHandler = ({ stateNavigator, flattenedSceneViews, children }: { stateNavigator: StateNavigator, flattenedSceneViews?: any, children: any }) => {
     getCache().flattenedSceneViews = flattenedSceneViews || null;
-    const { oldState, state, data, asyncData } = stateNavigator.stateContext;
+    const renderNavigator = new StateNavigator(stateNavigator);
+    renderNavigator.navigateLink(stateNavigator.stateContext.nextCrumb.crumblessUrl);
+    renderNavigator.stateContext.asyncData = stateNavigator.stateContext.asyncData;
+    const { oldState, state, data, asyncData } = renderNavigator.stateContext;
     const dataProxy = new Proxy(data, {
         get(target, key) {
             if (typeof key === 'string') asyncNavigationStorage.getStore()?.data.add(key);
@@ -23,14 +26,14 @@ const NavigationHandler = ({ stateNavigator, flattenedSceneViews, children }: { 
         return state;
     };
     getCache().navigationEvent = { oldState, get state() { return getState(); }, asyncData, data: dataProxy, stateNavigator: {
-        stateContext: new Proxy(stateNavigator.stateContext, {
+        stateContext: new Proxy(renderNavigator.stateContext, {
             get(target, key) {
                 if (key === 'data') return dataProxy;
                 if (key === 'state') return getState();
                 return target[key];
             }
         }),
-        states: stateNavigator.states
+        states: renderNavigator.states
     }};
     return children;
 };
