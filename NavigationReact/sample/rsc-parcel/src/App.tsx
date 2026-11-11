@@ -16,13 +16,13 @@ const App = async ({url}: any) => {
       </head>
       <body>
         <NavigationProvider url={url}>
-          <SceneView active={['people', 'person']} name="header">
+          <SceneView active={['people', 'person']} name="header" errorFallback={<div>Header error</div>}>
             <Header />
           </SceneView>
           <SceneView active="people">
             <People />
           </SceneView>
-          <SceneView active="person" cache>
+          <SceneView active="person" cache errorFallback={<div>Person error</div>}>
             <Person />
           </SceneView>
         </NavigationProvider>

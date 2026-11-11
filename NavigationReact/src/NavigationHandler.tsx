@@ -238,28 +238,36 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 && Object.keys(prefetch.navigationData).length === Object.keys(navigationData).length
                 && Object.keys(prefetch.navigationData).every(key => LinkUtility.areEqual(prefetch.navigationData[key], navigationData[key]))
             ))) return;
-            const items = {}, resolvers = {};
-            const getItem = (key: string) => items[key] ||= new Promise(res => resolvers[key] = res);
+            const items = {}, resolvers = {}, rejecters = {};
+            const getItem = (key: string) => items[key] ||= new Promise((res, rej) => {
+                resolvers[key] = res;
+                rejecters[key] = rej;
+            });
             const prefetch = {stateKey, navigationData, getItem};
             prefetches.current.push(prefetch);
-            const temporaryReferences = createTemporaryReferenceSet();
-            const response = fetch(stateNavigator.historyManager.getHref(url), {
-                method: 'post',
-                headers: {Accept: 'text/x-component', 'Content-Type': 'application/json'},
-                body: await encodeReply({url, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}, {temporaryReferences})
-            });
-            const {flattenedSceneViews} = await createFromFetch(response);
-            for await (const {key, content: sceneView, ancestors} of flattenedSceneViews) {
-                getItem(key);
-                resolvers[key](sceneView);
-                if (prefetches.current.indexOf(prefetch) === -1 || stateKey !== navigationEvent.data.state.key) continue;
-                const {entries = []} = cache.current[key] || {};
-                const entry = {navigationData: null, sceneView};
-                cache.current[key] = {ancestors: new Set(ancestors), entries: [...entries, entry]};
-                sceneView.props.keys.then(({data: keys}) => {
-                    entry.navigationData = {};
-                    for (const key of keys) entry.navigationData[key] = navigationData[key];
+            try {
+                const temporaryReferences = createTemporaryReferenceSet();
+                const response = fetch(stateNavigator.historyManager.getHref(url), {
+                    method: 'post',
+                    headers: {Accept: 'text/x-component', 'Content-Type': 'application/json'},
+                    body: await encodeReply({url, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}, {temporaryReferences})
                 });
+                const {flattenedSceneViews} = await createFromFetch(response);
+                for await (const {key, content: sceneView, ancestors} of flattenedSceneViews) {
+                    getItem(key);
+                    resolvers[key](sceneView);
+                    if (prefetches.current.indexOf(prefetch) === -1 || stateKey !== navigationEvent.data.state.key) continue;
+                    const {entries = []} = cache.current[key] || {};
+                    const entry = {navigationData: null, sceneView};
+                    cache.current[key] = {ancestors: new Set(ancestors), entries: [...entries, entry]};
+                    sceneView.props.keys.then(({data: keys}) => {
+                        entry.navigationData = {};
+                        for (const key of keys) entry.navigationData[key] = navigationData[key];
+                    }, () => {});
+                }
+            } catch (e) {
+                prefetches.current = prefetches.current.filter(item => item !== prefetch);
+                for (const key in rejecters) rejecters[key](e);
             }
         },
         trigger: (navigationEventData: NavigationHandlerState) => {
