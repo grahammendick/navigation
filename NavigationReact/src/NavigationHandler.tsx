@@ -249,13 +249,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 body: await encodeReply({url, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}, {temporaryReferences})
             });
             const {flattenedSceneViews} = await createFromFetch(response);
-            for await (const {key, content: sceneView} of flattenedSceneViews) {
+            for await (const {key, content: sceneView, ancestors} of flattenedSceneViews) {
                 getItem(key);
                 resolvers[key](sceneView);
                 if (prefetches.current.indexOf(prefetch) === -1 || stateKey !== navigationEvent.data.state.key) continue;
-                const {ancestors = new Set([key]), entries = []} = cache.current[key] || {};
+                const {entries = []} = cache.current[key] || {};
                 const entry = {navigationData: null, sceneView};
-                cache.current[key] = {ancestors, entries: [...entries, entry]};
+                cache.current[key] = {ancestors: new Set(ancestors), entries: [...entries, entry]};
                 sceneView.props.keys.then(({data: keys}) => {
                     entry.navigationData = {};
                     for (const key of keys) entry.navigationData[key] = navigationData[key];

@@ -7,10 +7,12 @@ import SceneRSCView from './SceneRSCView.js';
 import SceneViewClient from './SceneView.js';
 import Refetch from './Refetch.js';
 
-const SceneView = ({active, client, fetching, children, ...props}: SceneViewProps & {active: string | string[], fetching?: boolean}) => {
+const SceneView = ({active, client, fetching, __ancestors = [], children, ...props}: SceneViewProps & {active: string | string[], fetching?: boolean, __ancestors?: string[]}) => {
     const {state} = useNavigationEvent();
     const {flattenedSceneViews} = getCache();
     const flattened = flattenedSceneViews && !client;
+    const sceneViewKey = props.name || (typeof active === 'string' ? active : active[0]);
+    const ancestors = [sceneViewKey, ...__ancestors];
     const show = active != null && state && (
         typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
     );
@@ -36,8 +38,9 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
         }
         const {type, props, key} = node;
         if (type === SceneView) {
-            if (flattened && !props.client) flattenedSceneViews.start();
-            return node;
+            if (!flattened || props.client) return node;
+            flattenedSceneViews.start();
+            return cloneElement(node, {__ancestors: ancestors});
         }
         if (type?.['$$typeof'] === Symbol.for('react.memo') || type?.['$$typeof'] === Symbol.for('react.forward_ref'))
             return render(createElement((type as any).type || (type as any).render, key != null ? {...props, key} : props));
@@ -70,9 +73,8 @@ const SceneView = ({active, client, fetching, children, ...props}: SceneViewProp
         return cloneElement(node, render(rest), ...(children !== undefined ? [].concat(render(children)) : []));
     };
     const content = !client && show ? render(children) : null;
-    const sceneViewKey = props.name || (typeof active === 'string' ? active : active[0]);
     const refetched = <Refetch keys={promise}>{content}</Refetch>;
-    if (flattened && show) flattenedSceneViews.push({key: sceneViewKey, content: refetched});
+    if (flattened && show) flattenedSceneViews.push({key: sceneViewKey, content: refetched, ancestors});
     if (pending === 0) complete();
     if (flattened) {
         if (fetching) return null;
