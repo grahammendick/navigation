@@ -8,6 +8,7 @@ const Filter = () => {
   const prefetch = usePrefetch();
   useEffect(() => {
     prefetch.navigate('person', { id: 2 });
+    prefetch.navigate('person', { id: 2 });
   }, []);
   return (
     <div>

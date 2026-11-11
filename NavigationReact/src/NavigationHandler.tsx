@@ -232,6 +232,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         },
         prefetcher: async (url: string) => {
             const {state: {key: stateKey}, data: navigationData} = stateNavigator.parseLink(url);
+            if (prefetches.current.some(prefetch => (
+                prefetch.stateKey === stateKey
+                && Object.keys(prefetch.navigationData).length === Object.keys(navigationData).length
+                && Object.keys(prefetch.navigationData).every(key => LinkUtility.areEqual(prefetch.navigationData[key], navigationData[key]))
+            ))) return;
             const items = {}, resolvers = {};
             const getItem = (key: string) => items[key] ||= new Promise(res => resolvers[key] = res);
             prefetches.current.push({stateKey, navigationData, getItem});
