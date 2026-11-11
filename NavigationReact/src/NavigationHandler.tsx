@@ -294,7 +294,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (!isPending) navigationEvent.data.uncommitted = false;
         const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = navigationEvent.data;
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-        if (!isPending && !refresh) {
+        if (!isPending && navigationEvent.intercept && !refresh) {
             prefetches.current = [];
             cache.current = {};
         }
