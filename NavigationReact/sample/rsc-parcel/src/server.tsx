@@ -58,6 +58,11 @@ app.post('*', async (req, res) => {
   }
   const {state} = serverNavigator.stateContext;
   const navigated = serverNavigator.stateContext !== stateContext;
+  if (prefetch && navigated) {
+    res.set('Content-Type', 'text/x-component');
+    renderRSC({flattenedSceneViews: null}).pipe(res);
+    return;
+  }
   const flattenedSceneViews = prefetch ? createSceneViewQueue() : null;
   const activeViews = (navigated || refetch === true || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];

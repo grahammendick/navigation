@@ -199,8 +199,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         deserialize: async (sceneViewKey: string, actionId: string = null, args: any[] = null) => {
             if (actionId) return fetchRSC([sceneViewKey], actionId, args);
             const {state, data} = nextNavigationEvent.data;
-            const prefetch = prefetches.current.find(({stateKey, navigationData}) => (
-                stateKey === state.key
+            const prefetch = prefetches.current.find(({stateKey, navigationData, ready}) => (
+                ready && stateKey === state.key
                 && Object.keys(navigationData).length === Object.keys(data).length
                 && Object.keys(navigationData).every(key => LinkUtility.areEqual(navigationData[key], data[key]))
             ));
@@ -243,16 +243,22 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 resolvers[key] = res;
                 rejecters[key] = rej;
             });
-            const prefetch = {stateKey, navigationData, getItem};
+            const prefetch = {stateKey, navigationData, getItem, ready: false};
             prefetches.current.push(prefetch);
             try {
+                const crumblessUrl = stateNavigator.fluent().navigate(stateKey, navigationData).url;
                 const temporaryReferences = createTemporaryReferenceSet();
-                const response = fetch(stateNavigator.historyManager.getHref(url), {
+                const response = fetch(stateNavigator.historyManager.getHref(crumblessUrl), {
                     method: 'post',
                     headers: {Accept: 'text/x-component', 'Content-Type': 'application/json'},
-                    body: await encodeReply({url, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}, {temporaryReferences})
+                    body: await encodeReply({url: crumblessUrl, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}, {temporaryReferences})
                 });
                 const {flattenedSceneViews} = await createFromFetch(response);
+                if (!flattenedSceneViews) {
+                    prefetches.current = prefetches.current.filter(item => item !== prefetch);
+                    return;
+                }
+                prefetch.ready = true;
                 for await (const {key, content: sceneView, ancestors} of flattenedSceneViews) {
                     getItem(key);
                     resolvers[key](sceneView);
