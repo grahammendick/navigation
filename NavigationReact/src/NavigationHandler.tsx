@@ -214,18 +214,18 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const sceneViews = await rscFetch.sceneViews;
             return sceneViews[sceneViewKey];
         },
-        getCache: (sceneViewKey: string, stateKey: string, navigationData: any, cacheable: boolean) => {
+        getCache: (sceneViewKey: string, navigationData: any, cacheable: boolean) => {
             const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
             const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
             return cacheable && refresh && [...(cache.current[sceneViewKey]?.entries || [])].reverse().find(entry => (
-                entry.navigationData && (!entry.stateKey || entry.stateKey === stateKey)
+                entry.navigationData
                 && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
             ))?.sceneView;
         },
-        setCache: (sceneViewKey: string, stateKey: string, navigationData: any, sceneView: any, ancestors: string[]) => {
+        setCache: (sceneViewKey: string, navigationData: any, sceneView: any, ancestors: string[]) => {
             const {entries = []} = cache.current[sceneViewKey] || {};
             const matches = entry => (
-                entry.navigationData && (!entry.stateKey || entry.stateKey === stateKey)
+                entry.navigationData
                 && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
             );
             cache.current[sceneViewKey] = {ancestors: new Set(ancestors), entries: [...entries.filter(entry => !matches(entry)), {navigationData, sceneView}]};
@@ -239,7 +239,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             ))) return;
             const items = {}, resolvers = {};
             const getItem = (key: string) => items[key] ||= new Promise(res => resolvers[key] = res);
-            prefetches.current.push({stateKey, navigationData, getItem});
+            const prefetch = {stateKey, navigationData, getItem};
+            prefetches.current.push(prefetch);
             const temporaryReferences = createTemporaryReferenceSet();
             const response = fetch(stateNavigator.historyManager.getHref(url), {
                 method: 'post',
@@ -250,8 +251,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             for await (const {key, content: sceneView} of flattenedSceneViews) {
                 getItem(key);
                 resolvers[key](sceneView);
+                if (prefetches.current.indexOf(prefetch) === -1 || stateKey !== navigationEvent.data.state.key) continue;
                 const {ancestors = new Set([key]), entries = []} = cache.current[key] || {};
-                const entry = {stateKey, navigationData: null, sceneView};
+                const entry = {navigationData: null, sceneView};
                 cache.current[key] = {ancestors, entries: [...entries, entry]};
                 sceneView.props.keys.then(({data: keys}) => {
                     entry.navigationData = {};
@@ -293,14 +295,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
         if (!isPending && !refresh) {
             prefetches.current = [];
-            for (const key in cache.current) {
-                const {ancestors, entries} = cache.current[key];
-                const converted = entries
-                    .filter(entry => entry.stateKey === state.key && entry.navigationData)
-                    .map(({navigationData, sceneView}) => ({navigationData, sceneView}));
-                if (converted.length) cache.current[key] = {ancestors, entries: converted};
-                else delete cache.current[key];
-            }
+            cache.current = {};
         }
         if (!isPending && commit) {
             commit();
