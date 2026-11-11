@@ -23,8 +23,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     );
     const cache = useRef({});
     const prefetches = useRef([]);
-    const expire = (sceneViewKey: string | boolean) => {
-        prefetches.current = [];
+    const expireCache = (sceneViewKey: string | boolean) => {
         for (const key in cache.current) {
             if (sceneViewKey === true || cache.current[key].ancestors.has(sceneViewKey)) delete cache.current[key];
         }
@@ -178,7 +177,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             nextNavigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
             nextNavigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext, nextNavigationEvent.intercept);
         } else if (actionId && res.refetch) {
-            expire(res.refetch === true || res.refetch[0]);
+            expireCache(res.refetch === true || res.refetch[0]);
+            prefetches.current = prefetches.current.filter(prefetch => prefetch.stateKey !== nextNavigationEvent.data.state.key);
             startTransition(() => {
                 setNavigationEvent({data: {...nextNavigationEvent.data, ignoreCache: res.refetch === true || res.refetch[0], rscCache: res.sceneViews, rscFetching: undefined, trackable: undefined}, stateNavigator: nextNavigationEvent.stateNavigator});
             });
@@ -187,7 +187,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [stateNavigator, nextNavigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch]);
     const refetchControl = useMemo(() => ({
         refetcher: (sceneViewKey: string | boolean = true) => {
-            expire(sceneViewKey);
+            expireCache(sceneViewKey);
+            prefetches.current = prefetches.current.filter(prefetch => prefetch.stateKey !== navigationEvent.data.state.key);
             startTransition(() => {
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined, rscFetching: primeRefetch(sceneViewKey), trackable: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
@@ -349,7 +350,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [navigationEvent, stateNavigator]);
     useEffect(() => {
         const offHmrReload = onHmrReload?.(() => {
-            expire(true);
+            expireCache(true);
+            prefetches.current = [];
             startTransition(() => {
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(), trackable: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
