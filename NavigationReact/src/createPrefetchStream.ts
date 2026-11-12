@@ -1,4 +1,4 @@
-const createSceneViewQueue = () => {
+const createPrefetchStream = () => {
     const queue: {key: string, content: any}[] = [];
     let open = 0, wake: () => void = null;
     const notify = () => {
@@ -26,4 +26,4 @@ const createSceneViewQueue = () => {
         }
     };
 };
-export default createSceneViewQueue;
+export default createPrefetchStream;
