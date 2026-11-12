@@ -173,24 +173,39 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const {stateContext: actualStateContext} = nextNavigationEvent.stateNavigator;
         if (actualStateContext !== currentStateContext && actualStateContext !== nextStateContext)
             return !actionId ? new Promise(() => {}) : res.data;
+        const {key} = nextNavigationEvent.data.state;
+        const invalidate: (string | false)[] | true = res.invalidate || [];
+        const invalidated = invalidate === true || invalidate.indexOf(key) !== -1 || (invalidate.indexOf(false) !== -1 && sceneViewKeys[0]);
+        if (invalidated) expireCache(invalidated);
+        if (invalidate === true) prefetches.current = [];
+        else if (invalidated || invalidate.length) {
+            prefetches.current = prefetches.current.filter(prefetch => (
+                invalidate.indexOf(prefetch.stateKey) === -1 && (!invalidated || prefetch.stateKey !== key)
+            ));
+        }
         if (res.url) {
             nextNavigationEvent.data.stateNavigator.stateContext['rscCache'] = res.sceneViews;
             nextNavigationEvent.data.stateNavigator.navigateLink(res.url, res.historyAction, false, undefined, stateNavigator.stateContext, nextNavigationEvent.intercept);
-        } else if (actionId && res.refetch) {
-            expireCache(res.refetch === true || res.refetch[0]);
-            prefetches.current = prefetches.current.filter(prefetch => prefetch.stateKey !== nextNavigationEvent.data.state.key);
+        } else if (invalidated) {
             startTransition(() => {
-                setNavigationEvent({data: {...nextNavigationEvent.data, ignoreCache: res.refetch === true || res.refetch[0], rscCache: res.sceneViews, rscFetching: undefined, trackable: undefined}, stateNavigator: nextNavigationEvent.stateNavigator});
+                setNavigationEvent({data: {...nextNavigationEvent.data, ignoreCache: invalidated, rscCache: res.sceneViews, rscFetching: undefined, trackable: undefined}, stateNavigator: nextNavigationEvent.stateNavigator});
             });
         }
         return !actionId ? !res.url ? res.sceneViews : new Promise(() => {}) : res.data;
     }, [stateNavigator, nextNavigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch]);
     const refetchControl = useMemo(() => ({
-        refetcher: (sceneViewKey: string | boolean = true) => {
-            expireCache(sceneViewKey);
-            prefetches.current = prefetches.current.filter(prefetch => prefetch.stateKey !== navigationEvent.data.state.key);
+        invalidator: (scope: boolean | string, sceneViewKey?: string) => {
+            const {key} = navigationEvent.data.state;
+            if (typeof scope === 'string' && scope !== key) {
+                prefetches.current = prefetches.current.filter(prefetch => prefetch.stateKey !== scope);
+                return;
+            }
+            const invalidated = (scope === false && sceneViewKey) || true;
+            expireCache(invalidated);
+            if (scope === true) prefetches.current = [];
+            else prefetches.current = prefetches.current.filter(prefetch => prefetch.stateKey !== key);
             startTransition(() => {
-                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: sceneViewKey, rscCache: undefined, rscFetching: primeRefetch(sceneViewKey), trackable: undefined}, stateNavigator: navigationEvent.stateNavigator});
+                setNavigationEvent({data: {...navigationEvent.data, ignoreCache: invalidated, rscCache: undefined, rscFetching: primeRefetch(invalidated), trackable: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
         },
         registerSceneView: (sceneViewKey: string, active: string | string[]) => {

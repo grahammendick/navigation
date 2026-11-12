@@ -1,12 +1,12 @@
 'use client'
 import { useEffect } from 'react';
-import { useSceneView, usePrefetch, useRefetch } from 'navigation-react';
+import { useSceneView, usePrefetch, useInvalidate } from 'navigation-react';
 import updateName from "./updateName";
 
 const Edit = ({ id, name }: { id: number, name: string }) => {
   const saveName = useSceneView(updateName);
   const prefetch = usePrefetch();
-  const refetch = useRefetch();
+  const invalidate = useInvalidate();
   useEffect(() => {
     prefetch.refresh({ id, show: true });
     prefetch.navigateBack(1);
@@ -17,7 +17,7 @@ const Edit = ({ id, name }: { id: number, name: string }) => {
       <input key={id} type="text" name="name" defaultValue={name} autoFocus />
       <button type="submit">Save</button>
       <button type="reset">Reset</button>
-      <button type="button" onClick={() => refetch()}>Refetch</button>
+      <button type="button" onClick={() => invalidate(false)}>Refetch</button>
     </form>
   )
 }

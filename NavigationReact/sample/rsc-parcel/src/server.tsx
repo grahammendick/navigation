@@ -45,13 +45,15 @@ app.post('*', async (req, res) => {
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
   const stateContext = serverNavigator.stateContext;
-  let data = null; let refetch = null;
+  let data = null; let invalidate = [] as (string | false)[] | true;
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);
     const scene = {
       stateNavigator: serverNavigator,
-      refetch: (scene: boolean = false) => {
-        refetch = scene || sceneViewKeys;
+      invalidate: (scope?: boolean | string) => {
+        if (invalidate === true) return;
+        if (scope === true) invalidate = true;
+        else invalidate.push(scope === undefined ? stateContext.state.key : scope);
       }
     };
     data = await action.apply(null, url ? [...args, scene] : args);
@@ -64,17 +66,19 @@ app.post('*', async (req, res) => {
     return;
   }
   const flattenedSceneViews = prefetch ? createPrefetchStream() : null;
-  const activeViews = (navigated || refetch === true || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+  const sceneInvalidated = invalidate === true || invalidate.indexOf(stateContext.state.key) !== -1;
+  const viewInvalidated = invalidate !== true && invalidate.indexOf(false) !== -1;
+  const activeViews = (navigated || sceneInvalidated || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];
       const show =  active != null && (
           typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, [] as string[]) : ((!actionId || refetch) ? sceneViewKeys : []);
+    }, [] as string[]) : ((!actionId || viewInvalidated) ? sceneViewKeys : []);
   const stream = renderRSC({
     data,
-    refetch,
+    invalidate,
     url: navigated ? serverNavigator.stateContext.url : null,
     historyAction: navigated ? serverNavigator.stateContext.historyAction : null,
     sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {

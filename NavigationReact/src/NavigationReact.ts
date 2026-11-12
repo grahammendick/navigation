@@ -9,8 +9,8 @@ import FluentLink from './FluentLink.js';
 import SceneView from './SceneView.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import useSceneView from './useSceneView.js';
-import useRefetch from './useRefetch.js';
+import useInvalidate from './useInvalidate.js';
 import usePrefetch from './usePrefetch.js';
 import useRootViewRegistry from './useRootViewRegistry.js';
 
-export { NavigationContext, TransitionContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView, useRefetch, usePrefetch, useRootViewRegistry };
+export { NavigationContext, TransitionContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView, useInvalidate, usePrefetch, useRootViewRegistry };
