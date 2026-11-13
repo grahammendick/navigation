@@ -4,11 +4,12 @@ import useNavigationEvent from './useNavigationEvent.js';
 
 const usePrefetch = () => {
     const {prefetcher} = useContext(RefetchContext);
-    const {stateNavigator} = useNavigationEvent();
+    const navigationEvent = useNavigationEvent();
+    const {stateNavigator} = navigationEvent;
     return useMemo(() => ({
-        navigate: (stateKey: string, navigationData?: any) => prefetcher(stateNavigator.getNavigationLink(stateKey, navigationData)),
-        refresh: (navigationData?: any) => prefetcher(stateNavigator.getRefreshLink(navigationData)),
-        navigateBack: (distance: number) => prefetcher(stateNavigator.getNavigationBackLink(distance)),
-    }), [prefetcher, stateNavigator]);
+        navigate: (stateKey: string, navigationData?: any) => prefetcher(stateNavigator.getNavigationLink(stateKey, navigationData), navigationEvent),
+        refresh: (navigationData?: any) => prefetcher(stateNavigator.getRefreshLink(navigationData), navigationEvent),
+        navigateBack: (distance: number) => prefetcher(stateNavigator.getNavigationBackLink(distance), navigationEvent),
+    }), [prefetcher, navigationEvent]);
 }
 export default usePrefetch;
