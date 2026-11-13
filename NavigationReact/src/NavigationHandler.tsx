@@ -25,8 +25,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const prefetches = useRef([]);
     const expireCache = (sceneViewKey: string | boolean) => {
         cache.current.forEach(crumbCache => {
-            for (const key in crumbCache) {
-                if (sceneViewKey === true || crumbCache[key].ancestors.has(sceneViewKey)) delete crumbCache[key];
+            for (const key in crumbCache?.sceneViews) {
+                if (sceneViewKey === true || crumbCache.sceneViews[key].ancestors.has(sceneViewKey)) delete crumbCache.sceneViews[key];
             }
         });
     };
@@ -236,19 +236,19 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = nextNavigationEvent.data;
             const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
             const {data: navigationData, stateNavigator: {stateContext: navigationContext}} = navigationEvent;
-            return cacheable && refresh && [...(cache.current[navigationContext.crumbs.length]?.[sceneViewKey]?.entries || [])].reverse().find(entry => (
+            return cacheable && refresh && [...(cache.current[navigationContext.crumbs.length]?.sceneViews[sceneViewKey]?.entries || [])].reverse().find(entry => (
                 entry.navigationData
                 && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
             ))?.sceneView;
         },
         setCache: (sceneViewKey: string, navigationEvent: any, navigationData: any, sceneView: any, ancestors: string[]) => {
-            const crumbCache = cache.current[navigationEvent.stateNavigator.stateContext.crumbs.length] ||= {};
-            const {entries = []} = crumbCache[sceneViewKey] || {};
+            const crumbCache = cache.current[navigationEvent.stateNavigator.stateContext.crumbs.length] ||= {stateKey: navigationEvent.state.key, sceneViews: {}};
+            const {entries = []} = crumbCache.sceneViews[sceneViewKey] || {};
             const matches = entry => (
                 entry.navigationData
                 && Object.keys(entry.navigationData).every(key => LinkUtility.areEqual(entry.navigationData[key], navigationData[key]))
             );
-            crumbCache[sceneViewKey] = {ancestors: new Set(ancestors), entries: [...entries.filter(entry => !matches(entry)), {navigationData, sceneView}]};
+            crumbCache.sceneViews[sceneViewKey] = {ancestors: new Set(ancestors), entries: [...entries.filter(entry => !matches(entry)), {navigationData, sceneView}]};
         },
         prefetcher: async (url: string) => {
             const {state: {key: stateKey}, data: navigationData} = stateNavigator.parseLink(url);
@@ -282,10 +282,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     getItem(key);
                     resolvers[key](sceneView);
                     if (prefetches.current.indexOf(prefetch) === -1 || stateKey !== navigationEvent.data.state.key) continue;
-                    const crumbCache = cache.current[navigationEvent.data.stateNavigator.stateContext.crumbs.length] ||= {};
-                    const {entries = []} = crumbCache[key] || {};
+                    const crumbCache = cache.current[navigationEvent.data.stateNavigator.stateContext.crumbs.length] ||= {stateKey, sceneViews: {}};
+                    const {entries = []} = crumbCache.sceneViews[key] || {};
                     const entry = {navigationData: null, sceneView};
-                    crumbCache[key] = {ancestors: new Set(ancestors), entries: [...entries, entry]};
+                    crumbCache.sceneViews[key] = {ancestors: new Set(ancestors), entries: [...entries, entry]};
                     sceneView.props.keys.then(({data: keys}) => {
                         entry.navigationData = {};
                         for (const key of keys) entry.navigationData[key] = navigationData[key];
@@ -328,9 +328,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         if (!isPending) navigationEvent.data.uncommitted = false;
         const {state, oldState, stateNavigator: {stateContext: {oldUrl, crumbs}}} = navigationEvent.data;
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-        if (!isPending && navigationEvent.intercept && !refresh) {
-            prefetches.current = [];
-            cache.current = [];
+        if (!isPending && navigationEvent.intercept) {
+            const stateKeys = [...crumbs.map(crumb => crumb.state.key), state.key];
+            cache.current = stateKeys.map((stateKey, i) => cache.current[i]?.stateKey === stateKey ? cache.current[i] : undefined);
+            if (!refresh) prefetches.current = [];
         }
         if (!isPending && commit) {
             commit();
