@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "rm -rf .parcel-cache && rm -rf dist && parcel build --no-cache",
-    "start": "parcel --no-cache"
+    "start": "NODE_OPTIONS='--require ./preload.cjs' parcel --no-cache"
   },
   "dependencies": {
     "@parcel/rsc": "^2.14.4",

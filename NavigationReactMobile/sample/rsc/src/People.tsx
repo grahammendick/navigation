@@ -9,7 +9,7 @@ const People = async () => {
       <title>People</title>
       <h1>People</h1>
       <Filter />
-      <SceneView active="people" name="list">
+      <SceneView active="people" name="list" cache>
         <List />
       </SceneView>
     </>
