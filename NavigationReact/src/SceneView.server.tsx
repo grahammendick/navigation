@@ -38,7 +38,8 @@ const SceneView = ({active, client, fetching, __ancestors = [], children, ...pro
         }
         const {type, props, key} = node;
         if (type === SceneView) {
-            if (!flattened || props.client) return node;
+            if (!flattened) return node;
+            if (props.client) return cloneElement(node, undefined, ...(props.children !== undefined ? [].concat(render(props.children)) : []));
             flattenedSceneViews.start();
             return cloneElement(node, {__ancestors: ancestors});
         }
