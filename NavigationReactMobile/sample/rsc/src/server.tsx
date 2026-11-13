@@ -47,7 +47,7 @@ app.post('*', async (req, res) => {
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
   const stateContext = serverNavigator.stateContext;
-  let data = null; let invalidate = [] as (string | false)[] | true;
+  let data = null; let invalidate = [] as (string | false | null)[] | true;
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);
     const scene = {
@@ -55,7 +55,7 @@ app.post('*', async (req, res) => {
       invalidate: (scope?: boolean | string) => {
         if (invalidate === true) return;
         if (scope === true) invalidate = true;
-        else invalidate.push(scope === undefined ? stateContext.state.key : scope);
+        else invalidate.push(scope === undefined ? null : scope);
       }
     };
     data = await action.apply(null, url ? [...args, scene] : args);
@@ -68,7 +68,7 @@ app.post('*', async (req, res) => {
     return;
   }
   const flattenedSceneViews = prefetch ? createPrefetchStream() : null;
-  const sceneInvalidated = invalidate === true || invalidate.indexOf(stateContext.state.key) !== -1;
+  const sceneInvalidated = invalidate === true || invalidate.indexOf(null) !== -1 || invalidate.indexOf(stateContext.state.key) !== -1;
   const viewInvalidated = invalidate !== true && invalidate.indexOf(false) !== -1;
   const activeViews = (navigated || sceneInvalidated || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];

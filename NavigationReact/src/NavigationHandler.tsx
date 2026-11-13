@@ -23,8 +23,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     );
     const cache = useRef([]);
     const prefetches = useRef([]);
-    const expireCache = (sceneViewKey: string | boolean) => {
-        cache.current.forEach(crumbCache => {
+    const expireCache = (sceneViewKey: string | boolean, crumbs?: number) => {
+        cache.current.forEach((crumbCache, i) => {
+            if (crumbs !== undefined && i !== crumbs) return;
             for (const key in crumbCache?.sceneViews) {
                 if (sceneViewKey === true || crumbCache.sceneViews[key].ancestors.has(sceneViewKey)) delete crumbCache.sceneViews[key];
             }
@@ -180,12 +181,13 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const {stateContext: actualStateContext} = nextNavigationEvent.stateNavigator;
         if (actualStateContext !== currentStateContext && actualStateContext !== nextStateContext)
             return !actionId ? new Promise(() => {}) : res.data;
-        const {key} = nextNavigationEvent.data.state;
-        const invalidate: (string | false)[] | true = res.invalidate || [];
-        const invalidated = invalidate === true || invalidate.indexOf(key) !== -1 || (invalidate.indexOf(false) !== -1 && sceneViewKeys[0]);
-        if (invalidated) expireCache(invalidated);
+        const {state: {key}, stateNavigator: {stateContext: {crumbs}}} = nextNavigationEvent.data;
+        const invalidate: (string | false | null)[] | true = res.invalidate || [];
+        const invalidated = invalidate === true || invalidate.indexOf(null) !== -1 || invalidate.indexOf(key) !== -1 || (invalidate.indexOf(false) !== -1 && sceneViewKeys[0]);
+        if (invalidated) expireCache(invalidated, invalidate === true ? undefined : crumbs.length);
         if (invalidate === true) prefetches.current = [];
         else if (invalidated || invalidate.length) {
+            cache.current = cache.current.map(crumbCache => crumbCache && invalidate.indexOf(crumbCache.stateKey) !== -1 ? undefined : crumbCache);
             filterPrefetches(prefetch => (
                 invalidate.indexOf(prefetch.stateKey) === -1 && (!invalidated || prefetch.stateKey !== key)
             ));
@@ -201,16 +203,20 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         return !actionId ? !res.url ? res.sceneViews : new Promise(() => {}) : res.data;
     }, [stateNavigator, nextNavigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch]);
     const refetchControl = useMemo(() => ({
-        invalidator: (scope: boolean | string, sceneViewKey?: string) => {
-            const {key} = navigationEvent.data.state;
-            if (typeof scope === 'string' && scope !== key) {
-                filterPrefetches(prefetch => prefetch.stateKey !== scope);
-                return;
-            }
+        invalidator: (scope: boolean | string, sceneViewKey: string, navigationEventData: NavigationHandlerState) => {
             const invalidated = (scope === false && sceneViewKey) || true;
-            expireCache(invalidated);
-            if (scope === true) prefetches.current = [];
-            else filterPrefetches(prefetch => prefetch.stateKey !== key);
+            if (typeof scope === 'string') {
+                filterPrefetches(prefetch => prefetch.stateKey !== scope);
+                cache.current = cache.current.map(crumbCache => crumbCache?.stateKey !== scope ? crumbCache : undefined);
+                if (scope !== navigationEvent.data.state.key) return;
+            } else if (scope === true) {
+                expireCache(true);
+                prefetches.current = [];
+            } else {
+                expireCache(invalidated, navigationEventData.stateNavigator.stateContext.crumbs.length);
+                filterPrefetches(prefetch => prefetch.stateKey !== navigationEventData.state.key);
+                if (navigationEventData !== navigationEvent.data) return;
+            }
             startTransition(() => {
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: invalidated, rscCache: undefined, rscFetching: primeRefetch(invalidated), trackable: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
