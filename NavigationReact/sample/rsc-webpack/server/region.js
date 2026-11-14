@@ -51,10 +51,9 @@ async function getModuleMap() {
   }
 }
 
-async function renderSceneView(el, navigator) {
-  const {NavigationHandler} = await import('navigation-react');
+function renderSceneView(NavigationHandler, el, navigator, flattenedSceneViews = null) {
   return React.createElement(React.Fragment, null,
-    React.createElement(NavigationHandler, {stateNavigator: navigator}, el)
+    React.createElement(NavigationHandler, {stateNavigator: navigator, flattenedSceneViews}, el)
   );
 }
 
@@ -67,7 +66,8 @@ app.get('*', async function (req, res) {
     'react-server-dom-webpack/server'
   );
   const moduleMap = await getModuleMap();
-  const root = renderSceneView(React.createElement(App, {url: serverNavigator.stateContext.url}), serverNavigator);
+  const {NavigationHandler} = await import('navigation-react');
+  const root = renderSceneView(NavigationHandler, React.createElement(App, {url: serverNavigator.stateContext.url}), serverNavigator);
   const {pipe} = renderToPipeableStream(root, moduleMap);
   pipe(res);
 });
@@ -80,47 +80,60 @@ app.post('*', async function (req, res) {
     person: await import('../src/Person.js'),
     friends: await import('../src/Friends.js')
   };
-  const {url, sceneViewKeys, rootViews, actionId, args} = await decodeBody(req);
+  const {url, oldUrl, sceneViewKeys, rootViews, actionId, args, prefetch} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator.default);
+  if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
-  let data = null; let refetch = null;
+  const stateContext = serverNavigator.stateContext;
+  let data = null; let invalidate = [];
   if (req.headers['content-type'] !== 'application/json') {
     const [filepath, name] = actionId.split('#');
     const action = (await import(filepath))[name];
     const scene = {
       stateNavigator: serverNavigator,
-      refetch: (scene = false) => {
-        refetch = scene || sceneViewKeys;
+      invalidate: (scope) => {
+        if (invalidate === true) return;
+        if (scope === true) invalidate = true;
+        else invalidate.push(scope === undefined ? null : scope);
       }
     };
     data = await action.apply(null, url ? [...args, scene] : args);
   }
-  const {state, oldState} = serverNavigator.stateContext;
-  const activeViews = (oldState || refetch === true) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+  const {state} = serverNavigator.stateContext;
+  const navigated = serverNavigator.stateContext !== stateContext;
+  const {renderToPipeableStream} = await import(
+    'react-server-dom-webpack/server'
+  );
+  const {NavigationHandler, SceneView, createPrefetchStream} = await import('navigation-react');
+  const moduleMap = await getModuleMap();
+  if (prefetch && navigated) {
+    renderToPipeableStream({flattenedSceneViews: null}, moduleMap).pipe(res);
+    return;
+  }
+  const flattenedSceneViews = prefetch ? createPrefetchStream() : null;
+  const sceneInvalidated = invalidate === true || invalidate.indexOf(null) !== -1 || invalidate.indexOf(stateContext.state.key) !== -1;
+  const viewInvalidated = invalidate !== true && invalidate.indexOf(false) !== -1;
+  const activeViews = (navigated || sceneInvalidated || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];
       const show =  active != null && (
           typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, []) : ((!actionId || refetch) ? sceneViewKeys : []);
-  const {renderToPipeableStream} = await import(
-    'react-server-dom-webpack/server'
-  );
-  const {SceneView} = await import('navigation-react');
-  const moduleMap = await getModuleMap();
+    }, []) : ((!actionId || viewInvalidated) ? sceneViewKeys : []);
   const {pipe} = renderToPipeableStream({
     data,
-    refetch,
-    url: oldState ? serverNavigator.stateContext.url : null,
-    historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
+    invalidate,
+    url: navigated ? serverNavigator.stateContext.url : null,
+    historyAction: navigated ? serverNavigator.stateContext.historyAction : null,
     sceneViews: activeViews.reduce((SceneViews, activeKey) => {
       const Content = sceneViews[activeKey].default;
       SceneViews[activeKey] = (
-        renderSceneView(React.createElement(SceneView, {fetching: true, active: [state.key]}, React.createElement(Content)), serverNavigator)
+        renderSceneView(NavigationHandler, React.createElement(SceneView, {fetching: true, active: [state.key], name: activeKey}, React.createElement(Content)), serverNavigator, flattenedSceneViews)
       );
       return SceneViews;
-    }, {})
+    }, {}),
+    flattenedSceneViews
   }, moduleMap);
   pipe(res);
 });
