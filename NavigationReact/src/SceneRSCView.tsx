@@ -48,13 +48,13 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
     }, [suspense]);
     const fetchingFn = useCallback(((navigationEvent) => {
         const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
-        const {url, oldData} = stateContext;
+        const {nextCrumb: {crumblessUrl}, oldData} = stateContext;
         const refetch = keys.current;
         const cacheIgnorable = navigationEvent['ignoreCache'];
         const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
         if (!getShow(state?.key)) return false;
         if (navigationEvent['rscCache']?.[sceneViewKey] || suspended.current || errored.current) return true;
-        if (!ignoreCache && renderedSceneView.current && renderedUrl.current === url) return false;
+        if (!ignoreCache && renderedSceneView.current && renderedUrl.current === crumblessUrl) return false;
         if (!ignoreCache && getCache(sceneViewKey, navigationEvent, cache)) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || ignoreCache) return true;
         if (!rendered) return true;
@@ -95,7 +95,7 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
                     <SceneViewContext.Provider value={sceneViewContext}>
                         <SceneViewInner onMount={() => {
                             renderedSceneView.current = sceneView;
-                            renderedUrl.current = stateContext.url;
+                            renderedUrl.current = stateContext.nextCrumb.crumblessUrl;
                             if (pending) return;
                             if (cache && sceneView && keys.current) {
                                 const navigationData = {};

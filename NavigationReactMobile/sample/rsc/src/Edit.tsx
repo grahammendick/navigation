@@ -1,6 +1,6 @@
 'use client'
 import { useEffect } from 'react';
-import { useSceneView, usePrefetch, useInvalidate } from 'navigation-react';
+import { FluentLink, useSceneView, usePrefetch, useInvalidate } from 'navigation-react';
 import updateName from "./updateName";
 
 const Edit = ({ id, name }: { id: number, name: string }) => {
@@ -19,6 +19,7 @@ const Edit = ({ id, name }: { id: number, name: string }) => {
       <button type="reset">Reset</button>
       <button type="button" onClick={() => invalidate(false)}>Refetch</button>
       <button type="button" onClick={() => prefetch.navigateBack(1)}>Prefetch Back</button>
+      <FluentLink navigate={fluent => fluent.navigate('people', { size: 5 }).navigate('person', { id }).navigate('person', { id: 2 })}>Fluent</FluentLink>
     </form>
   )
 }
