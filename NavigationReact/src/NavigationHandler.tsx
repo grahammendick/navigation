@@ -111,7 +111,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             }, {});
         };
         const rscFetching = oldUrl && !refresh ? prime() : undefined;
-        const stale = cache.current[crumbs.length]?.stale && cache.current[crumbs.length].stateKey === state.key;
+        const stale = (cache.current[crumbs.length]?.stale && cache.current[crumbs.length].stateKey === state.key) || (history && crumbs.length > oldUrl?.split('crumb=').length - 1);
         const nextNavigationEvent = {data: {oldState, state, data, asyncData, stateNavigator: asyncNavigator, rscCache, ignoreCache: !!rscCache || stale, rscFetching, hasUAVisualTransition: intercept.hasUAVisualTransition, uncommitted: !oldUrl}, stateNavigator, intercept};
         setNavigationEvent(nextNavigationEvent);
         if (intercept.resume && refresh) setNextNavigationEvent(nextNavigationEvent);
