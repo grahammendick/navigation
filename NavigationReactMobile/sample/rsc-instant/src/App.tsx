@@ -25,7 +25,7 @@ const App = async ({url}: any) => {
             style={{position: 'fixed', left: '0', right: '0', top: '0', bottom: '0', overflow: 'auto', backgroundColor: '#fff', padding: '8px'}}>
               <Scene stateKey="people" client>
                 <People>
-                  <SceneView active="people" fallback={<h2>loading...</h2>}>
+                  <SceneView active="people" cache fallback={<h2>loading...</h2>}>
                     <List />
                   </SceneView>
                 </People>
