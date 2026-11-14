@@ -158,7 +158,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
                 {scenes => (
                     scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
-                        <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted)}>
+                        <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted) && crumb !== navigationEvent['staleCrumb']}>
                             <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className}
                                 style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} />
                         </Freeze>
