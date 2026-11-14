@@ -18,6 +18,7 @@ const Edit = ({ id, name }: { id: number, name: string }) => {
       <button type="submit">Save</button>
       <button type="reset">Reset</button>
       <button type="button" onClick={() => invalidate(false)}>Refetch</button>
+      <button type="button" onClick={() => prefetch.navigateBack(1)}>Prefetch Back</button>
     </form>
   )
 }
