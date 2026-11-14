@@ -1,15 +1,9 @@
 'use client'
-import { useEffect } from 'react';
-import { RefreshLink, useNavigationEvent, usePrefetch } from 'navigation-react';
+import { RefreshLink, useNavigationEvent } from 'navigation-react';
 
 const Filter = () => {
   const { data, stateNavigator } = useNavigationEvent();
   const { name } = data;
-  const prefetch = usePrefetch();
-  useEffect(() => {
-    prefetch.navigate('person', { id: 2 });
-    prefetch.navigate('person', { id: 2 });
-  }, []);
   return (
     <div>
       <div>

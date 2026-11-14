@@ -19,13 +19,11 @@ const Details = async () => {
         <div>Phone</div>
         <div>{phone}</div>
       </div>
-      <SceneView active="person" client>
-        <Gender>
-          <SceneView active="person" name="friends" fallback={<h2>loading...</h2>}>
-            <Friends />
-          </SceneView>
-        </Gender>
-      </SceneView>
+      <Gender>
+        <SceneView active="person" name="friends" fallback={<h2>loading...</h2>}>
+          <Friends />
+        </SceneView>
+      </Gender>
     </>
   )
 }

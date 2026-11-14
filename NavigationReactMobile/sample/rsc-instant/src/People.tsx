@@ -1,15 +1,9 @@
 'use client'
-import { useEffect } from 'react';
-import { RefreshLink, useNavigationEvent, usePrefetch } from 'navigation-react';
+import { RefreshLink, useNavigationEvent } from 'navigation-react';
 
 const People = ({children}: any) => {
   const { data, stateNavigator } = useNavigationEvent();
   const { name } = data;
-  const prefetch = usePrefetch();
-  useEffect(() => {
-    prefetch.navigate('person', { id: 2 });
-    prefetch.navigate('person', { id: 2 });
-  }, []);
   return (
     <>
       <title>People</title>
@@ -23,7 +17,6 @@ const People = ({children}: any) => {
       Page size
       <RefreshLink navigationData={{ size: 5, page: null }} includeCurrentData>5</RefreshLink>
       <RefreshLink navigationData={{ size: 10, page: null }} includeCurrentData>10</RefreshLink>
-      <button type="button" onClick={() => prefetch.navigate('person', { id: 3 })}>Prefetch 3</button>
       {children}
     </>
   );
