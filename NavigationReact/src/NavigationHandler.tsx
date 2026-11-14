@@ -26,7 +26,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const expireCache = (sceneViewKey: string | boolean, crumbs?: number) => {
         cache.current.forEach((crumbCache, i) => {
             if (crumbs !== undefined && i !== crumbs) return;
-            for (const key in crumbCache?.sceneViews) {
+            for (const key in crumbCache.sceneViews) {
                 if (sceneViewKey === true || crumbCache.sceneViews[key].ancestors.has(sceneViewKey)) delete crumbCache.sceneViews[key];
             }
         });
@@ -39,7 +39,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     };
     const filterPrefetches = (keep: (prefetch: any) => boolean) => {
         prefetches.current.forEach(crumbPrefetches => {
-            if (crumbPrefetches) crumbPrefetches.prefetches = crumbPrefetches.prefetches.filter(keep);
+            crumbPrefetches.prefetches = crumbPrefetches.prefetches.filter(keep);
         });
     };
     const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
@@ -193,7 +193,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const invalidated = invalidate === true || invalidate.indexOf(null) !== -1 || invalidate.indexOf(key) !== -1 || (invalidate.indexOf(false) !== -1 && sceneViewKeys[0]);
         if (invalidate === true) {
             markStale(true, nextNavigationEvent.data);
-            prefetches.current = [];
+            filterPrefetches(() => false);
         } else if (invalidated || invalidate.length) {
             if (invalidated) expireCache(invalidated, crumbs.length);
             for (const scope of invalidate) {
@@ -222,7 +222,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 if (scope !== navigationEvent.data.state.key) return;
             } else if (scope === true) {
                 markStale(true, navigationEvent.data);
-                prefetches.current = [];
+                filterPrefetches(() => false);
             } else {
                 expireCache(invalidated, navigationEventData.stateNavigator.stateContext.crumbs.length);
                 filterPrefetches(prefetch => prefetch.stateKey !== navigationEventData.state.key);
@@ -264,7 +264,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             ))?.sceneView;
         },
         setCache: (sceneViewKey: string, navigationEvent: any, navigationData: any, sceneView: any, ancestors: string[]) => {
-            const crumbCache = cache.current[navigationEvent.stateNavigator.stateContext.crumbs.length] ||= {stateKey: navigationEvent.state.key, sceneViews: {}};
+            const crumbCache = cache.current[navigationEvent.stateNavigator.stateContext.crumbs.length];
+            if (crumbCache?.stateKey !== navigationEvent.state.key) return;
             const {entries = []} = crumbCache.sceneViews[sceneViewKey] || {};
             const matches = entry => (
                 entry.navigationData
@@ -275,7 +276,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         prefetcher: async (url: string, navigationEvent: any) => {
             const {state: {key: stateKey}, data: navigationData} = stateNavigator.parseLink(url);
             const crumbs = navigationEvent.stateNavigator.stateContext.crumbs.length;
-            const crumbPrefetches = prefetches.current[crumbs] ||= {stateKey: navigationEvent.state.key, prefetches: []};
+            const crumbPrefetches = prefetches.current[crumbs];
+            if (crumbPrefetches?.stateKey !== navigationEvent.state.key) return;
             if (crumbPrefetches.prefetches.some(prefetch => (
                 prefetch.stateKey === stateKey
                 && Object.keys(prefetch.navigationData).length === Object.keys(navigationData).length
@@ -305,8 +307,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 for await (const {key, content: sceneView, ancestors} of flattenedSceneViews) {
                     getItem(key);
                     resolvers[key](sceneView);
-                    if ((prefetches.current[crumbs]?.prefetches || []).indexOf(prefetch) === -1 || stateKey !== navigationEvent.state.key) continue;
-                    const crumbCache = cache.current[crumbs] ||= {stateKey, sceneViews: {}};
+                    if (prefetches.current[crumbs] !== crumbPrefetches || crumbPrefetches.prefetches.indexOf(prefetch) === -1 || stateKey !== navigationEvent.state.key) continue;
+                    const crumbCache = cache.current[crumbs];
                     const {entries = []} = crumbCache.sceneViews[key] || {};
                     const entry = {navigationData: null, sceneView};
                     crumbCache.sceneViews[key] = {ancestors: new Set(ancestors), entries: [...entries, entry]};
@@ -353,9 +355,9 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const {state, stateNavigator: {stateContext: {crumbs}}} = navigationEvent.data;
         if (!isPending && navigationEvent.intercept) {
             const stateKeys = [...crumbs.map(crumb => crumb.state.key), state.key];
-            cache.current = stateKeys.map((stateKey, i) => cache.current[i]?.stateKey === stateKey ? cache.current[i] : undefined);
-            if (cache.current[crumbs.length]?.stale) cache.current[crumbs.length].stale = false;
-            prefetches.current = stateKeys.map((stateKey, i) => prefetches.current[i]?.stateKey === stateKey ? prefetches.current[i] : undefined);
+            cache.current = stateKeys.map((stateKey, i) => cache.current[i]?.stateKey === stateKey ? cache.current[i] : {stateKey, sceneViews: {}, stale: false});
+            cache.current[crumbs.length].stale = false;
+            prefetches.current = stateKeys.map((stateKey, i) => prefetches.current[i]?.stateKey === stateKey ? prefetches.current[i] : {stateKey, prefetches: []});
         }
         if (!isPending && commit) {
             commit();
@@ -410,7 +412,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     useEffect(() => {
         const offHmrReload = onHmrReload?.(() => {
             markStale(true, navigationEvent.data);
-            prefetches.current = [];
+            filterPrefetches(() => false);
             startTransition(() => {
                 setNavigationEvent({data: {...navigationEvent.data, ignoreCache: true, rscCache: undefined, rscFetching: primeRefetch(), trackable: undefined}, stateNavigator: navigationEvent.stateNavigator});
             });
