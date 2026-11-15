@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, useMemo } from 'react';
+import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, useMemo, useLayoutEffect } from 'react';
 import { Platform, requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, Crumb, State, StateContext } from 'navigation';
 import { NavigationContext } from 'navigation-react';
@@ -7,7 +7,7 @@ import InsetsContext from './InsetsContext';
 import PopSync from './PopSync';
 import Scene from './Scene';
 type NavigationStackProps = {underlayColor: string, title: (state: State, data: any) => string, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, sharedElement: any, sharedElements: any, backgroundColor: any, landscape: any, stackInvalidatedLink: string, renderScene: (state: State, data: any) => ReactNode, children: any};
-type NavigationStackState = {stateNavigator: StateNavigator, keys: string[], rest: boolean, counter: number, mostRecentEventCount: number};
+type CommittedStack = {stateNavigator: StateNavigator, keys: string[], refresh: boolean, counter: number};
 
 const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, customAnimation = Platform.OS === 'android', crumbStyle: crumbStyleStack = () => null, unmountStyle: unmountStyleStack = () => null,
     hidesTabBar: hidesTabBarStack = () => false, sharedElement: getSharedElementStack = () => null, sharedElements: getSharedElementsStack = () => null, backgroundColor: backgroundColorStack = () => null,
@@ -20,7 +20,9 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const insets = useRef({top: 0, bottom: 0});
     const navigationEvent = useContext(NavigationContext);
     const resetLinkStateContext = useRef(null);
-    const [stackState, setStackState] = useState<NavigationStackState>({stateNavigator: null, keys: [], rest: true, counter: 0, mostRecentEventCount: 0});
+    const committedStack = useRef<CommittedStack>({stateNavigator: null, keys: [], refresh: false, counter: 0});
+    const [restNavigator, setRestNavigator] = useState<StateNavigator>(null);
+    const [mostRecentEventCount, setMostRecentEventCount] = useState(0);
     const scenes = {};
     let firstLink;
     const findScenes = (elements = children, nested = false) => {
@@ -84,15 +86,13 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const {crumbs} = stateNavigator.stateContext;
         const mostRecentEventCount = nativeEvent.eventCount;
         if (mostRecentEventCount) {
-            setStackState((prevStackState) => ({...prevStackState, mostRecentEventCount}));
+            setMostRecentEventCount(mostRecentEventCount);
             if (resumeNavigationRef.current) {
                 resumeNavigationRef.current();
                 resumeNavigationRef.current = null;
             }
         } else if (crumbs.length === nativeEvent.crumb) {
-            setStackState(prevStackState => (
-                !prevStackState.rest ? {...prevStackState, rest: true} : prevStackState
-            ));
+            setRestNavigator(stateNavigator);
         }
     }
     const sceneProps = ({key}: State) => firstLink ? allScenes[key].props : null;
@@ -173,21 +173,24 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const enterAnimOff = enterAnim === '';
         return {enterAnim, exitAnim, enterAnimOff, enterTrans, exitTrans, sharedElements, containerTransform, underlayColor, backgroundColor: underlayColor};
     }
-    const {stateNavigator: prevStateNavigator, keys, rest, mostRecentEventCount} = stackState;
-    if (prevStateNavigator !== stateNavigator && stateNavigator.stateContext.state) {
-        setStackState((prevStackState) => {
-            const {keys: prevKeys, counter} = prevStackState;
-            const {state, crumbs, nextCrumb, history} = stateNavigator.stateContext;
-            const currentKeys = crumbs.concat(nextCrumb).map((_, i) => `${counter}-${i}`);
-            const newKeys = currentKeys.slice(prevKeys.length);
-            const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
-            if ((prevKeys.length === keys.length && prevStateNavigator.stateContext.state !== state) || 
-                (prevKeys.length > keys.length && prevStateNavigator.stateContext.crumbs[keys.length - 1].state !== state))
-                keys[keys.length - 1] = currentKeys[keys.length - 1];
-            const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
-            return {keys, stateNavigator, rest: history || refresh, counter: (counter + 1) % 1000, mostRecentEventCount};
-        });
-    }
+    const {keys, refresh, counter} = useMemo(() => {
+        const {stateNavigator: prevStateNavigator, keys: prevKeys, refresh: prevRefresh, counter} = committedStack.current;
+        if (prevStateNavigator === stateNavigator || !stateNavigator.stateContext.state)
+            return {keys: prevKeys, refresh: prevRefresh, counter};
+        const {state, crumbs, nextCrumb} = stateNavigator.stateContext;
+        const currentKeys = crumbs.concat(nextCrumb).map((_, i) => `${counter}-${i}`);
+        const newKeys = currentKeys.slice(prevKeys.length);
+        const keys = prevKeys.slice(0, currentKeys.length).concat(newKeys);
+        if ((prevKeys.length === keys.length && prevStateNavigator.stateContext.state !== state) ||
+            (prevKeys.length > keys.length && prevStateNavigator.stateContext.crumbs[keys.length - 1].state !== state))
+            keys[keys.length - 1] = currentKeys[keys.length - 1];
+        const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
+        return {keys, refresh, counter: (counter + 1) % 1000};
+    }, [stateNavigator]);
+    const rest = restNavigator === stateNavigator || stateNavigator.stateContext.history || refresh;
+    useLayoutEffect(() => {
+        committedStack.current = {stateNavigator, keys, refresh, counter};
+    });
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     return (
         <FragmentContext.Provider value={fragmentTags}>
