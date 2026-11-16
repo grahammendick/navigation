@@ -354,7 +354,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const commit = navigationEvent.intercept?.commit;
         if (!isPending) navigationEvent.data.uncommitted = false;
         const {state, stateNavigator: {stateContext: {crumbs}}} = navigationEvent.data;
-        if (!isPending && navigationEvent.intercept) {
+        if (!isPending && navigationEvent.intercept && state) {
             const stateKeys = [...crumbs.map(crumb => crumb.state.key), state.key];
             cache.current = stateKeys.map((stateKey, i) => cache.current[i]?.stateKey === stateKey ? cache.current[i] : {stateKey, sceneViews: {}, stale: false});
             cache.current[crumbs.length].stale = false;
