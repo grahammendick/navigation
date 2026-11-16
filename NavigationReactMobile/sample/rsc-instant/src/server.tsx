@@ -3,7 +3,7 @@ import { Readable } from 'stream';
 import { renderRequest, renderRSC } from '@parcel/rsc/node';
 import { createTemporaryReferenceSet, decodeReply, loadServerAction } from 'react-server-dom-parcel/server.edge';
 import { StateNavigator } from 'navigation';
-import { NavigationHandler, SceneView } from 'navigation-react';
+import { NavigationHandler, SceneView, createPrefetchStream } from 'navigation-react';
 import stateNavigator from './stateNavigator';
 import App from './App';
 import List from './List';
@@ -42,43 +42,57 @@ app.post('*', async (req, res) => {
     person: Details,
     friends: Friends,
   };
-  const {url, sceneViewKeys, rootViews, actionId, args} = await decodeBody(req);
+  const {url, oldUrl, sceneViewKeys, rootViews, actionId, args, prefetch} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
+  if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
-  let data = null; let refetch = null;
+  const stateContext = serverNavigator.stateContext;
+  let data = null; let invalidate = [] as (string | false | null)[] | true;
   if (req.headers['content-type'] !== 'application/json') {
     const action = await loadServerAction(actionId);
     const scene = {
       stateNavigator: serverNavigator,
-      refetch: (scene: boolean = false) => {
-        refetch = scene || sceneViewKeys;
+      invalidate: (scope?: boolean | string) => {
+        if (invalidate === true) return;
+        if (scope === true) invalidate = true;
+        else invalidate.push(scope === undefined ? null : scope);
       }
     };
     data = await action.apply(null, url ? [...args, scene] : args);
   }
-  const {state, oldState} = serverNavigator.stateContext;
-  const activeViews = (oldState || refetch === true) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+  const {state} = serverNavigator.stateContext;
+  const navigated = serverNavigator.stateContext !== stateContext;
+  if (prefetch && navigated) {
+    res.set('Content-Type', 'text/x-component');
+    renderRSC({flattenedSceneViews: null}).pipe(res);
+    return;
+  }
+  const flattenedSceneViews = prefetch ? createPrefetchStream() : null;
+  const sceneInvalidated = invalidate === true || invalidate.indexOf(null) !== -1 || invalidate.indexOf(stateContext.state.key) !== -1;
+  const viewInvalidated = invalidate !== true && invalidate.indexOf(false) !== -1;
+  const activeViews = (navigated || sceneInvalidated || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
       const active = rootViews[rootKey];
       const show =  active != null && (
           typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, [] as string[]) : ((!actionId || refetch) ? sceneViewKeys : []);
+    }, [] as string[]) : ((!actionId || viewInvalidated) ? sceneViewKeys : []);
   const stream = renderRSC({
     data,
-    refetch,
-    url: oldState ? serverNavigator.stateContext.url : null,
-    historyAction: oldState ? serverNavigator.stateContext.historyAction : null,
+    invalidate,
+    url: navigated ? serverNavigator.stateContext.url : null,
+    historyAction: navigated ? serverNavigator.stateContext.historyAction : null,
     sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {
       const Content = sceneViews[activeKey];
       SceneViews[activeKey] = (
-        <NavigationHandler stateNavigator={serverNavigator}>
-          <SceneView fetching active={[state.key]}><Content /></SceneView>
+        <NavigationHandler stateNavigator={serverNavigator} flattenedSceneViews={flattenedSceneViews}>
+          <SceneView fetching active={[state.key]} name={activeKey}><Content /></SceneView>
         </NavigationHandler>
       );
       return SceneViews;
-    }, {})
+    }, {}),
+    flattenedSceneViews
   });
   res.set('Content-Type', 'text/x-component');
   stream.pipe(res);

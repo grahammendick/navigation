@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useRef, useMemo, useCallback, Suspense } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useMemo, useCallback, Suspense } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import RefetchContext from './RefetchContext.js';
@@ -48,14 +48,14 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
     }, [suspense]);
     const fetchingFn = useCallback(((navigationEvent) => {
         const {state, oldState, data, stateNavigator: {stateContext}} = navigationEvent;
-        const {url, oldData} = stateContext;
+        const {nextCrumb: {crumblessUrl}, oldData} = stateContext;
         const refetch = keys.current;
         const cacheIgnorable = navigationEvent['ignoreCache'];
         const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
         if (!getShow(state?.key)) return false;
         if (navigationEvent['rscCache']?.[sceneViewKey] || suspended.current || errored.current) return true;
-        if (!ignoreCache && renderedSceneView.current && renderedUrl.current === url) return false;
-        if (!ignoreCache && cache && getCache(sceneViewKey, data)) return false;
+        if (!ignoreCache && renderedSceneView.current && renderedUrl.current === crumblessUrl) return false;
+        if (!ignoreCache && getCache(sceneViewKey, navigationEvent, cache)) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || ignoreCache) return true;
         if (!rendered) return true;
         if (cacheIgnorable) return false;
@@ -80,7 +80,7 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
         if (!getShow(state?.key)) return null;
         if (cachedSceneViews[sceneViewKey]) return cachedSceneViews[sceneViewKey];
         if (firstScene || ancestorFetching) return children;
-        return (!ignoreCache && cache && getCache(sceneViewKey, navigationEvent.data)) || renderedSceneView.current;
+        return (!ignoreCache && getCache(sceneViewKey, navigationEvent, cache)) || renderedSceneView.current;
     })();
     const combinedFetchingFn = useCallback((navigationEvent) => (
         ancestorFetchingFn(navigationEvent) || fetchingFn(navigationEvent)
@@ -95,12 +95,12 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
                     <SceneViewContext.Provider value={sceneViewContext}>
                         <SceneViewInner onMount={() => {
                             renderedSceneView.current = sceneView;
-                            renderedUrl.current = stateContext.url;
+                            renderedUrl.current = stateContext.nextCrumb.crumblessUrl;
                             if (pending) return;
                             if (cache && sceneView && keys.current) {
                                 const navigationData = {};
                                 for (const key of keys.current.data) navigationData[key] = navigationEvent.data[key];
-                                setCache(sceneViewKey, navigationData, sceneView, sceneViewContext.ancestors);
+                                setCache(sceneViewKey, navigationEvent, navigationData, sceneView, sceneViewContext.ancestors);
                             }
                             if (historyAction === 'none') return;
                             if (typeof window === 'undefined') return;
@@ -126,7 +126,7 @@ const SceneRSCView = (props: SceneViewProps & {active: string | string[]}) => {
     const ancestorNavigationEvent = useNavigationEvent();
     const {navigationEvent, nextNavigationEvent} = useContext(TransitionContext);
     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
-    useEffect(() => {
+    useLayoutEffect(() => {
         registerSceneView(sceneViewKey, active);
     }, [registerSceneView, sceneViewKey, active]);
     useEffect(() => {
