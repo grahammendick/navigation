@@ -65,9 +65,27 @@ export var BundlerContext: Context<{
 export function useNavigationEvent<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string>() : NavigationEvent<NavigationInfo, Key>;
 
 /**
- * The hook for refetching the RSC View
+ * The hook for invalidating RSC Views
  */
-export function useRefetch() : (scene?: boolean) => void;
+export function useInvalidate() : (scope?: boolean | string) => void;
+
+/**
+ * The hook for prefetching RSC Views for a navigation
+ */
+export function usePrefetch<NavigationInfo extends { [index: string]: any } = any, Key extends keyof NavigationInfo = string>() : {
+    /**
+     * Prefetches RSC Views for the navigation
+     */
+    navigate<StateKey extends keyof NavigationInfo & string>(stateKey: StateKey, navigationData?: null | NavigationInfo[StateKey]): void;
+    /**
+     * Prefetches RSC Views for the refresh navigation
+     */
+    refresh(navigationData?: null | NavigationInfo[Key]): void;
+    /**
+     * Prefetches RSC Views for the back navigation
+     */
+    navigateBack(distance: number): void;
+};
 
 /**
  * The hook for registering top-level RSC Views
@@ -75,9 +93,9 @@ export function useRefetch() : (scene?: boolean) => void;
 export function useRootViewRegistry() : (sceneViewKey: string, active: string | string[]) => void;
 
 /**
- * The hook for navigating or refetching inside a server function
+ * The hook for navigating or invalidating inside a server function
  */
-export function useSceneView<Payload extends any[], SceneView extends { stateNavigator: StateNavigator, refetch: (scene?: boolean) => void }, Data>(fn: (...args: [...Payload, SceneView]) => Data): (...args: Payload) => Data;
+export function useSceneView<Payload extends any[], SceneView extends { stateNavigator: StateNavigator, invalidate: (scope?: boolean | string) => void }, Data>(fn: (...args: [...Payload, SceneView]) => Data): (...args: Payload) => Data;
 
 /**
  * Defines the Navigation Handler Props contract
@@ -88,6 +106,10 @@ export interface NavigationHandlerProps {
      */
     stateNavigator: StateNavigator;
     /**
+     * The stream of RSC Views for a prefetch request
+     */
+    flattenedSceneViews?: AsyncIterable<any> | null;
+    /**
      * The rendered content
      */
     children: ReactNode;
@@ -97,6 +119,11 @@ export interface NavigationHandlerProps {
  * Provides the navigation event data
  */
 export class NavigationHandler extends Component<NavigationHandlerProps> { }
+
+/**
+ * Creates the stream of RSC Views for a prefetch request
+ */
+export function createPrefetchStream(): AsyncIterable<any>;
 
 /**
  * Defines the Link Props contract
