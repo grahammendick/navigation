@@ -134,6 +134,12 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                 }
 
                 @Override
+                public void onBackStackChangeCancelled() {
+                    nativeEventCount--;
+                    post(() -> onAfterUpdateTransaction());
+                }
+
+                @Override
                 public void onBackStackChangeStarted(@NonNull Fragment sceneFragment, boolean pop) {
                     if (pop && sceneFragment.isRemoving() && sceneFragment instanceof SceneFragment) {
                         int popCrumb = ((SceneFragment) sceneFragment).getScene().crumb;
@@ -152,6 +158,7 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
                             }
                             ReactContext reactContext = (ReactContext) getContext();
                             EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
+                            nativeEventCount++;
                             eventDispatcher.dispatchEvent(new NavigationStackView.WillNavigateBackEvent(getId(), crumb));
                         }
                     }
@@ -468,8 +475,6 @@ public class NavigationStackView extends ViewGroup implements LifecycleEventList
     void onRest(int crumb) {
         ReactContext reactContext = (ReactContext) getContext();
         EventDispatcher eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, getId());
-        if (crumb < keys.size() - 1)
-            nativeEventCount++;
         eventDispatcher.dispatchEvent(new NavigationStackView.RestEvent(getId(), crumb, crumb < keys.size() - 1 ? nativeEventCount : 0));
     }
 
