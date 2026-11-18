@@ -2,11 +2,13 @@
 import { StateNavigator } from 'navigation';
 import { NavigationHandler, SceneView } from 'navigation-react';
 import stateNavigator from './stateNavigator';
-import Home from './Home';
+import People from './People';
+import Person from './Person';
 
 export async function renderSceneViews({url, sceneViewKeys}: {url: string, sceneViewKeys: string[]}) {
   const sceneViews: any = {
-    home: Home,
+    people: People,
+    person: Person,
   };
   const serverNavigator = new StateNavigator(stateNavigator);
   serverNavigator.navigateLink(url);

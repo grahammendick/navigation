@@ -8,7 +8,7 @@ import { renderSceneViews } from './render';
 export default function App() {
   const [clientNavigator] = useState(() => {
     const clientNavigator = new StateNavigator(stateNavigator);
-    clientNavigator.navigate('home');
+    clientNavigator.navigate('people');
     return clientNavigator;
   });
   return (
@@ -16,8 +16,11 @@ export default function App() {
       <NavigationHandler stateNavigator={clientNavigator}>
         <Suspense fallback={null}>
           <NavigationStack>
-            <Scene stateKey="home">
-              <SceneRSCView active="home" />
+            <Scene stateKey="people">
+              <SceneRSCView active="people" />
+            </Scene>
+            <Scene stateKey="person">
+              <SceneRSCView active="person" />
             </Scene>
           </NavigationStack>
         </Suspense>
