@@ -1,7 +1,7 @@
 import { Suspense, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { StateNavigator } from 'navigation';
 import { BundlerContext, NavigationHandler, SceneRSCView } from 'navigation-react';
+import { NavigationStack, Scene } from 'navigation-react-native';
 import stateNavigator from './stateNavigator';
 import { renderSceneViews } from './render';
 
@@ -12,23 +12,16 @@ export default function App() {
     return clientNavigator;
   });
   return (
-    <View style={styles.container}>
-      <BundlerContext.Provider value={{fetchRSC: renderSceneViews} as any}>
-        <NavigationHandler stateNavigator={clientNavigator}>
-          <Suspense fallback={<Text>loading...</Text>}>
-            <SceneRSCView active="home" />
-          </Suspense>
-        </NavigationHandler>
-      </BundlerContext.Provider>
-    </View>
+    <BundlerContext.Provider value={{fetchRSC: renderSceneViews} as any}>
+      <NavigationHandler stateNavigator={clientNavigator}>
+        <NavigationStack>
+          <Scene stateKey="home">
+            <Suspense fallback={null}>
+              <SceneRSCView active="home" />
+            </Suspense>
+          </Scene>
+        </NavigationStack>
+      </NavigationHandler>
+    </BundlerContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

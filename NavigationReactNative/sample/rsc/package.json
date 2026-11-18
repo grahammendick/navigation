@@ -9,6 +9,7 @@
     "expo-status-bar": "~58.0.5",
     "navigation": "^6.7.0",
     "navigation-react": "^4.25.0",
+    "navigation-react-native": "^9.38.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-native": "0.88.1",
