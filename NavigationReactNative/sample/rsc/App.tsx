@@ -3,7 +3,7 @@ import { StateNavigator } from 'navigation';
 import { BundlerContext, NavigationHandler, SceneRSCView } from 'navigation-react';
 import { NavigationStack, Scene } from 'navigation-react-native';
 import stateNavigator from './stateNavigator';
-import { renderSceneViews } from './render';
+import { renderSceneViews } from './server';
 
 export default function App() {
   const [clientNavigator] = useState(() => {
