@@ -14,13 +14,13 @@ export default function App() {
   return (
     <BundlerContext.Provider value={{fetchRSC: renderSceneViews} as any}>
       <NavigationHandler stateNavigator={clientNavigator}>
-        <NavigationStack>
-          <Scene stateKey="home">
-            <Suspense fallback={null}>
+        <Suspense fallback={null}>
+          <NavigationStack>
+            <Scene stateKey="home">
               <SceneRSCView active="home" />
-            </Suspense>
-          </Scene>
-        </NavigationStack>
+            </Scene>
+          </NavigationStack>
+        </Suspense>
       </NavigationHandler>
     </BundlerContext.Provider>
   );
