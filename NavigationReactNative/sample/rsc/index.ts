@@ -1,8 +1,7 @@
+import '@expo/metro-runtime';
 import { registerRootComponent } from 'expo';
-
 import App from './App';
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
+(globalThis as any).__webpack_get_script_filename__ = (id: string) => id;
+
 registerRootComponent(App);

@@ -1,11 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
+import { Suspense, use } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { renderStack } from './actions/render';
+
+const stack = renderStack();
+
+const Root = () => use(stack);
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Suspense fallback={<Text>loading...</Text>}>
+        <Root />
+      </Suspense>
     </View>
   );
 }

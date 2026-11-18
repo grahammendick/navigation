@@ -3,10 +3,16 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
+    "@expo/metro-runtime": "~58.0.17",
     "expo": "~58.0.26",
+    "expo-router": "~58.0.32",
     "expo-status-bar": "~58.0.5",
+    "navigation": "^6.7.0",
+    "navigation-react": "^4.25.0",
     "react": "19.3.0",
-    "react-native": "0.88.1"
+    "react-dom": "19.3.0",
+    "react-native": "0.88.1",
+    "react-server-dom-webpack": "19.3.0"
   },
   "devDependencies": {
     "@types/react": "~19.3.0",
@@ -14,8 +20,8 @@
   },
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "private": true
