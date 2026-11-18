@@ -42,7 +42,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             crumbPrefetches.prefetches = crumbPrefetches.prefetches.filter(keep);
         });
     };
-    const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload} = useContext(BundlerContext);
+    const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload, fetchRSC: fetchServer} = useContext(BundlerContext);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -157,7 +157,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const currentStateContext = nextNavigationEvent.stateNavigator.stateContext;
         const {stateContext: nextStateContext, historyManager} = nextNavigationEvent.data.stateNavigator
         const {url, oldUrl, nextCrumb} = nextStateContext;
-        const responsePromise = (async () => {
+        const responsePromise = !fetchServer && (async () => {
             let response = null;
             try {
                 const temporaryReferences = createTemporaryReferenceSet();
@@ -185,7 +185,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             });
             return new Response(customStream, {headers: response.headers});
         })();
-        const res = await createFromFetch(responsePromise);
+        const res = fetchServer ? await fetchServer({url, oldUrl, sceneViewKeys, rootViews: rootViews.current, actionId, args}) : await createFromFetch(responsePromise);
         const {stateContext: actualStateContext} = nextNavigationEvent.stateNavigator;
         if (actualStateContext !== currentStateContext && actualStateContext !== nextStateContext)
             return !actionId ? new Promise(() => {}) : res.data;
@@ -213,7 +213,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             });
         }
         return !actionId ? !res.url ? res.sceneViews : new Promise(() => {}) : res.data;
-    }, [stateNavigator, nextNavigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch]);
+    }, [stateNavigator, nextNavigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch, fetchServer]);
     const refetchControl = useMemo(() => ({
         invalidator: (scope: boolean | string, sceneViewKey: string, navigationEventData: NavigationHandlerState) => {
             const invalidated = (scope === false && sceneViewKey) || true;

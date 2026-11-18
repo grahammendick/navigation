@@ -1,13 +1,9 @@
-import { Suspense, use, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { StateNavigator } from 'navigation';
-import { NavigationHandler } from 'navigation-react';
+import { BundlerContext, NavigationHandler, SceneRSCView } from 'navigation-react';
 import stateNavigator from './stateNavigator';
-import { renderStack } from './render';
-
-const stack = renderStack();
-
-const Root = () => use(stack);
+import { renderSceneViews } from './render';
 
 export default function App() {
   const [clientNavigator] = useState(() => {
@@ -17,11 +13,13 @@ export default function App() {
   });
   return (
     <View style={styles.container}>
-      <NavigationHandler stateNavigator={clientNavigator}>
-        <Suspense fallback={<Text>loading...</Text>}>
-          <Root />
-        </Suspense>
-      </NavigationHandler>
+      <BundlerContext.Provider value={{fetchRSC: renderSceneViews} as any}>
+        <NavigationHandler stateNavigator={clientNavigator}>
+          <Suspense fallback={<Text>loading...</Text>}>
+            <SceneRSCView active="home" />
+          </Suspense>
+        </NavigationHandler>
+      </BundlerContext.Provider>
     </View>
   );
 }
