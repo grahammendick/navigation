@@ -8,6 +8,9 @@ const People = async () => {
   const {people} = await searchPeople(name, page, size, sort);
   return (
     <View>
+      <Link stateKey="people" navigationData={{sort: sort === 'asc' ? 'desc' : 'asc'}}>
+        <Text style={{fontSize: 20, padding: 10, fontWeight: 'bold'}}>Name {sort === 'asc' ? '▲' : '▼'}</Text>
+      </Link>
       {people.map(({id, name}) => (
         <Link key={id} stateKey="person" navigationData={{id}}>
           <Text style={{fontSize: 20, padding: 10}}>{name}</Text>
