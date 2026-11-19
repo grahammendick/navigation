@@ -5,10 +5,8 @@ import SceneViewContext from './SceneViewContext.js';
 const useSceneView = (fn: (...args: any) => any) => {
     const {deserialize} = useContext(RefetchContext);
     const {ancestors: [sceneViewKey]} = useContext(SceneViewContext);
-    if (typeof window === 'undefined') return fn;
-    const deserializeScene = useCallback(fn.bind(null, async (actionId: string, args: any[]) => (
-        deserialize(sceneViewKey, actionId, args)
-    )), [fn, sceneViewKey, deserialize])
-    return deserializeScene;
+    return useCallback((...args: any[]) => (
+        deserialize(sceneViewKey, fn as any, args)
+    ), [fn, sceneViewKey, deserialize]);
 }
 export default useSceneView;
