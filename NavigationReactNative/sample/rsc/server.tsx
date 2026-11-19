@@ -5,12 +5,14 @@ import stateNavigator from './stateNavigator';
 import People from './People';
 import List from './List';
 import Person from './Person';
+import Friends from './Friends';
 
 export async function renderSceneViews({url, sceneViewKeys}: {url: string, sceneViewKeys: string[]}) {
   const sceneViews: any = {
     people: People,
     list: List,
     person: Person,
+    friends: Friends,
   };
   const serverNavigator = new StateNavigator(stateNavigator);
   serverNavigator.navigateLink(url);

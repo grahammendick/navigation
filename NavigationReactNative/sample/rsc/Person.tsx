@@ -1,6 +1,8 @@
 import { Text, View } from 'react-native';
-import { useNavigationEvent } from 'navigation-react';
+import { SceneView, useNavigationEvent } from 'navigation-react';
 import { getPerson } from './data';
+import Gender from './Gender';
+import Friends from './Friends';
 
 const Person = async () => {
   const {data: {id}} = useNavigationEvent();
@@ -14,6 +16,11 @@ const Person = async () => {
       <Text>{email}</Text>
       <Text>Phone</Text>
       <Text>{phone}</Text>
+      <Gender>
+        <SceneView active="person" name="friends" fallback={<View />}>
+          <Friends />
+        </SceneView>
+      </Gender>
     </View>
   );
 };
