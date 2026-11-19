@@ -1,18 +1,18 @@
 import React, { ReactNode } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, State } from 'navigation';
-import { NavigationContext, NavigationEvent } from 'navigation-react';
+import { NavigationContext, TransitionContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
 import Freeze from './Freeze';
 import OverlapContext from './OverlapContext';
-type SceneProps = { crumb: number, url: string, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, landscape: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent };
-type SceneState = { navigationEvent: NavigationEvent };
+type SceneProps = { crumb: number, url: string, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, landscape: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent} };
+type SceneState = { navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent} };
 
 class Scene extends React.Component<SceneProps, SceneState> {
     private timer: any;
     constructor(props) {
         super(props);
-        this.state = {navigationEvent: null};
+        this.state = {navigationEvent: null, navigationTransition: null};
         this.handleBack = this.handleBack.bind(this);
         this.onBeforeNavigate = this.onBeforeNavigate.bind(this);
     }
@@ -26,9 +26,9 @@ class Scene extends React.Component<SceneProps, SceneState> {
         this.backgroundPeekNavigate();
     }
     static getDerivedStateFromProps(props: SceneProps) {
-        var {url, navigationEvent} = props;
+        var {url, navigationEvent, navigationTransition} = props;
         var {url: currentUrl, state} = navigationEvent.stateNavigator.stateContext;
-        return (!state || url !== currentUrl) ? null : {navigationEvent};
+        return (!state || url !== currentUrl) ? null : {navigationEvent, navigationTransition};
     }
     shouldComponentUpdate({crumb, rest, navigationEvent: {stateNavigator}}: SceneProps, {navigationEvent}: SceneState) {
         var {crumbs} = stateNavigator.stateContext;
@@ -133,7 +133,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return {enterAnim, exitAnim, enterTrans, exitTrans, hidesTabBar, backgroundColor, landscape};
     }
     render() {
-        var {navigationEvent} = this.state;
+        var {navigationEvent, navigationTransition} = this.state;
         var {crumb, title, sceneKey, rest, popped, navigationEvent: {stateNavigator}} = this.props;
         var freezable = rest && !!React.Suspense;
         var {crumbs} = stateNavigator.stateContext;
@@ -160,9 +160,11 @@ class Scene extends React.Component<SceneProps, SceneState> {
                     onPopped={() => popped(sceneKey)}>
                     <BackButton onPress={this.handleBack} />
                     <NavigationContext.Provider value={navigationEvent}>
-                        <OverlapContext.Provider value={0}>
-                            {navigationEvent && this.props.renderScene(state, data)}
-                        </OverlapContext.Provider>
+                        <TransitionContext.Provider value={navigationTransition}>
+                            <OverlapContext.Provider value={0}>
+                                {navigationEvent && this.props.renderScene(state, data)}
+                            </OverlapContext.Provider>
+                        </TransitionContext.Provider>
                     </NavigationContext.Provider>
                 </NVScene>
             </Freeze>
@@ -182,6 +184,10 @@ const styles = StyleSheet.create({
 
 export default props => (
     <NavigationContext.Consumer>
-        {(navigationEvent) => <Scene navigationEvent={navigationEvent} {...props} />}
+        {(navigationEvent) => (
+            <TransitionContext.Consumer>
+                {(navigationTransition) => <Scene navigationEvent={navigationEvent} navigationTransition={navigationTransition} {...props} />}
+            </TransitionContext.Consumer>
+        )}
     </NavigationContext.Consumer>
 )
