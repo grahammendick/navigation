@@ -9,7 +9,10 @@ import ErrorBoundary from './ErrorBoundary.js';
 import TransitionContext from './TransitionContext.js';
 import NavigationContext from './NavigationContext.js';
 
-const SceneViewInner = ({children, onMount}) => {
+const SceneViewInner = ({children, onMount, shown}) => {
+    useLayoutEffect(() => {
+        shown.current = true;
+    }, [shown]);
     useEffect(() => {
         onMount();
     }, [onMount]);
@@ -22,8 +25,7 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
     const {state, oldState, stateNavigator: {stateContext, historyManager}} = navigationEvent;
     const {oldUrl, historyAction, history, crumbs} = stateContext;
     const {deserialize, trigger, getCache, setCache} = useContext(RefetchContext);
-    const suspended = useRef(null);
-    const errored = useRef(null);
+    const shown = useRef(false);
     const {fetchingFn: ancestorFetchingFn} = useContext(SceneViewContext);
     const ancestorFetching = ancestorFetchingFn(navigationEvent);
     const ancestorFetchingNext = ancestorFetchingFn(nextNavigationEvent);
@@ -53,7 +55,7 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
         const cacheIgnorable = navigationEvent['ignoreCache'];
         const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
         if (!getShow(state?.key)) return false;
-        if (navigationEvent['rscCache']?.[sceneViewKey] || suspended.current || errored.current) return true;
+        if (navigationEvent['rscCache']?.[sceneViewKey] || (rendered && !shown.current)) return true;
         if (!ignoreCache && renderedSceneView.current && renderedUrl.current === crumblessUrl) return false;
         if (!ignoreCache && getCache(sceneViewKey, navigationEvent, cache)) return false;
         if ((!getShow(oldState?.key) && !cacheIgnorable) || ignoreCache) return true;
@@ -88,11 +90,13 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
         ancestors: [sceneViewKey, ...ancestors], fetchingFn: combinedFetchingFn, keys, cache
     }), [sceneViewKey, ancestors, combinedFetchingFn, keys, cache]);
     return (
-        <ErrorBoundary errorFallback={errorFallback} errorRef={errored}>
+        <ErrorBoundary errorFallback={errorFallback} onError={() => {
+            shown.current = false;
+        }}>
             {(() => {
                 const view = (
                     <SceneViewContext.Provider value={sceneViewContext}>
-                        <SceneViewInner onMount={() => {
+                        <SceneViewInner shown={shown} onMount={() => {
                             renderedSceneView.current = sceneView;
                             renderedUrl.current = stateContext.nextCrumb.crumblessUrl;
                             if (pending) return;
@@ -110,7 +114,7 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
                         }}>{sceneView}</SceneViewInner>
                     </SceneViewContext.Provider>
                 );
-                return fallback && sceneView && suspense ? <Suspense fallback={<div ref={suspended}>{fallback}</div>}>{view}</Suspense> : view;
+                return fallback && sceneView && suspense ? <Suspense fallback={fallback}>{view}</Suspense> : view;
             })()}
         </ErrorBoundary>
     );
