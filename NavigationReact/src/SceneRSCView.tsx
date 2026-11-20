@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useLayoutEffect, useRef, useMemo, useCallback, Suspense } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useMemo, useCallback, useSyncExternalStore, Suspense } from 'react';
 import { SceneViewProps } from './Props.js';
 import useNavigationEvent from './useNavigationEvent.js';
 import RefetchContext from './RefetchContext.js';
@@ -39,6 +39,8 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
     const ignoreCache = cacheIgnorable === true || cacheIgnorable === sceneViewKey;
     if (!navigationEvent['rscCache']) navigationEvent['rscCache'] = {};
     const cachedSceneViews = navigationEvent['rscCache'];
+    const hydrating = useSyncExternalStore(useCallback(() => () => {}, []), () => false, () => true);
+    if (hydrating && !ignoreCache && !cachedSceneViews[sceneViewKey]) cachedSceneViews[sceneViewKey] = children;
     if (!navigationEvent['trackable']) navigationEvent['trackable'] = {};
     if (navigationEvent['uncommitted'] && getShow(state?.key)) navigationEvent['trackable'][sceneViewKey] = true;
     const renderedSceneView = useRef(null);
