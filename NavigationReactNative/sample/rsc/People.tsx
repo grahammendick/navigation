@@ -1,9 +1,10 @@
+'use server';
 import { View } from 'react-native';
 import { SceneView } from 'navigation-react';
 import Filter from './Filter';
 import List from './List';
 
-const People = () => {
+const People = async () => {
   return (
     <View>
       <Filter />

@@ -1,3 +1,4 @@
+'use server';
 import { Text, View } from 'react-native';
 import { SceneView, useNavigationEvent } from 'navigation-react';
 import { getPerson } from './data';

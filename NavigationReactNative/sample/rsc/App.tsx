@@ -4,6 +4,8 @@ import { BundlerContext, NavigationHandler } from 'navigation-react';
 import { NavigationStack, Scene } from 'navigation-react-native';
 import stateNavigator from './stateNavigator';
 import { renderSceneViews } from './server';
+import People from './People';
+import Person from './Person';
 
 export default function App() {
   const [clientNavigator] = useState(() => {
@@ -23,8 +25,12 @@ export default function App() {
       <NavigationHandler stateNavigator={clientNavigator}>
         <Suspense fallback={null}>
           <NavigationStack>
-            <Scene stateKey="people" client={false} cache />
-            <Scene stateKey="person" client={false} cache />
+            <Scene stateKey="people" client={false} cache>
+              <People />
+            </Scene>
+            <Scene stateKey="person" client={false} cache>
+              <Person />
+            </Scene>
           </NavigationStack>
         </Suspense>
       </NavigationHandler>
