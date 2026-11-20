@@ -1,7 +1,7 @@
 import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, useMemo, useLayoutEffect } from 'react';
 import { Platform, requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, Crumb, State, StateContext } from 'navigation';
-import { NavigationContext } from 'navigation-react';
+import { NavigationContext, useRootViewRegistry } from 'navigation-react';
 import FragmentContext from './FragmentContext';
 import InsetsContext from './InsetsContext';
 import PopSync from './PopSync';
@@ -19,6 +19,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
     const insets = useRef({top: 0, bottom: 0});
     const navigationEvent = useContext(NavigationContext);
+    const registerRootView = useRootViewRegistry();
     const resetLinkStateContext = useRef(null);
     const committedStack = useRef<CommittedStack>({stateNavigator: null, keys: [], refresh: false, counter: 0});
     const [restNavigator, setRestNavigator] = useState<StateNavigator>(null);
@@ -63,6 +64,16 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         }
         return () => stateNavigator.offBeforeNavigate(validate);
     }, [children, navigationEvent, scenes, allScenes, stackInvalidatedLink]);
+    useEffect(() => {
+        const findRootViews = (elements) => {
+            for (const sceneView of React.Children.toArray(elements) as any) {
+                const {name, active, __scene, children} = sceneView.props || {};
+                if (__scene) registerRootView(name || (typeof active === 'string' ? active : active[0]), active);
+                else if (children) findRootViews(children);
+            }
+        };
+        for (const key of Object.keys(allScenes)) findRootViews(allScenes[key].props.children);
+    }, [registerRootView, allScenes]);
     const stateNavigator = firstNavigationEvent?.stateNavigator || navigationEvent.stateNavigator;
     const onWillNavigateBack = ({nativeEvent}) => {
         const distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;

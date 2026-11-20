@@ -1,11 +1,12 @@
 'use client';
 import { Pressable, Text, TextInput, View } from 'react-native';
-import { useNavigationEvent } from 'navigation-react';
+import { useNavigationEvent, usePrefetch } from 'navigation-react';
 import Link from './Link';
 
 const Filter = () => {
   const {data, stateNavigator} = useNavigationEvent();
   const {name} = data;
+  const prefetch = usePrefetch();
   return (
     <View style={{padding: 10}}>
       <TextInput
@@ -24,6 +25,9 @@ const Filter = () => {
         </Link>
         <Pressable onPress={() => stateNavigator.navigateLink(stateNavigator.fluent(true).navigate('person', {id: 1}).navigate('person', {id: 2}).url)}>
           <Text style={{fontSize: 20}}>Fluent</Text>
+        </Pressable>
+        <Pressable onPress={() => prefetch.navigate('person', {id: 2})}>
+          <Text style={{fontSize: 20}}>Prefetch</Text>
         </Pressable>
       </View>
     </View>

@@ -293,13 +293,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             crumbPrefetches.prefetches.push(prefetch);
             try {
                 const crumblessUrl = stateNavigator.fluent().navigate(stateKey, navigationData).url;
-                const temporaryReferences = createTemporaryReferenceSet();
-                const response = fetch(stateNavigator.historyManager.getHref(crumblessUrl), {
-                    method: 'post',
-                    headers: {Accept: 'text/x-component', 'Content-Type': 'application/json'},
-                    body: await encodeReply({url: crumblessUrl, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}, {temporaryReferences})
-                });
-                const {flattenedSceneViews} = await createFromFetch(response);
+                const {flattenedSceneViews} = fetchServer ? await fetchServer({url: crumblessUrl, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}) : await (async () => {
+                    const temporaryReferences = createTemporaryReferenceSet();
+                    const response = fetch(stateNavigator.historyManager.getHref(crumblessUrl), {
+                        method: 'post',
+                        headers: {Accept: 'text/x-component', 'Content-Type': 'application/json'},
+                        body: await encodeReply({url: crumblessUrl, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}, {temporaryReferences})
+                    });
+                    return createFromFetch(response);
+                })();
                 if (!flattenedSceneViews) {
                     filterPrefetches(item => item !== prefetch);
                     return;

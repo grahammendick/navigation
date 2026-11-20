@@ -17,10 +17,10 @@ export default function App() {
         <Suspense fallback={null}>
           <NavigationStack>
             <Scene stateKey="people">
-              <SceneRSCView active="people" />
+              <SceneRSCView active="people" cache {...{__scene: true}} />
             </Scene>
             <Scene stateKey="person">
-              <SceneRSCView active="person" />
+              <SceneRSCView active="person" cache {...{__scene: true}} />
             </Scene>
           </NavigationStack>
         </Suspense>
