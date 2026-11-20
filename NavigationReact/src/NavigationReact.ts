@@ -1,6 +1,7 @@
 ﻿import NavigationContext from './NavigationContext.js';
 import TransitionContext from './TransitionContext.js';
 import BundlerContext from './BundlerContext.js';
+import createFetchRSC from './createFetchRSC.js';
 import NavigationHandler from './NavigationHandler.js';
 import NavigationBackLink from './NavigationBackLink.js';
 import NavigationLink from './NavigationLink.js';
@@ -13,4 +14,4 @@ import useInvalidate from './useInvalidate.js';
 import usePrefetch from './usePrefetch.js';
 import useRootViewRegistry from './useRootViewRegistry.js';
 
-export { NavigationContext, TransitionContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView, useInvalidate, usePrefetch, useRootViewRegistry };
+export { NavigationContext, TransitionContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView, useInvalidate, usePrefetch, useRootViewRegistry, createFetchRSC };

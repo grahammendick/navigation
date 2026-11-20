@@ -15,7 +15,7 @@ export default function App() {
   });
   return (
     <BundlerContext.Provider value={{
-      fetchRSC: renderSceneViews,
+      fetchRSC: (url: string, {body}: {body: any}) => renderSceneViews(body),
       onHmrReload: (hmrReload: () => void) => {
         const listeners = ((globalThis as any).__EXPO_RSC_RELOAD_LISTENERS__ ||= []);
         listeners.push(hmrReload);

@@ -42,7 +42,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             crumbPrefetches.prefetches = crumbPrefetches.prefetches.filter(keep);
         });
     };
-    const {createTemporaryReferenceSet, encodeReply, createFromFetch, onHmrReload, fetchRSC: fetchServer} = useContext(BundlerContext);
+    const {fetchRSC: fetchServer, onHmrReload} = useContext(BundlerContext);
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -64,8 +64,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                     suspendNavigation(stateContext, () => {
                         navigating = true;
                         const startTran = startTransition || ((transition) => transition());
-                        intercept.title = typeof document !== 'undefined' && createFromFetch ? document.title : null;
-                        if (typeof window !== 'undefined' && createFromFetch && window.navigation?.currentEntry) window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), scrollY: window.scrollY}});
+                        intercept.title = typeof document !== 'undefined' && fetchServer ? document.title : null;
+                        if (typeof window !== 'undefined' && fetchServer && window.navigation?.currentEntry) window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), scrollY: window.scrollY}});
                         intercept.resume = resumeNavigation;
                         startTran(() => {
                             raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
@@ -116,7 +116,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         setNavigationEvent(nextNavigationEvent);
         if (intercept.resume && refresh) setNextNavigationEvent(nextNavigationEvent);
         if (intercept.resume && stale) setNextNavigationEvent(prevNavigationEvent => ({...prevNavigationEvent, data: {...prevNavigationEvent.data, staleCrumb: crumbs.length}}));
-        if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && createFromFetch && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
+        if (typeof window !== 'undefined' && intercept.resume && window.NavigationPrecommitController && fetchServer && historyAction !== 'none' && !history && (!intercept.commit || intercept.controller)) {
             nextNavigationEvent.data.uncommitted = true;
             if (!intercept.controller) {
                 window.navigation.addEventListener('navigate', e => {
@@ -143,7 +143,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 if (!intercept?.signal?.aborted) throw e;
             });
         }
-    }, [stateNavigator, createFromFetch]);
+    }, [stateNavigator, fetchServer]);
     if (!navigationEvent) raiseNavigationEvent();
     const primeRefetch = (sceneViewKey: string | boolean = true) => {
         if (typeof sceneViewKey === 'string') return {[sceneViewKey]: false};
@@ -157,35 +157,11 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         const currentStateContext = nextNavigationEvent.stateNavigator.stateContext;
         const {stateContext: nextStateContext, historyManager} = nextNavigationEvent.data.stateNavigator
         const {url, oldUrl, nextCrumb} = nextStateContext;
-        const responsePromise = !fetchServer && (async () => {
-            let response = null;
-            try {
-                const temporaryReferences = createTemporaryReferenceSet();
-                response = await fetch(historyManager.getHref(nextCrumb.crumblessUrl), {
-                    method: 'post',
-                    headers: {Accept: 'text/x-component', ...(!actionId ? {'Content-Type': 'application/json'} : undefined)},
-                    body: await encodeReply({url, oldUrl, sceneViewKeys, rootViews: rootViews.current, actionId, args}, {temporaryReferences}),
-                    signal: nextNavigationEvent.intercept?.signal
-                });
-            } catch(e) {
-                if (!nextNavigationEvent.intercept?.signal?.aborted) throw e;
-                else return new Promise(() => {}) as Promise<Response>;
-            }
-            const reader = response.body.getReader();
-            const customStream = new ReadableStream({
-                async pull(controller) {
-                    try {
-                        const {done, value} = await reader.read();
-                        if (!done) controller.enqueue(value);
-                        else controller.close();
-                    } catch(e) {
-                        if (!nextNavigationEvent.intercept?.signal?.aborted) controller.error(e);
-                    }
-                }
-            });
-            return new Response(customStream, {headers: response.headers});
-        })();
-        const res = fetchServer ? await fetchServer({url, oldUrl, sceneViewKeys, rootViews: rootViews.current, actionId, args}) : await createFromFetch(responsePromise);
+        const res = await fetchServer(historyManager.getHref(nextCrumb.crumblessUrl), {
+            body: {url, oldUrl, sceneViewKeys, rootViews: rootViews.current, actionId, args},
+            headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
+            signal: nextNavigationEvent.intercept?.signal
+        });
         const {stateContext: actualStateContext} = nextNavigationEvent.stateNavigator;
         if (actualStateContext !== currentStateContext && actualStateContext !== nextStateContext)
             return !actionId ? new Promise(() => {}) : res.data;
@@ -213,7 +189,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             });
         }
         return !actionId ? !res.url ? res.sceneViews : new Promise(() => {}) : res.data;
-    }, [stateNavigator, nextNavigationEvent, createTemporaryReferenceSet, encodeReply, createFromFetch, fetchServer]);
+    }, [stateNavigator, nextNavigationEvent, fetchServer]);
     const refetchControl = useMemo(() => ({
         invalidator: (scope: boolean | string, sceneViewKey: string, navigationEventData: NavigationHandlerState) => {
             const invalidated = (scope === false && sceneViewKey) || true;
@@ -293,15 +269,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             crumbPrefetches.prefetches.push(prefetch);
             try {
                 const crumblessUrl = stateNavigator.fluent().navigate(stateKey, navigationData).url;
-                const {flattenedSceneViews} = fetchServer ? await fetchServer({url: crumblessUrl, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}) : await (async () => {
-                    const temporaryReferences = createTemporaryReferenceSet();
-                    const response = fetch(stateNavigator.historyManager.getHref(crumblessUrl), {
-                        method: 'post',
-                        headers: {Accept: 'text/x-component', 'Content-Type': 'application/json'},
-                        body: await encodeReply({url: crumblessUrl, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true}, {temporaryReferences})
-                    });
-                    return createFromFetch(response);
-                })();
+                const {flattenedSceneViews} = await fetchServer(stateNavigator.historyManager.getHref(crumblessUrl), {
+                    body: {url: crumblessUrl, sceneViewKeys: [], rootViews: rootViews.current, prefetch: true},
+                    headers: {'Content-Type': 'application/json'}
+                });
                 if (!flattenedSceneViews) {
                     filterPrefetches(item => item !== prefetch);
                     return;
@@ -395,7 +366,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         }
     }, [isPending, navigationEvent]);
     useEffect(() => {
-        if (typeof window === 'undefined' || !createFromFetch || !window.navigation) return;
+        if (typeof window === 'undefined' || !fetchServer || !window.navigation) return;
         stateNavigator.historyManager.interceptHistory((navigationLink: string, {signal, hasUAVisualTransition, destination}: NavigateEvent) => (
             new Promise((resolve, reject) => {
                 const {sceneViews, scrollY} = destination.getState() as any || {};
@@ -407,7 +378,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 });
             })
         ));
-    }, [navigationEvent, stateNavigator.historyManager, createFromFetch])
+    }, [navigationEvent, stateNavigator.historyManager, fetchServer])
     useEffect(() => {
         if (stateNavigator !== navigationEvent.stateNavigator)
             raiseNavigationEvent(undefined, undefined, {});

@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom/client';
 import { createFromReadableStream, setServerCallback, createTemporaryReferenceSet, encodeReply } from '@vitejs/plugin-rsc/browser'
 import { rscStream } from 'rsc-html-stream/client'
 import { createFromFetch } from '@vitejs/plugin-rsc/browser';
-import { BundlerContext } from 'navigation-react';
+import { BundlerContext, createFetchRSC } from 'navigation-react';
 
+const fetchRSC = createFetchRSC({createFromFetch, createTemporaryReferenceSet, encodeReply});
 const initialPayload = createFromReadableStream<any>(rscStream)
 function Shell() {
     const root = useMemo(() => initialPayload, []);
     const bundler = useMemo(() => ({
-        createTemporaryReferenceSet,
-        encodeReply,
-        createFromFetch,
+        fetchRSC,
         onHmrReload: (hmrReload: () => void) => {
             import.meta.hot?.on("rsc:update", hmrReload);
             return () => import.meta.hot?.off("rsc:update", hmrReload);
@@ -27,14 +26,10 @@ function Shell() {
 setServerCallback(async (actionId: string, args: any[]) => {
     const ind = args.findIndex(arg => typeof arg === 'function');
     if (ind !== -1) {
-        const fetchRSC = args[ind];
-        return fetchRSC(actionId, [...args.slice(0, ind), ...args.slice(ind +1)]);
+        const sceneViewAction = args[ind];
+        return sceneViewAction(actionId, [...args.slice(0, ind), ...args.slice(ind +1)]);
     }
-    const temporaryReferences = createTemporaryReferenceSet();
-    const res = await createFromFetch<{data: any}>(fetch(window.location.href, {
-        method: 'post',
-        body: await encodeReply({actionId, args} as any, {temporaryReferences})
-    }));
+    const res = await fetchRSC(window.location.href, {body: {actionId, args}});
     return res.data;
 });
 
