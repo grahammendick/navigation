@@ -12,6 +12,5 @@ import useSceneView from './useSceneView.js';
 import useInvalidate from './useInvalidate.js';
 import usePrefetch from './usePrefetch.js';
 import useRootViewRegistry from './useRootViewRegistry.js';
-import SceneRSCView from './SceneRSCView.js';
 
-export { NavigationContext, TransitionContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView, useInvalidate, usePrefetch, useRootViewRegistry, SceneRSCView };
+export { NavigationContext, TransitionContext, BundlerContext, NavigationHandler, NavigationBackLink, NavigationLink, RefreshLink, FluentLink, SceneView, useNavigationEvent, useSceneView, useInvalidate, usePrefetch, useRootViewRegistry };
