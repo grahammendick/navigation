@@ -49,6 +49,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return !this.state.navigationEvent && crumb === crumbs.length -1;
     }
     backgroundPeekNavigate() {
+        return;
         if (this.fluentPeekable() && !this.timer) {
             this.timer = setTimeout(() => {
                 if (this.fluentPeekable()) this.peekNavigate();

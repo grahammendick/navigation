@@ -1,5 +1,5 @@
 'use client';
-import { Text, TextInput, View } from 'react-native';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import { useNavigationEvent } from 'navigation-react';
 import Link from './Link';
 
@@ -22,6 +22,9 @@ const Filter = () => {
         <Link navigationData={{size: 10, page: null}}>
           <Text style={{fontSize: 20}}>10</Text>
         </Link>
+        <Pressable onPress={() => stateNavigator.navigateLink(stateNavigator.fluent(true).navigate('person', {id: 1}).navigate('person', {id: 2}).url)}>
+          <Text style={{fontSize: 20}}>Fluent</Text>
+        </Pressable>
       </View>
     </View>
   );
