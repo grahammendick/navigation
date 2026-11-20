@@ -17,7 +17,6 @@ export async function renderSceneViews({url, oldUrl, sceneViewKeys, rootViews, a
   const serverNavigator = new StateNavigator(stateNavigator);
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
-  console.log('RENDER', url, JSON.stringify(sceneViewKeys), action ? 'ACTION' : '', prefetch ? 'PREFETCH' : '');
   const stateContext = serverNavigator.stateContext;
   let data = null; let invalidate = [] as (string | false | null)[] | true;
   if (action) {

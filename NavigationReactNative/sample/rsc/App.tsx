@@ -25,10 +25,10 @@ export default function App() {
       <NavigationHandler stateNavigator={clientNavigator}>
         <Suspense fallback={null}>
           <NavigationStack>
-            <Scene stateKey="people" client={false} cache>
+            <Scene stateKey="people" client={false}>
               <People />
             </Scene>
-            <Scene stateKey="person" client={false} cache>
+            <Scene stateKey="person" client={false}>
               <Person />
             </Scene>
           </NavigationStack>
