@@ -42,7 +42,7 @@ const post = async (request: Request) => {
   const stateContext = serverNavigator.stateContext;
   let data = null; let invalidate = [] as (string | false | null)[] | true;
   if (request.headers.get('content-type') !== 'application/json') {
-    const action = await loadServerAction(actionId);
+    const action = typeof actionId === 'function' ? actionId : await loadServerAction(actionId);
     const scene = {
       stateNavigator: serverNavigator,
       invalidate: (scope?: boolean | string) => {

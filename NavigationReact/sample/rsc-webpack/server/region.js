@@ -87,8 +87,10 @@ app.post('*', async function (req, res) {
   const stateContext = serverNavigator.stateContext;
   let data = null; let invalidate = [];
   if (req.headers['content-type'] !== 'application/json') {
-    const [filepath, name] = actionId.split('#');
-    const action = (await import(filepath))[name];
+    const action = typeof actionId === 'function' ? actionId : await (async () => {
+      const [filepath, name] = actionId.split('#');
+      return (await import(filepath))[name];
+    })();
     const scene = {
       stateNavigator: serverNavigator,
       invalidate: (scope) => {

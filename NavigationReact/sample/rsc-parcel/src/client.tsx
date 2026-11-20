@@ -28,11 +28,6 @@ function Shell() {
 }
 
 setServerCallback(async (actionId: string, args: any[]) => {
-    const ind = args.findIndex(arg => typeof arg === 'function');
-    if (ind !== -1) {
-        const sceneViewAction = args[ind];
-        return sceneViewAction(actionId, [...args.slice(0, ind), ...args.slice(ind +1)]);
-    }
     const res = await fetchRSC(window.location.href, {body: {actionId, args}});
     return res.data;
 });
