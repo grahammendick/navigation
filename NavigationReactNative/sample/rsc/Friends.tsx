@@ -7,10 +7,10 @@ const Friends = async () => {
   const {data: {show, id, gender}} = useNavigationEvent();
   const friends = show ? await getFriends(id, gender) : null;
   return show && (
-    <View style={{paddingTop: 10}}>
+    <View style={styles.friends}>
       {friends?.map(({id, name}) => (
         <Link key={id} navigationData={{id}}>
-          <Text style={{fontSize: 20, paddingVertical: 8}}>{name}</Text>
+          <Text style={styles.friend}>{name}</Text>
         </Link>
       ))}
     </View>
@@ -18,3 +18,13 @@ const Friends = async () => {
 };
 
 export default Friends;
+
+const styles = {
+  friends: {
+    paddingTop: 10,
+  },
+  friend: {
+    fontSize: 20,
+    paddingVertical: 8,
+  },
+} as const;

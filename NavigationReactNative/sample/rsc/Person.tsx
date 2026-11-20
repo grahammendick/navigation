@@ -10,8 +10,8 @@ const Person = async () => {
   const {data: {id}} = useNavigationEvent();
   const {name, dateOfBirth, email, phone} = await getPerson(id);
   return (
-    <View style={{padding: 10}}>
-      <Text style={{fontSize: 24}}>{name}</Text>
+    <View style={styles.person}>
+      <Text style={styles.name}>{name}</Text>
       <Edit key={id} id={id} name={name} />
       <Text>Date of Birth</Text>
       <Text>{dateOfBirth}</Text>
@@ -29,3 +29,12 @@ const Person = async () => {
 };
 
 export default Person;
+
+const styles = {
+  person: {
+    padding: 10,
+  },
+  name: {
+    fontSize: 24,
+  },
+} as const;

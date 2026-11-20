@@ -10,11 +10,11 @@ const List = async () => {
   return (
     <View>
       <Link navigationData={{sort: sort === 'asc' ? 'desc' : 'asc'}}>
-        <Text style={{fontSize: 20, padding: 10, fontWeight: 'bold'}}>Name {sort === 'asc' ? '▲' : '▼'}</Text>
+        <Text style={[styles.row, styles.header]}>Name {sort === 'asc' ? '▲' : '▼'}</Text>
       </Link>
       {people.map(({id, name}) => (
         <Link key={id} stateKey="person" navigationData={{id}}>
-          <Text style={{fontSize: 20, padding: 10}}>{name}</Text>
+          <Text style={styles.row}>{name}</Text>
         </Link>
       ))}
       <Pager totalRowCount={count} />
@@ -23,3 +23,13 @@ const List = async () => {
 };
 
 export default List;
+
+const styles = {
+  row: {
+    fontSize: 20,
+    padding: 10,
+  },
+  header: {
+    fontWeight: 'bold',
+  },
+} as const;
