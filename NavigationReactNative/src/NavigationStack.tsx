@@ -47,6 +47,18 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const {oldState, state, data, asyncData} = firstNavigator.stateContext;
         return {oldState, state, data, asyncData, stateNavigator: firstNavigator};
     }, [firstLink, navigationEvent]);
+    const getRootViews = (scene: ReactElement<any>) => {
+        const rootViews: {key: string, active: string | string[]}[] = [];
+        const findRootViews = (elements) => {
+            for (const sceneView of React.Children.toArray(elements) as any) {
+                const {name, active, __scene, children} = sceneView.props || {};
+                if (__scene) rootViews.push({key: name || (typeof active === 'string' ? active : active[0]), active});
+                else if (children) findRootViews(children);
+            }
+        };
+        findRootViews(scene.props.children);
+        return rootViews;
+    };
     useEffect(() => {
         prevScenes.current = allScenes;
         const {stateNavigator} = navigationEvent;
@@ -64,16 +76,6 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         }
         return () => stateNavigator.offBeforeNavigate(validate);
     }, [children, navigationEvent, scenes, allScenes, stackInvalidatedLink]);
-    useEffect(() => {
-        const findRootViews = (elements) => {
-            for (const sceneView of React.Children.toArray(elements) as any) {
-                const {name, active, __scene, children} = sceneView.props || {};
-                if (__scene) registerRootView(name || (typeof active === 'string' ? active : active[0]), active);
-                else if (children) findRootViews(children);
-            }
-        };
-        for (const key of Object.keys(allScenes)) findRootViews(allScenes[key].props.children);
-    }, [registerRootView, allScenes]);
     const stateNavigator = firstNavigationEvent?.stateNavigator || navigationEvent.stateNavigator;
     const onWillNavigateBack = ({nativeEvent}) => {
         const distance = stateNavigator.stateContext.crumbs.length - nativeEvent.crumb;
@@ -196,12 +198,27 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
             (prevKeys.length > keys.length && prevStateNavigator.stateContext.crumbs[keys.length - 1].state !== state))
             keys[keys.length - 1] = currentKeys[keys.length - 1];
         const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
+        const {oldState, oldUrl} = stateNavigator.stateContext;
+        const refreshNav = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
+        if (oldUrl && !refreshNav && allScenes[state.key]) {
+            if (!navigationEvent['rscFetching']) navigationEvent['rscFetching'] = {};
+            for (const {key: sceneViewKey, active} of getRootViews(allScenes[state.key])) {
+                if (typeof active === 'string' ? active === state.key : active.indexOf(state.key) !== -1)
+                    navigationEvent['rscFetching'][sceneViewKey] ||= false;
+            }
+        }
         return {keys, refresh, counter: (counter + 1) % 1000};
     }, [stateNavigator]);
     const rest = restNavigator === stateNavigator || stateNavigator.stateContext.history || refresh;
     useLayoutEffect(() => {
         committedStack.current = {stateNavigator, keys, refresh, counter};
     });
+    useEffect(() => {
+        for (const key of Object.keys(allScenes)) {
+            for (const {key: sceneViewKey, active} of getRootViews(allScenes[key]))
+                registerRootView(sceneViewKey, active);
+        }
+    }, [registerRootView, allScenes]);
     const {crumbs, nextCrumb} = stateNavigator.stateContext;
     return (
         <FragmentContext.Provider value={fragmentTags}>

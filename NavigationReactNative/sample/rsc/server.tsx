@@ -6,6 +6,7 @@ import People from './People';
 import List from './List';
 import Person from './Person';
 import Friends from './Friends';
+import Details from './Details';
 
 export async function renderSceneViews({url, oldUrl, sceneViewKeys, rootViews, actionId, args, prefetch}: {url: string, oldUrl?: string, sceneViewKeys: string[], rootViews: any, actionId: any, args: any[], prefetch?: boolean}) {
   const sceneViews: any = {
@@ -13,10 +14,12 @@ export async function renderSceneViews({url, oldUrl, sceneViewKeys, rootViews, a
     list: List,
     person: Person,
     friends: Friends,
+    details: Details,
   };
   const serverNavigator = new StateNavigator(stateNavigator);
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
+  console.log('RENDER', url, JSON.stringify(sceneViewKeys), actionId ? 'ACTION' : '', prefetch ? 'PREFETCH' : '');
   const stateContext = serverNavigator.stateContext;
   let data = null; let invalidate = [] as (string | false | null)[] | true;
   if (actionId) {

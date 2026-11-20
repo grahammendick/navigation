@@ -28,6 +28,7 @@ export default function App() {
             </Scene>
             <Scene stateKey="person">
               <SceneRSCView active="person" cache {...{__scene: true}} />
+              <SceneRSCView active="person" name="details" {...{__scene: true}} />
             </Scene>
           </NavigationStack>
         </Suspense>
