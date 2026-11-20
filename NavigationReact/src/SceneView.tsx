@@ -4,10 +4,11 @@ import NavigationContext from './NavigationContext.js';
 import { SceneViewProps } from './Props.js';
 import ErrorBoundary from './ErrorBoundary.js';
 import useRootViewRegistry from './useRootViewRegistry.js';
+import SceneRSCView from './SceneRSCView.js';
 
 const SceneViewInner = ({children}) => children;
 
-const SceneView = ({active, errorFallback, client, children}: SceneViewProps) => {
+const SceneView = ({active, errorFallback, client, children, ...props}: SceneViewProps) => {
     const {state, stateNavigator} = useContext(NavigationContext);
     const registerSceneView = useRootViewRegistry();
     const show = active != null && state && (
@@ -30,6 +31,7 @@ const SceneView = ({active, errorFallback, client, children}: SceneViewProps) =>
         }
         if (client) registerSceneViews();
     }, [registerSceneView, client, children]);
+    if (client === false) return <SceneRSCView {...{...props, active, errorFallback, __scene: true} as any} />;
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <SceneViewInner>

@@ -1,7 +1,7 @@
 import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, useMemo, useLayoutEffect } from 'react';
 import { Platform, requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, Crumb, State, StateContext } from 'navigation';
-import { NavigationContext, useRootViewRegistry } from 'navigation-react';
+import { NavigationContext, SceneView, useRootViewRegistry } from 'navigation-react';
 import FragmentContext from './FragmentContext';
 import InsetsContext from './InsetsContext';
 import PopSync from './PopSync';
@@ -48,6 +48,8 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         return {oldState, state, data, asyncData, stateNavigator: firstNavigator};
     }, [firstLink, navigationEvent]);
     const getRootViews = (scene: ReactElement<any>) => {
+        const {stateKey, client} = scene.props;
+        if (client === false) return [{key: stateKey, active: stateKey}];
         const rootViews: {key: string, active: string | string[]}[] = [];
         const findRootViews = (elements) => {
             for (const sceneView of React.Children.toArray(elements) as any) {
@@ -267,7 +269,9 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
 
 const NVNavigationStack = global.nativeFabricUIManager ? require('./NavigationStackNativeComponent').default : requireNativeComponent('NVNavigationStack');
 
-NavigationStack.Scene = ({children}) => children;
+NavigationStack.Scene = ({stateKey, client, children, ...props}) => (
+    client === false ? <SceneView active={stateKey} name={stateKey} {...{client: false, ...props} as any} /> : children
+);
 
 const styles = StyleSheet.create({
     stack: {

@@ -1,6 +1,6 @@
 import { Suspense, useState } from 'react';
 import { StateNavigator } from 'navigation';
-import { BundlerContext, NavigationHandler, SceneRSCView } from 'navigation-react';
+import { BundlerContext, NavigationHandler } from 'navigation-react';
 import { NavigationStack, Scene } from 'navigation-react-native';
 import stateNavigator from './stateNavigator';
 import { renderSceneViews } from './server';
@@ -23,13 +23,8 @@ export default function App() {
       <NavigationHandler stateNavigator={clientNavigator}>
         <Suspense fallback={null}>
           <NavigationStack>
-            <Scene stateKey="people">
-              <SceneRSCView active="people" cache {...{__scene: true}} />
-            </Scene>
-            <Scene stateKey="person">
-              <SceneRSCView active="person" cache {...{__scene: true}} />
-              <SceneRSCView active="person" name="details" {...{__scene: true}} />
-            </Scene>
+            <Scene stateKey="people" client={false} cache />
+            <Scene stateKey="person" client={false} cache />
           </NavigationStack>
         </Suspense>
       </NavigationHandler>
