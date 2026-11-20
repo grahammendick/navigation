@@ -153,18 +153,18 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             return rscFetching;
         }, {});
     };
-    const fetchRSC = useCallback(async (sceneViewKeys: string[], actionId: string = null, args: any[] = null) => {
+    const fetchRSC = useCallback(async (sceneViewKeys: string[], action: (...args: any[]) => any = null, args: any[] = null) => {
         const currentStateContext = nextNavigationEvent.stateNavigator.stateContext;
         const {stateContext: nextStateContext, historyManager} = nextNavigationEvent.data.stateNavigator
         const {url, oldUrl, nextCrumb} = nextStateContext;
         const res = await fetchServer(historyManager.getHref(nextCrumb.crumblessUrl), {
-            body: {url, oldUrl, sceneViewKeys, rootViews: rootViews.current, actionId, args},
-            headers: !actionId ? {'Content-Type': 'application/json'} : undefined,
+            body: {url, oldUrl, sceneViewKeys, rootViews: rootViews.current, action, args},
+            headers: !action ? {'Content-Type': 'application/json'} : undefined,
             signal: nextNavigationEvent.intercept?.signal
         });
         const {stateContext: actualStateContext} = nextNavigationEvent.stateNavigator;
         if (actualStateContext !== currentStateContext && actualStateContext !== nextStateContext)
-            return !actionId ? new Promise(() => {}) : res.data;
+            return !action ? new Promise(() => {}) : res.data;
         const {state: {key}, stateNavigator: {stateContext: {crumbs}}} = nextNavigationEvent.data;
         const invalidate: (string | false | null)[] | true = res.invalidate || [];
         const invalidated = invalidate === true || invalidate.indexOf(null) !== -1 || invalidate.indexOf(key) !== -1 || (invalidate.indexOf(false) !== -1 && sceneViewKeys[0]);
@@ -188,7 +188,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 setNavigationEvent({data: {...nextNavigationEvent.data, ignoreCache: invalidated, rscCache: res.sceneViews, rscFetching: undefined, trackable: undefined}, stateNavigator: nextNavigationEvent.stateNavigator});
             });
         }
-        return !actionId ? !res.url ? res.sceneViews : new Promise(() => {}) : res.data;
+        return !action ? !res.url ? res.sceneViews : new Promise(() => {}) : res.data;
     }, [stateNavigator, nextNavigationEvent, fetchServer]);
     const refetchControl = useMemo(() => ({
         invalidator: (scope: boolean | string, sceneViewKey: string, navigationEventData: NavigationHandlerState) => {
@@ -212,8 +212,8 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
         registerSceneView: (sceneViewKey: string, active: string | string[]) => {
             rootViews.current[sceneViewKey] = active;
         },
-        deserialize: async (sceneViewKey: string, actionId: string = null, args: any[] = null) => {
-            if (actionId) return fetchRSC([sceneViewKey], actionId, args);
+        deserialize: async (sceneViewKey: string, action: (...args: any[]) => any = null, args: any[] = null) => {
+            if (action) return fetchRSC([sceneViewKey], action, args);
             const {state, data, stateNavigator: {stateContext: {oldUrl}}} = nextNavigationEvent.data;
             const prefetch = prefetches.current[oldUrl?.split('crumb=').length - 1]?.prefetches.find(({stateKey, navigationData, ready}) => (
                 ready && stateKey === state.key

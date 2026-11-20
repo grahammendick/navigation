@@ -40,14 +40,14 @@ app.post('*', async (req, res) => {
     person: Person,
     friends: Friends,
   };
-  const {url, oldUrl, sceneViewKeys, rootViews, actionId, args, prefetch} = await decodeBody(req);
+  const {url, oldUrl, sceneViewKeys, rootViews, action, actionId, args, prefetch} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
   const stateContext = serverNavigator.stateContext;
   let data = null; let invalidate = [] as (string | false | null)[] | true;
   if (req.headers['content-type'] !== 'application/json') {
-    const action = typeof actionId === 'function' ? actionId : await loadServerAction(actionId);
+    const serverAction = action || await loadServerAction(actionId);
     const scene = {
       stateNavigator: serverNavigator,
       invalidate: (scope?: boolean | string) => {
@@ -56,7 +56,7 @@ app.post('*', async (req, res) => {
         else invalidate.push(scope === undefined ? null : scope);
       }
     };
-    data = await action.apply(null, url ? [...args, scene] : args);
+    data = await serverAction.apply(null, url ? [...args, scene] : args);
   }
   const {state} = serverNavigator.stateContext;
   const navigated = serverNavigator.stateContext !== stateContext;
@@ -75,7 +75,7 @@ app.post('*', async (req, res) => {
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, [] as string[]) : ((!actionId || viewInvalidated) ? sceneViewKeys : []);
+    }, [] as string[]) : ((!action || viewInvalidated) ? sceneViewKeys : []);
   const stream = renderRSC({
     data,
     invalidate,

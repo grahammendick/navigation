@@ -80,14 +80,14 @@ app.post('*', async function (req, res) {
     person: await import('../src/Person.js'),
     friends: await import('../src/Friends.js')
   };
-  const {url, oldUrl, sceneViewKeys, rootViews, actionId, args, prefetch} = await decodeBody(req);
+  const {url, oldUrl, sceneViewKeys, rootViews, action, actionId, args, prefetch} = await decodeBody(req);
   const serverNavigator = new StateNavigator(stateNavigator.default);
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
   const stateContext = serverNavigator.stateContext;
   let data = null; let invalidate = [];
   if (req.headers['content-type'] !== 'application/json') {
-    const action = typeof actionId === 'function' ? actionId : await (async () => {
+    const serverAction = action || await (async () => {
       const [filepath, name] = actionId.split('#');
       return (await import(filepath))[name];
     })();
@@ -99,7 +99,7 @@ app.post('*', async function (req, res) {
         else invalidate.push(scope === undefined ? null : scope);
       }
     };
-    data = await action.apply(null, url ? [...args, scene] : args);
+    data = await serverAction.apply(null, url ? [...args, scene] : args);
   }
   const {state} = serverNavigator.stateContext;
   const navigated = serverNavigator.stateContext !== stateContext;
@@ -122,7 +122,7 @@ app.post('*', async function (req, res) {
       );
       if (show) activeRoots.push(rootKey);
       return activeRoots;
-    }, []) : ((!actionId || viewInvalidated) ? sceneViewKeys : []);
+    }, []) : ((!action || viewInvalidated) ? sceneViewKeys : []);
   const {pipe} = renderToPipeableStream({
     data,
     invalidate,

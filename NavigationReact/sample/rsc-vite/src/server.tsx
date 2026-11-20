@@ -35,14 +35,14 @@ const post = async (request: Request) => {
     person: await import('./Person.tsx'),
     friends: await import('./Friends.tsx')
   };
-  const {url, oldUrl, sceneViewKeys, rootViews, actionId, args, prefetch} = await decodeBody(request);
+  const {url, oldUrl, sceneViewKeys, rootViews, action, actionId, args, prefetch} = await decodeBody(request);
   const serverNavigator = new StateNavigator(stateNavigator);
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
   const stateContext = serverNavigator.stateContext;
   let data = null; let invalidate = [] as (string | false | null)[] | true;
   if (request.headers.get('content-type') !== 'application/json') {
-    const action = typeof actionId === 'function' ? actionId : await loadServerAction(actionId);
+    const serverAction = action || await loadServerAction(actionId);
     const scene = {
       stateNavigator: serverNavigator,
       invalidate: (scope?: boolean | string) => {
@@ -51,7 +51,7 @@ const post = async (request: Request) => {
         else invalidate.push(scope === undefined ? null : scope);
       }
     };
-    data = await action.apply(null, url ? [...args, scene] : args);
+    data = await serverAction.apply(null, url ? [...args, scene] : args);
   }
   const {state} = serverNavigator.stateContext;
   const navigated = serverNavigator.stateContext !== stateContext;
@@ -68,7 +68,7 @@ const post = async (request: Request) => {
     );
     if (show) activeRoots.push(rootKey);
     return activeRoots;
-  }, [] as string[]) : ((!actionId || viewInvalidated) ? sceneViewKeys : []);
+  }, [] as string[]) : ((!action || viewInvalidated) ? sceneViewKeys : []);
   const stream = renderToReadableStream({
     data,
     invalidate,
