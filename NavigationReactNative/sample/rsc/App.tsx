@@ -12,7 +12,14 @@ export default function App() {
     return clientNavigator;
   });
   return (
-    <BundlerContext.Provider value={{fetchRSC: renderSceneViews} as any}>
+    <BundlerContext.Provider value={{
+      fetchRSC: renderSceneViews,
+      onHmrReload: (hmrReload: () => void) => {
+        const listeners = ((globalThis as any).__EXPO_RSC_RELOAD_LISTENERS__ ||= []);
+        listeners.push(hmrReload);
+        return () => listeners.splice(listeners.indexOf(hmrReload), 1);
+      }
+    } as any}>
       <NavigationHandler stateNavigator={clientNavigator}>
         <Suspense fallback={null}>
           <NavigationStack>
