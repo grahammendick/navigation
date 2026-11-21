@@ -386,7 +386,10 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
             if (oldStateNavigator.historyManager !== stateNavigator.historyManager)
                 oldStateNavigator.historyManager.stop();
             if (!stateNavigator.stateContext.state) {
-                const {url, state, data, crumbs} = oldStateNavigator.stateContext;
+                const {url, oldUrl, state, data, crumbs} = oldStateNavigator.stateContext;
+                try {
+                    if (oldUrl) stateNavigator.navigateLink(oldUrl, 'none');
+                } catch {}
                 try {
                     stateNavigator.navigateLink(url, 'replace');
                 } catch {
