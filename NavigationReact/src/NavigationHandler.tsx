@@ -318,7 +318,7 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
     }), [navigationEvent, nextNavigationEvent, fetchRSC]);
     useEffect(() => {
         const onNavigate = () => {
-            if (navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
+            if (navigationEvent.stateNavigator === stateNavigator && navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
                 raiseNavigationEvent();
         };
         stateNavigator.onNavigate(onNavigate);
@@ -381,8 +381,23 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
         ));
     }, [navigationEvent, stateNavigator.historyManager, fetchServer])
     useEffect(() => {
-        if (stateNavigator !== navigationEvent.stateNavigator)
+        const {stateNavigator: oldStateNavigator} = navigationEvent;
+        if (stateNavigator !== oldStateNavigator) {
+            if (oldStateNavigator.historyManager !== stateNavigator.historyManager)
+                oldStateNavigator.historyManager.stop();
+            if (!stateNavigator.stateContext.state) {
+                const {url, state, data, crumbs} = oldStateNavigator.stateContext;
+                try {
+                    stateNavigator.navigateLink(url, 'replace');
+                } catch {
+                    let fluentNavigator = stateNavigator.fluent();
+                    for (const crumb of crumbs)
+                        fluentNavigator = fluentNavigator.navigate(crumb.state.key, crumb.data);
+                    stateNavigator.navigateLink(fluentNavigator.navigate(state.key, data).url, 'replace');
+                }
+            }
             raiseNavigationEvent(undefined, undefined, {});
+        }
     }, [navigationEvent, stateNavigator]);
     useEffect(() => {
         const offHmrReload = onHmrReload?.(() => {
