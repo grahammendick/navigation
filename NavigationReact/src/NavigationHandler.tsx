@@ -10,7 +10,7 @@ type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal
 type NavigationHandlerState = { ignoreCache?: boolean | string, staleCrumb?: number, rscCache?: any, rscFetching?: any, hasUAVisualTransition?: boolean, uncommitted?: boolean, trackable?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 type RSCFetch = {sceneViewKeys: string[], resolve: (sceneViewKeys: string[]) => void, sceneViews: Promise<any>, timeout?: ReturnType<typeof setTimeout>};
 
-const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNavigator, children: any}) => {
+const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: StateNavigator, url?: string, children: any}) => {
     const [navigationEvent, setNavigationEvent] = useState<{data: NavigationHandlerState, stateNavigator: StateNavigator, intercept?: Intercept, rscFetch?: RSCFetch}>();
     const [_nextNavigationEvent, setNextNavigationEvent] = useOptimistic?.(navigationEvent) || [navigationEvent, () => {}];
     const [isPending, startTransition] = useTransition?.() || [false];
@@ -144,6 +144,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
             });
         }
     }, [stateNavigator, fetchServer]);
+    if (!navigationEvent && url && !stateNavigator.stateContext.state) stateNavigator.navigateLink(url);
     if (!navigationEvent) raiseNavigationEvent();
     const primeRefetch = (sceneViewKey: string | boolean = true) => {
         if (typeof sceneViewKey === 'string') return {[sceneViewKey]: false};
