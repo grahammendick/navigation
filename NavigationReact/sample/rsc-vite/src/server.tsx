@@ -1,13 +1,12 @@
 import { renderToReadableStream, createTemporaryReferenceSet, decodeReply, loadServerAction } from '@vitejs/plugin-rsc/rsc';
-import { StateNavigator } from 'navigation';
-import stateNavigator from './stateNavigator.ts';
+import createStateNavigator from './stateNavigator.ts';
 
 export default async function handler(request: Request): Promise<Response> {
   return request.method === 'GET' ? get(request) : post(request);
 }
 
 const get = async (request: Request) => {
-  const serverNavigator = new StateNavigator(stateNavigator);
+  const serverNavigator = createStateNavigator();
   const {pathname, search} = new URL(request.url);
   const url = `${pathname}${search}`;
   const App = (await import('./App.tsx')).default;
@@ -36,7 +35,7 @@ const post = async (request: Request) => {
     friends: await import('./Friends.tsx')
   };
   const {url, oldUrl, sceneViewKeys, rootViews, action, actionId, args, prefetch} = await decodeBody(request);
-  const serverNavigator = new StateNavigator(stateNavigator);
+  const serverNavigator = createStateNavigator();
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
   const stateContext = serverNavigator.stateContext;
