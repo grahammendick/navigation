@@ -2,9 +2,8 @@ import express from 'express';
 import { Readable } from 'stream';
 import { renderRequest, renderRSC } from '@parcel/rsc/node';
 import { createTemporaryReferenceSet, decodeReply, loadServerAction } from 'react-server-dom-parcel/server.edge';
-import { StateNavigator } from 'navigation';
 import { NavigationHandler, SceneView, createPrefetchStream } from 'navigation-react';
-import stateNavigator from './stateNavigator';
+import createStateNavigator from './stateNavigator';
 import App from './App';
 import Person from './Person';
 import People from './People';
@@ -23,7 +22,7 @@ app.get(['/favicon.ico', '/.well-known/*.json'], (_req, res) => {
 });
 
 app.get('*', async (req, res) => {
-  const serverNavigator = new StateNavigator(stateNavigator);
+  const serverNavigator = createStateNavigator();
   serverNavigator.navigateLink(req.url);
   await renderRequest(req, res, (
     <NavigationHandler stateNavigator={serverNavigator}>
@@ -41,7 +40,7 @@ app.post('*', async (req, res) => {
     friends: Friends,
   };
   const {url, oldUrl, sceneViewKeys, rootViews, action, actionId, args, prefetch} = await decodeBody(req);
-  const serverNavigator = new StateNavigator(stateNavigator);
+  const serverNavigator = createStateNavigator();
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
   const stateContext = serverNavigator.stateContext;

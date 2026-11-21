@@ -144,7 +144,7 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
             });
         }
     }, [stateNavigator, fetchServer]);
-    if (!navigationEvent && url && !stateNavigator.stateContext.state) stateNavigator.navigateLink(url);
+    if (!navigationEvent && url && !stateNavigator.stateContext.state) stateNavigator.navigateLink(url, 'replace');
     if (!navigationEvent) raiseNavigationEvent();
     const primeRefetch = (sceneViewKey: string | boolean = true) => {
         if (typeof sceneViewKey === 'string') return {[sceneViewKey]: false};
