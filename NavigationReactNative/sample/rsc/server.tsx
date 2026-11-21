@@ -1,7 +1,6 @@
 'use server';
-import { StateNavigator } from 'navigation';
 import { NavigationHandler, SceneView, createPrefetchStream } from 'navigation-react';
-import stateNavigator from './stateNavigator';
+import createStateNavigator from './stateNavigator';
 import People from './People';
 import List from './List';
 import Person from './Person';
@@ -14,7 +13,7 @@ export async function renderSceneViews({url, oldUrl, sceneViewKeys, rootViews, a
     person: Person,
     friends: Friends,
   };
-  const serverNavigator = new StateNavigator(stateNavigator);
+  const serverNavigator = createStateNavigator();
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
   const stateContext = serverNavigator.stateContext;
