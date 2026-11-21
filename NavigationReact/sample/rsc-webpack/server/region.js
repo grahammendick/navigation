@@ -36,7 +36,6 @@ app.use(express.json());
 const {readFile} = require('fs').promises;
 
 const React = require('react');
-const {StateNavigator} = require('navigation');
 const stateNavigator = require('../src/stateNavigator.js');
 
 async function getModuleMap() {
@@ -60,7 +59,7 @@ function renderSceneView(NavigationHandler, el, navigator, flattenedSceneViews =
 app.get('*', async function (req, res) {
   const m = await import('../src/App.js');
   const App = m.default.default || m.default;
-  const serverNavigator = new StateNavigator(stateNavigator.default);
+  const serverNavigator = stateNavigator.default();
   serverNavigator.navigateLink(req.url);
   const {renderToPipeableStream} = await import(
     'react-server-dom-webpack/server'
@@ -81,7 +80,7 @@ app.post('*', async function (req, res) {
     friends: await import('../src/Friends.js')
   };
   const {url, oldUrl, sceneViewKeys, rootViews, action, actionId, args, prefetch} = await decodeBody(req);
-  const serverNavigator = new StateNavigator(stateNavigator.default);
+  const serverNavigator = stateNavigator.default();
   if (oldUrl) serverNavigator.navigateLink(oldUrl);
   if (url) serverNavigator.navigateLink(url);
   const stateContext = serverNavigator.stateContext;

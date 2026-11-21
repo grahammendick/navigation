@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SceneView } from 'navigation-react';
-import NavigationProvider from './NavigationProvider.js';
+import Shell from './Shell.js';
 import People from './People.js';
 import Person from './Person.js';
 import Header from './Header.js';
@@ -14,7 +14,7 @@ const App = async ({url}) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
       </head>
       <body>
-        <NavigationProvider url={url}>
+        <Shell url={url}>
           <SceneView active={['people', 'person']} name="header">
             <Header />
           </SceneView>
@@ -24,7 +24,7 @@ const App = async ({url}) => {
           <SceneView active="person">
             <Person />
           </SceneView>
-        </NavigationProvider>
+        </Shell>
       </body>
     </html>
   );

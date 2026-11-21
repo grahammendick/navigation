@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import { encodeReply, createFromFetch, createTemporaryReferenceSet } from 'react-server-dom-webpack/client';
 import { BundlerContext, createFetchRSC } from 'navigation-react';
@@ -18,25 +17,21 @@ const fetchRSC = createFetchRSC({
 const initialPayload = createFromFetch(fetch(window.location.pathname + window.location.search, {
   headers: {Accept: 'text/x-component'},
 }), {callServer: serverCallback});
-function Shell() {
-  const root = useMemo(() => initialPayload, []);
-  const bundler = useMemo(() => ({
-    fetchRSC,
-    onHmrReload: (hmrReload) => {
-      const onHmrReload = (status) => {
-          if (status !== 'idle') return;
-          hmrReload();
-      };
-      import.meta.webpackHot?.addStatusHandler(onHmrReload);
-      return () => import.meta.webpackHot?.removeStatusHandler(onHmrReload);
-    },
-  }), []);
-  return (
-    <BundlerContext.Provider value={bundler}>
-      {root}
-    </BundlerContext.Provider>
-  );
-}
+const bundler = {
+  fetchRSC,
+  onHmrReload: (hmrReload) => {
+    const onHmrReload = (status) => {
+        if (status !== 'idle') return;
+        hmrReload();
+    };
+    import.meta.webpackHot?.addStatusHandler(onHmrReload);
+    return () => import.meta.webpackHot?.removeStatusHandler(onHmrReload);
+  },
+};
 
-ReactDOM.hydrateRoot(document, <Shell />);
+ReactDOM.hydrateRoot(document, (
+  <BundlerContext.Provider value={bundler}>
+    {initialPayload}
+  </BundlerContext.Provider>
+));
 
