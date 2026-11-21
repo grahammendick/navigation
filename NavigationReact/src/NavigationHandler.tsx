@@ -386,18 +386,20 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
             if (oldStateNavigator.historyManager !== stateNavigator.historyManager)
                 oldStateNavigator.historyManager.stop();
             if (!stateNavigator.stateContext.state) {
-                const {url, oldUrl, state, data, crumbs} = oldStateNavigator.stateContext;
-                try {
-                    if (oldUrl) stateNavigator.navigateLink(oldUrl, 'none');
-                } catch {}
-                try {
-                    stateNavigator.navigateLink(url, 'replace');
-                } catch {
-                    let fluentNavigator = stateNavigator.fluent();
-                    for (const crumb of crumbs)
-                        fluentNavigator = fluentNavigator.navigate(crumb.state.key, crumb.data);
-                    stateNavigator.navigateLink(fluentNavigator.navigate(state.key, data).url, 'replace');
-                }
+                const {url, oldUrl} = oldStateNavigator.stateContext;
+                const navigateLink = (link: string, historyAction: 'none' | 'replace') => {
+                    try {
+                        stateNavigator.navigateLink(link, historyAction);
+                    } catch {
+                        const {state, data, crumbs} = oldStateNavigator.parseLink(link);
+                        let fluentNavigator = stateNavigator.fluent();
+                        for (const crumb of crumbs)
+                            fluentNavigator = fluentNavigator.navigate(crumb.state.key, crumb.data);
+                        stateNavigator.navigateLink(fluentNavigator.navigate(state.key, data).url, historyAction);
+                    }
+                };
+                if (oldUrl) navigateLink(oldUrl, 'none');
+                navigateLink(url, 'replace');
             }
             raiseNavigationEvent(undefined, undefined, {});
         }
