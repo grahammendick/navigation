@@ -32,6 +32,7 @@ const compress = require('compression');
 
 app.use(compress());
 app.use(express.json());
+app.use(express.text());
 
 const {readFile} = require('fs').promises;
 
@@ -112,6 +113,10 @@ app.post('*', async function (req, res, next) {
     );
     const {NavigationHandler, SceneView, createPrefetchStream} = await import('navigation-react');
     const moduleMap = await getModuleMap();
+    if (!url) {
+      renderToPipeableStream({data}, moduleMap).pipe(res);
+      return;
+    }
     if (prefetch && navigated) {
       renderToPipeableStream({flattenedSceneViews: null}, moduleMap).pipe(res);
       return;

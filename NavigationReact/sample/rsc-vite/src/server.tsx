@@ -52,6 +52,8 @@ const post = async (request: Request) => {
     };
     data = await serverAction.apply(null, url ? [...args, scene] : args);
   }
+  if (!url)
+    return new Response(renderToReadableStream({data}), {headers: {'Content-type': 'text/x-component'}});
   const {state} = serverNavigator.stateContext;
   const navigated = serverNavigator.stateContext !== stateContext;
   const {NavigationHandler, SceneView, createPrefetchStream} = await import('navigation-react');

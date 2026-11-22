@@ -62,6 +62,11 @@ app.post('*', async (req, res, next) => {
       };
       data = await serverAction.apply(null, url ? [...args, scene] : args);
     }
+    if (!url) {
+      res.set('Content-Type', 'text/x-component');
+      renderRSC({data}).pipe(res);
+      return;
+    }
     const {state} = serverNavigator.stateContext;
     const navigated = serverNavigator.stateContext !== stateContext;
     if (prefetch && navigated) {
