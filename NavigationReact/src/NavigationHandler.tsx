@@ -1,5 +1,5 @@
 'use client'
-import React, { useCallback, useContext, useOptimistic, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition } from 'react';
+import React, { Suspense, useCallback, useContext, useOptimistic, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
@@ -15,6 +15,8 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
     const [_nextNavigationEvent, setNextNavigationEvent] = useOptimistic?.(navigationEvent) || [navigationEvent, () => {}];
     const [isPending, startTransition] = useTransition?.() || [false];
     const [, setTransitionAborted] = useState({});
+    const hydrating = useSyncExternalStore(useCallback(() => () => {}, []), () => false, () => true);
+    const [ssr] = useState(hydrating);
     const nextNavigationEvent = !_nextNavigationEvent?.intercept?.signal?.aborted ? _nextNavigationEvent : navigationEvent;
     const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
     const rootViews = useRef({});
@@ -418,7 +420,7 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
         <NavigationContext.Provider value={nextNavigationEvent?.data}>
             <TransitionContext.Provider value={navigationTransition}>
                 <RefetchContext.Provider value={refetchControl}>
-                    {children}
+                    {ssr || !fetchServer ? children : <Suspense fallback={null}>{children}</Suspense>}
                 </RefetchContext.Provider>
             </TransitionContext.Provider>
         </NavigationContext.Provider>

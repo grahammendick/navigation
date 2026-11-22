@@ -20,7 +20,7 @@ public class TabFragment extends Fragment {
     TabFragment(TabBarItemView tabBarItem) {
         super();
         this.tabBarItem = tabBarItem;
-        view = tabBarItem.content.get(0);
+        view = !tabBarItem.content.isEmpty() ? tabBarItem.content.get(0) : null;
     }
 
     @Nullable
