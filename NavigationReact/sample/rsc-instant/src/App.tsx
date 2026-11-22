@@ -1,7 +1,7 @@
 'use server-entry';
 import './client';
 import { SceneView } from 'navigation-react';
-import NavigationProvider from './NavigationProvider';
+import Shell from './Shell';
 import People from './People';
 import List from './List';
 import Person from './Person';
@@ -18,7 +18,7 @@ const App = async ({url}: any) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
       </head>
       <body>
-        <NavigationProvider url={url}>
+        <Shell url={url}>
           <SceneView active={['people', 'person']} client>
             <Header>
               <SceneView active="person" name="header" fallback={<h1>Person</h1>}>
@@ -40,7 +40,7 @@ const App = async ({url}: any) => {
               </SceneView>
             </Person>
           </SceneView>
-        </NavigationProvider>
+        </Shell>
       </body>
     </html>
   );

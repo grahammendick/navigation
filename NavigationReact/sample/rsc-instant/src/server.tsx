@@ -2,9 +2,8 @@ import express from 'express';
 import { Readable } from 'stream';
 import { renderRequest, renderRSC } from '@parcel/rsc/node';
 import { createTemporaryReferenceSet, decodeReply, loadServerAction } from 'react-server-dom-parcel/server.edge';
-import { StateNavigator } from 'navigation';
 import { NavigationHandler, SceneView, createPrefetchStream } from 'navigation-react';
-import stateNavigator from './stateNavigator';
+import createStateNavigator from './stateNavigator';
 import App from './App';
 import List from './List';
 import Details from './Details';
@@ -21,77 +20,85 @@ app.get(['/favicon.ico', '/.well-known/*.json'], (_req, res) => {
   res.end();
 });
 
-app.get('*', async (req, res) => {
-  const serverNavigator = new StateNavigator(stateNavigator);
-  serverNavigator.navigateLink(req.url);
-  await renderRequest(req, res, (
-    <NavigationHandler stateNavigator={serverNavigator}>
-      <App url={serverNavigator.stateContext.url} />
-    </NavigationHandler>
-  ), {component: App});
+app.get('*', async (req, res, next) => {
+  try {
+    const serverNavigator = createStateNavigator();
+    serverNavigator.navigateLink(req.url);
+    await renderRequest(req, res, (
+      <NavigationHandler stateNavigator={serverNavigator}>
+        <App url={serverNavigator.stateContext.url} />
+      </NavigationHandler>
+    ), {component: App});
+  } catch (e) {
+    next(e);
+  }
 });
 
-app.post('*', async (req, res) => {
-  const sceneViews: any = {
-    header: Name,
-    people: List,
-    person: Details,
-    friends: Friends,
-  };
-  const {url, oldUrl, sceneViewKeys, rootViews, actionId, args, prefetch} = await decodeBody(req);
-  const serverNavigator = new StateNavigator(stateNavigator);
-  if (oldUrl) serverNavigator.navigateLink(oldUrl);
-  if (url) serverNavigator.navigateLink(url);
-  const stateContext = serverNavigator.stateContext;
-  let data = null; let invalidate = [] as (string | false | null)[] | true;
-  if (req.headers['content-type'] !== 'application/json') {
-    const action = await loadServerAction(actionId);
-    const scene = {
-      stateNavigator: serverNavigator,
-      invalidate: (scope?: boolean | string) => {
-        if (invalidate === true) return;
-        if (scope === true) invalidate = true;
-        else invalidate.push(scope === undefined ? null : scope);
-      }
+app.post('*', async (req, res, next) => {
+  try {
+    const sceneViews: any = {
+      header: Name,
+      people: List,
+      person: Details,
+      friends: Friends,
     };
-    data = await action.apply(null, url ? [...args, scene] : args);
-  }
-  const {state} = serverNavigator.stateContext;
-  const navigated = serverNavigator.stateContext !== stateContext;
-  if (prefetch && navigated) {
+    const {url, oldUrl, sceneViewKeys, rootViews, action, actionId, args, prefetch} = await decodeBody(req);
+    const serverNavigator = createStateNavigator();
+    if (oldUrl) serverNavigator.navigateLink(oldUrl);
+    if (url) serverNavigator.navigateLink(url);
+    const stateContext = serverNavigator.stateContext;
+    let data = null; let invalidate = [] as (string | false | null)[] | true;
+    if (req.headers['content-type'] !== 'application/json') {
+      const serverAction = action || await loadServerAction(actionId);
+      const scene = {
+        stateNavigator: serverNavigator,
+        invalidate: (scope?: boolean | string) => {
+          if (invalidate === true) return;
+          if (scope === true) invalidate = true;
+          else invalidate.push(scope === undefined ? null : scope);
+        }
+      };
+      data = await serverAction.apply(null, url ? [...args, scene] : args);
+    }
+    const {state} = serverNavigator.stateContext;
+    const navigated = serverNavigator.stateContext !== stateContext;
+    if (prefetch && navigated) {
+      res.set('Content-Type', 'text/x-component');
+      renderRSC({flattenedSceneViews: null}).pipe(res);
+      return;
+    }
+    const flattenedSceneViews = prefetch ? createPrefetchStream() : null;
+    const sceneInvalidated = invalidate === true || invalidate.indexOf(null) !== -1 || invalidate.indexOf(stateContext.state.key) !== -1;
+    const viewInvalidated = invalidate !== true && invalidate.indexOf(false) !== -1;
+    const activeViews = (navigated || sceneInvalidated || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
+        const active = rootViews[rootKey];
+        const show =  active != null && (
+            typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
+        );
+        if (show) activeRoots.push(rootKey);
+        return activeRoots;
+      }, [] as string[]) : ((!action || viewInvalidated) ? sceneViewKeys : []);
+    const stream = renderRSC({
+      data,
+      invalidate,
+      url: navigated ? serverNavigator.stateContext.url : null,
+      historyAction: navigated ? serverNavigator.stateContext.historyAction : null,
+      sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {
+        const Content = sceneViews[activeKey];
+        SceneViews[activeKey] = (
+          <NavigationHandler stateNavigator={serverNavigator} flattenedSceneViews={flattenedSceneViews}>
+            <SceneView fetching active={[state.key]} name={activeKey}><Content /></SceneView>
+          </NavigationHandler>
+        );
+        return SceneViews;
+      }, {}),
+      flattenedSceneViews
+    });
     res.set('Content-Type', 'text/x-component');
-    renderRSC({flattenedSceneViews: null}).pipe(res);
-    return;
+    stream.pipe(res);
+  } catch (e) {
+    next(e);
   }
-  const flattenedSceneViews = prefetch ? createPrefetchStream() : null;
-  const sceneInvalidated = invalidate === true || invalidate.indexOf(null) !== -1 || invalidate.indexOf(stateContext.state.key) !== -1;
-  const viewInvalidated = invalidate !== true && invalidate.indexOf(false) !== -1;
-  const activeViews = (navigated || sceneInvalidated || prefetch) ? Object.keys(rootViews).reduce((activeRoots, rootKey) => {
-      const active = rootViews[rootKey];
-      const show =  active != null && (
-          typeof active === 'string' ? state.key === active : active.indexOf(state.key) !== -1
-      );
-      if (show) activeRoots.push(rootKey);
-      return activeRoots;
-    }, [] as string[]) : ((!actionId || viewInvalidated) ? sceneViewKeys : []);
-  const stream = renderRSC({
-    data,
-    invalidate,
-    url: navigated ? serverNavigator.stateContext.url : null,
-    historyAction: navigated ? serverNavigator.stateContext.historyAction : null,
-    sceneViews: activeViews.reduce((SceneViews: any, activeKey: string) => {
-      const Content = sceneViews[activeKey];
-      SceneViews[activeKey] = (
-        <NavigationHandler stateNavigator={serverNavigator} flattenedSceneViews={flattenedSceneViews}>
-          <SceneView fetching active={[state.key]} name={activeKey}><Content /></SceneView>
-        </NavigationHandler>
-      );
-      return SceneViews;
-    }, {}),
-    flattenedSceneViews
-  });
-  res.set('Content-Type', 'text/x-component');
-  stream.pipe(res);
 });
 
 const decodeBody = async (req: any) => {

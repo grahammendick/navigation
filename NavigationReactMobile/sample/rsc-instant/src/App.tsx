@@ -2,7 +2,7 @@
 import './client';
 import { SceneView } from 'navigation-react';
 import { NavigationStack, Scene } from 'navigation-react-mobile';
-import NavigationProvider from './NavigationProvider';
+import Shell from './Shell';
 import People from './People';
 import List from './List';
 import Person from './Person';
@@ -18,7 +18,7 @@ const App = async ({url}: any) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
       </head>
       <body>
-        <NavigationProvider url={url}>
+        <Shell url={url}>
           <NavigationStack
             unmountStyle={[{transform: 'translateX(100%)'}, {transform: 'translateX(0)'}]}
             crumbStyle={[{transform: 'translateX(5%) scale(0.9)', opacity: 0},{transform: 'translateX(0) scale(1)', opacity: 1}]}
@@ -41,7 +41,7 @@ const App = async ({url}: any) => {
                 </Person>
               </Scene>
           </NavigationStack>
-        </NavigationProvider>
+        </Shell>
       </body>
     </html>
   );
