@@ -36,6 +36,7 @@ export var NavigationContext: Context<NavigationEvent<any, any>> & Context<Navig
  * The context for providers and consumers of transition navigation event data
  */
 export var TransitionContext: Context<{navigationEvent: NavigationEvent<any, any>, nextNavigationEvent: NavigationEvent<any, any>}>;
+export var RefetchContext: Context<any>;
 
 /**
  * The RSC bundler context

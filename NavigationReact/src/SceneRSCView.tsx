@@ -73,7 +73,7 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
     const fetching = fetchingFn(navigationEvent);
     const fetchingNext = fetchingFn(nextNavigationEvent);
     if (!cachedSceneViews[sceneViewKey] && !ancestorFetching && fetching) {
-        cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey);
+        cachedSceneViews[sceneViewKey] = deserialize(sceneViewKey, nextNavigationEvent);
     }
     if (!nextNavigationEvent['rscFetching']) nextNavigationEvent['rscFetching'] = {};
     if (!ancestorFetching && fetching) navigationEvent['rscFetching'][sceneViewKey] = true;
