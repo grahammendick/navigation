@@ -30,10 +30,15 @@ class Scene extends React.Component<SceneProps, SceneState> {
         this.offInvalidate = this.props.refetchControl?.onInvalidate?.(this.checkStale);
         this.backgroundPeekNavigate();
     }
-    static getDerivedStateFromProps(props: SceneProps) {
+    static getDerivedStateFromProps(props: SceneProps, {navigationEvent: stateNavigationEvent}: SceneState) {
         var {url, navigationEvent, navigationTransition} = props;
         var {url: currentUrl, state} = navigationEvent.stateNavigator.stateContext;
-        return (!state || url !== currentUrl) ? null : {navigationEvent, navigationTransition};
+        if (!state || url !== currentUrl) return null;
+        if (stateNavigationEvent?.['refetching']) {
+            navigationEvent['ignoreCache'] = true;
+            navigationEvent['rscCache'] = stateNavigationEvent['rscCache'] ||= {};
+        }
+        return {navigationEvent, navigationTransition};
     }
     shouldComponentUpdate({crumb, rest, navigationEvent: {stateNavigator}}: SceneProps, {navigationEvent}: SceneState) {
         var {crumbs} = stateNavigator.stateContext;
@@ -87,7 +92,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumb, refetchControl} = this.props;
         var {navigationEvent} = this.state;
         if (navigationEvent && crumb === stateContext.crumbs.length - 1 && refetchControl?.isStale?.(crumb, navigationEvent.state.key)) {
-            var refetchNavigationEvent = {...navigationEvent, ignoreCache: true, rscCache: undefined, rscFetching: undefined, rscFetch: undefined, trackable: undefined};
+            var refetchNavigationEvent = {...navigationEvent, ignoreCache: true, refetching: true, rscCache: undefined, rscFetching: undefined, rscFetch: undefined, trackable: undefined};
             React.startTransition(() => {
                 this.setState({navigationEvent: refetchNavigationEvent, navigationTransition: {navigationEvent: refetchNavigationEvent, nextNavigationEvent: refetchNavigationEvent}});
             });

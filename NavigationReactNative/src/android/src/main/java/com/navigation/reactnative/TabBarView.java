@@ -143,8 +143,6 @@ public class TabBarView extends ViewGroup implements TabBarItemView.ChangeListen
     void scrollToTop() {
         if (!scrollsToTop)
             return;
-        if (tabFragments.get(selectedTab).tabBarItem.content.isEmpty())
-            return;
         View tabBarItem = tabFragments.get(selectedTab).tabBarItem.content.get(0);
         if (tabBarItem instanceof ViewGroup viewGroup) {
             for(int i = 0; i < viewGroup.getChildCount(); i++) {

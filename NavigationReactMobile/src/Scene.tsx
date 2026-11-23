@@ -18,10 +18,15 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
     static defaultProps = {
         renderScene: (state: State, data: any) => state.renderScene(data)
     }
-    static getDerivedStateFromProps(props: SceneProps & {navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent}}) {
+    static getDerivedStateFromProps(props: SceneProps & {navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent}}, {navigationEvent: stateNavigationEvent}: SceneState) {
         var {url, navigationEvent, navigationTransition} = props;
         var {url: currentUrl, state} = navigationEvent.stateNavigator.stateContext;
-        return (!state || url !== currentUrl) ? null : {navigationEvent, navigationTransition};
+        if (!state || url !== currentUrl) return null;
+        if (stateNavigationEvent?.['refetching']) {
+            navigationEvent['ignoreCache'] = true;
+            navigationEvent['rscCache'] = stateNavigationEvent['rscCache'] ||= {};
+        }
+        return {navigationEvent, navigationTransition};
     }
     componentDidMount() {
         var {stateNavigator} = this.props.navigationEvent;
@@ -54,7 +59,7 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
         var {crumb, refetchControl} = this.props;
         var {navigationEvent} = this.state;
         if (navigationEvent && crumb === stateContext.crumbs.length - 1 && refetchControl?.isStale?.(crumb, navigationEvent.state.key)) {
-            var refetchNavigationEvent = {...navigationEvent, ignoreCache: true, rscCache: undefined, rscFetching: undefined, rscFetch: undefined, trackable: undefined};
+            var refetchNavigationEvent = {...navigationEvent, ignoreCache: true, refetching: true, rscCache: undefined, rscFetching: undefined, rscFetch: undefined, trackable: undefined};
             React.startTransition(() => {
                 this.setState({navigationEvent: refetchNavigationEvent, navigationTransition: {navigationEvent: refetchNavigationEvent, nextNavigationEvent: refetchNavigationEvent}});
             });

@@ -127,8 +127,6 @@ public class TabBarPagerView extends ViewPager implements TabBarItemView.ChangeL
     void scrollToTop() {
         if (!scrollsToTop)
             return;
-        if (getTabAt(getCurrentItem()).content.isEmpty())
-            return;
         View tabBarItem = getTabAt(getCurrentItem()).content.get(0);
         if (tabBarItem instanceof ViewGroup viewGroup) {
             for(int i = 0; i < viewGroup.getChildCount(); i++) {

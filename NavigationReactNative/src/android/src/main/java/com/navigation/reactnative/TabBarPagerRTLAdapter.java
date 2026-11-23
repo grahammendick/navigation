@@ -129,8 +129,6 @@ public class TabBarPagerRTLAdapter extends FragmentStateAdapter {
     void scrollToTop() {
         if (!scrollsToTop)
             return;
-        if (getTabAt(selectedTab).content.isEmpty())
-            return;
         View tabBarItem = getTabAt(selectedTab).content.get(0);
         if (tabBarItem instanceof ViewGroup) {
             ViewGroup viewGroup = (ViewGroup) tabBarItem;

@@ -73,12 +73,12 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
                 return (ScrollView) getChildAt(i);
             if (getChildAt(i) instanceof TabBarPagerView) {
                 TabBarPagerView tabBarView = ((TabBarPagerView) getChildAt(i));
-                View tab = !tabBarView.getTabAt(tabBarView.getCurrentItem()).content.isEmpty() ? tabBarView.getTabAt(tabBarView.getCurrentItem()).content.get(0) : null;
+                View tab = tabBarView.getTabAt(tabBarView.getCurrentItem()).content.get(0);
                 return tab instanceof ScrollView ? (ScrollView) tab : null;
             }
             if (getChildAt(i) instanceof ViewPager2) {
                 ViewPager2 tabBarView = ((ViewPager2) getChildAt(i));
-                View tab = !TabBarPagerRTLManager.getAdapter(tabBarView).getTabAt(tabBarView.getCurrentItem()).content.isEmpty() ? TabBarPagerRTLManager.getAdapter(tabBarView).getTabAt(tabBarView.getCurrentItem()).content.get(0) : null;
+                View tab = TabBarPagerRTLManager.getAdapter(tabBarView).getTabAt(tabBarView.getCurrentItem()).content.get(0);
                 return tab instanceof ScrollView ? (ScrollView) tab : null;
             }
         }

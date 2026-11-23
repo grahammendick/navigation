@@ -1,5 +1,5 @@
 'use client'
-import React, { Suspense, useCallback, useContext, useOptimistic, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, useTransition } from 'react';
+import React, { useCallback, useContext, useOptimistic, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
@@ -15,8 +15,6 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
     const [_nextNavigationEvent, setNextNavigationEvent] = useOptimistic?.(navigationEvent) || [navigationEvent, () => {}];
     const [isPending, startTransition] = useTransition?.() || [false];
     const [, setTransitionAborted] = useState({});
-    const hydrating = useSyncExternalStore(useCallback(() => () => {}, []), () => false, () => true);
-    const [ssr] = useState(hydrating);
     const nextNavigationEvent = !_nextNavigationEvent?.intercept?.signal?.aborted ? _nextNavigationEvent : navigationEvent;
     const navigationTransition = useMemo(() => ({navigationEvent: navigationEvent?.data, nextNavigationEvent: nextNavigationEvent?.data}), [navigationEvent, nextNavigationEvent]);
     const rootViews = useRef({});
@@ -46,7 +44,9 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
             crumbPrefetches.prefetches = crumbPrefetches.prefetches.filter(keep);
         });
     };
-    const {fetchRSC: fetchServer, onHmrReload} = useContext(BundlerContext);
+    const bundler = useContext(BundlerContext);
+    const parentNavigationEvent = useContext(NavigationContext);
+    const {fetchRSC: fetchServer, onHmrReload} = bundler;
     const raiseNavigationEvent = useCallback((stateContext: StateContext = stateNavigator.stateContext, intercept: Intercept = {}, rscCache?: any) => {
         class AsyncStateNavigator extends StateNavigator {
             constructor() {
@@ -146,9 +146,19 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
                 if (!intercept?.signal?.aborted) throw e;
             });
         }
+        return nextNavigationEvent;
     }, [stateNavigator, fetchServer]);
     if (!navigationEvent && url && !stateNavigator.stateContext.state) stateNavigator.navigateLink(url, 'replace');
-    if (!navigationEvent) raiseNavigationEvent();
+    if (!navigationEvent) {
+        const {data} = raiseNavigationEvent();
+        const {url} = data.stateNavigator.stateContext;
+        const rscCaches = (parentNavigationEvent.state ? parentNavigationEvent : bundler)['rscCaches'] ||= {};
+        if (rscCaches[url]) data.rscCache = rscCaches[url];
+        else rscCaches[url] = data.rscCache ||= {};
+    }
+    useEffect(() => {
+        if (!parentNavigationEvent.state) delete bundler['rscCaches'];
+    }, [bundler, parentNavigationEvent]);
     const primeRefetch = (sceneViewKey: string | boolean = true) => {
         if (typeof sceneViewKey === 'string') return {[sceneViewKey]: false};
         const {key} = navigationEvent.data.state;
@@ -430,7 +440,7 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
         <NavigationContext.Provider value={nextNavigationEvent?.data}>
             <TransitionContext.Provider value={navigationTransition}>
                 <RefetchContext.Provider value={refetchControl}>
-                    {ssr || !fetchServer ? children : <Suspense fallback={null}>{children}</Suspense>}
+                    {children}
                 </RefetchContext.Provider>
             </TransitionContext.Provider>
         </NavigationContext.Provider>
