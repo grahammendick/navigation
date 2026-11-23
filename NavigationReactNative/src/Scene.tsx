@@ -6,14 +6,14 @@ import BackButton from './BackButton';
 import Freeze from './Freeze';
 import OverlapContext from './OverlapContext';
 type SceneProps = { crumb: number, url: string, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, landscape: any, title: (state: State, data: any) => string, popped: (key: string) => void, navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent}, refetchControl: any };
-type SceneState = { navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent} };
+type SceneState = { navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent}, peekNavigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
     private timer: any;
     private offInvalidate: () => void;
     constructor(props) {
         super(props);
-        this.state = {navigationEvent: null, navigationTransition: null};
+        this.state = {navigationEvent: null, navigationTransition: null, peekNavigationEvent: null};
         this.handleBack = this.handleBack.bind(this);
         this.onBeforeNavigate = this.onBeforeNavigate.bind(this);
         this.onNavigate = this.onNavigate.bind(this);
@@ -73,7 +73,9 @@ class Scene extends React.Component<SceneProps, SceneState> {
         return false;
     }
     onBeforeNavigate(_state, _data, url: string, history: boolean) {
-        // var {crumb} = this.props;
+        var {crumb} = this.props;
+        if (url.split('crumb=').length - 1 === crumb)
+            this.setState({peekNavigationEvent: this.props.navigationEvent});
         // if (url.split('crumb=').length - 1 === crumb && history)
         //     this.peekNavigate();
         return true;
@@ -85,7 +87,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumb, refetchControl} = this.props;
         var {navigationEvent} = this.state;
         if (navigationEvent && crumb === stateContext.crumbs.length - 1 && refetchControl?.isStale?.(crumb, navigationEvent.state.key)) {
-            var refetchNavigationEvent = {...navigationEvent, ignoreCache: true, rscCache: undefined, rscFetching: undefined, rscFetch: undefined, trackable: undefined, refetching: true};
+            var refetchNavigationEvent = {...navigationEvent, ignoreCache: true, rscCache: undefined, rscFetching: undefined, rscFetch: undefined, trackable: undefined};
             React.startTransition(() => {
                 this.setState({navigationEvent: refetchNavigationEvent, navigationTransition: {navigationEvent: refetchNavigationEvent, nextNavigationEvent: refetchNavigationEvent}});
             });
@@ -161,7 +163,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
         var {state, data} = stateContext || crumbs[crumb] || {};
         return !!state && (
-            <Freeze enabled={freezable && crumb < crumbs.length && navigationEvent && !navigationEvent['refetching']
+            <Freeze enabled={freezable && crumb < crumbs.length && navigationEvent && this.state.peekNavigationEvent !== this.props.navigationEvent
                 && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
                 <NVScene
                     ref={(ref: any) => {
