@@ -66,6 +66,7 @@ interface SceneProps {
     url: string;
     id: string;
     rest: boolean;
+    unmounted?: boolean;
     className: string;
     style: any;
     wrap?: boolean;

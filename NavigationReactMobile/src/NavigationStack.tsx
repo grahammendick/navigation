@@ -3,7 +3,6 @@ import React, {useRef, useState, useContext, useEffect, ReactElement} from 'reac
 import { State, StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
 import Scene from './Scene.js';
-import Freeze from './Freeze.js';
 import SharedElementContext from './SharedElementContext.js';
 import NavigationAnimation from './NavigationAnimation.js';
 import { NavigationMotionProps as NavigationStackProps } from './Props.js';
@@ -158,10 +157,10 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
                 {scenes => (
                     scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
-                        <Freeze key={key} enabled={rest && ((crumb < sceneData.length - 1) || unmounted) && crumb !== navigationEvent['staleCrumb']}>
-                            <Scene key={subkey} crumb={crumb} url={url} rest={rest} className={className}
+                        <React.Fragment key={key}>
+                            <Scene key={subkey} crumb={crumb} url={url} rest={rest} unmounted={unmounted} className={className}
                                 style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} />
-                        </Freeze>
+                        </React.Fragment>
                     )).concat(
                         <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}
                             unmountStyle={sceneData[sceneData.length - 1].unmountStyle} duration={duration} />
