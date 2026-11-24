@@ -22,8 +22,8 @@ const SceneView = ({active, errorFallback, client, children, ...props}: SceneVie
     useLayoutEffect(() => {
         const registerSceneViews = (elements = children) => {
             for(const sceneView of React.Children.toArray(elements) as any) {
-                const {name, active, __scene, children} = sceneView.props || {};
-                if (__scene) {
+                const {name, active, client, __scene, children} = sceneView.props || {};
+                if (__scene || (sceneView.type === SceneView && client === false)) {
                     const sceneViewKey = name || (typeof active === 'string' ? active : active[0]);
                     registerSceneView(sceneViewKey, active);
                 } else if (children) registerSceneViews(children);
@@ -31,7 +31,7 @@ const SceneView = ({active, errorFallback, client, children, ...props}: SceneVie
         }
         if (client) registerSceneViews();
     }, [registerSceneView, client, children]);
-    if (client === false) return <SceneRSCView {...{...props, active, errorFallback, __scene: true} as any} />;
+    if (client === false) return <SceneRSCView {...{...props, active, errorFallback} as any} />;
     return (
         <ErrorBoundary errorFallback={errorFallback}>
             <SceneViewInner>

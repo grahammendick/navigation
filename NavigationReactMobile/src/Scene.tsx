@@ -59,7 +59,7 @@ class Scene extends React.Component<SceneProps & {navigationEvent: NavigationEve
         var {crumb, refetchControl} = this.props;
         var {navigationEvent} = this.state;
         if (navigationEvent && crumb === stateContext.crumbs.length - 1 && refetchControl?.isStale?.(crumb, navigationEvent.state.key)) {
-            var refetchNavigationEvent = {...navigationEvent, ignoreCache: true, refetching: true, rscCache: undefined, rscFetching: undefined, rscFetch: undefined, trackable: undefined};
+            var refetchNavigationEvent = {...navigationEvent, ignoreCache: true, refetching: true, rscCache: undefined, rscFetching: this.props.primeRefetch?.(), rscFetch: undefined, trackable: undefined};
             React.startTransition(() => {
                 this.setState({navigationEvent: refetchNavigationEvent, navigationTransition: {navigationEvent: refetchNavigationEvent, nextNavigationEvent: refetchNavigationEvent}});
             });

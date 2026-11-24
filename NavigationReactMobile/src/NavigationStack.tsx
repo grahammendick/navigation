@@ -1,7 +1,7 @@
 'use client'
 import React, {useRef, useState, useContext, useEffect, ReactElement} from 'react';
 import { State, StateNavigator } from 'navigation';
-import { NavigationContext, NavigationEvent, useRootViewRegistry } from 'navigation-react';
+import { NavigationContext, NavigationEvent, SceneView, useRootViewRegistry } from 'navigation-react';
 import Scene from './Scene.js';
 import SharedElementContext from './SharedElementContext.js';
 import NavigationAnimation from './NavigationAnimation.js';
@@ -38,13 +38,20 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         const rootViews: {key: string, active: string | string[]}[] = [];
         const findRootViews = (elements) => {
             for(const sceneView of React.Children.toArray(elements) as any) {
-                const {name, active, __scene, children} = sceneView.props || {};
-                if (__scene) rootViews.push({key: name || (typeof active === 'string' ? active : active[0]), active});
+                const {name, active, client, __scene, children} = sceneView.props || {};
+                if (__scene || (sceneView.type === SceneView && client === false)) rootViews.push({key: name || (typeof active === 'string' ? active : active[0]), active});
                 else if (children) findRootViews(children);
             }
         }
         findRootViews(children);
         return rootViews;
+    };
+    const primeRootViews = (stateKey: string, rscFetching = {}) => {
+        for(const {key: sceneViewKey, active} of getRootViews(allScenes[stateKey])) {
+            if (typeof active === 'string' ? active === stateKey : active.indexOf(stateKey) !== -1)
+                rscFetching[sceneViewKey] ||= false;
+        }
+        return rscFetching;
     };
     useEffect(() => {
         prevScenes.current = allScenes;
@@ -99,7 +106,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
             const preCrumbs = crumbsAndNext.slice(0, index);
             const {state: nextState, data: nextData} = crumbsAndNext[index + 1] || {state: undefined, data: undefined};
             const mount = url === nextCrumb.url;
-            return {key: keys[index], index, url, mount, style: style(state, data, preCrumbs),
+            return {key: keys[index], index, url, stateKey: state.key, mount, style: style(state, data, preCrumbs),
                 className: className(state, data, preCrumbs),
                 unmountStyle: unmountStyle(state, data, preCrumbs),
                 crumbStyle: crumbStyle(state, data, preCrumbs, nextState, nextData)};
@@ -127,13 +134,8 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         })
         const {state, oldState, oldUrl, crumbs} = stateNavigator.stateContext;
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-        if (oldUrl && !refresh && allScenes[state.key]) {
-            if (!navigationEvent['rscFetching']) navigationEvent['rscFetching'] = {};
-            for(const {key: sceneViewKey, active} of getRootViews(allScenes[state.key])) {
-                if (typeof active === 'string' ? active === state.key : active.indexOf(state.key) !== -1)
-                    navigationEvent['rscFetching'][sceneViewKey] ||= false;
-            }
-        }
+        if (oldUrl && !refresh && allScenes[state.key])
+            navigationEvent['rscFetching'] = primeRootViews(state.key, navigationEvent['rscFetching']);
     }
     const {stateContext: {oldState}, stateContext} = stateNavigator;
     renderScene = firstLink ? ({key}) => allScenes[key] : renderScene;
@@ -156,10 +158,10 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         <SharedElementContext.Provider value={sharedElementRegistry as any}>
             <NavigationAnimation data={sceneData} history={stateContext.history} onRest={clearScene} oldState={oldState} duration={duration} pause={!ignorePause && pause !== null} hasUAVisualTransition={!!navigationEvent['hasUAVisualTransition']}>
                 {scenes => (
-                    scenes.map(({key, subkey, index: crumb, url, unmounted, className, style}) => (
+                    scenes.map(({key, subkey, index: crumb, url, stateKey, unmounted, className, style}) => (
                         <React.Fragment key={key}>
                             <Scene key={subkey} crumb={crumb} url={url} rest={rest} unmounted={unmounted} className={className}
-                                style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} />
+                                style={{...style, display: unmounted ? 'none' : style?.display}} wrap renderScene={renderScene} primeRefetch={() => primeRootViews(stateKey)} />
                         </React.Fragment>
                     )).concat(
                         <SharedElementAnimation key="sharedElements" sharedElements={!rest ? sharedEls : []}

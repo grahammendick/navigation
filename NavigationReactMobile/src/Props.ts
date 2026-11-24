@@ -71,6 +71,7 @@ interface SceneProps {
     style: any;
     wrap?: boolean;
     renderScene?: (state: State, data: any) => ReactNode;
+    primeRefetch?: () => any;
 }
 
 export { MotionProps, SharedElementProps, SharedItem, SharedElementNavigationMotionProps, SharedElementMotionProps, NavigationMotionProps, SceneProps }

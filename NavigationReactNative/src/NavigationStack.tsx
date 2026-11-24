@@ -53,13 +53,20 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const rootViews: {key: string, active: string | string[]}[] = [];
         const findRootViews = (elements) => {
             for (const sceneView of React.Children.toArray(elements) as any) {
-                const {name, active, __scene, children} = sceneView.props || {};
-                if (__scene) rootViews.push({key: name || (typeof active === 'string' ? active : active[0]), active});
+                const {name, active, client, __scene, children} = sceneView.props || {};
+                if (__scene || (sceneView.type === SceneView && client === false)) rootViews.push({key: name || (typeof active === 'string' ? active : active[0]), active});
                 else if (children) findRootViews(children);
             }
         };
         findRootViews(scene.props.children);
         return rootViews;
+    };
+    const primeRootViews = (stateKey: string, rscFetching = {}) => {
+        for (const {key: sceneViewKey, active} of getRootViews(allScenes[stateKey])) {
+            if (typeof active === 'string' ? active === stateKey : active.indexOf(stateKey) !== -1)
+                rscFetching[sceneViewKey] ||= false;
+        }
+        return rscFetching;
     };
     useEffect(() => {
         prevScenes.current = allScenes;
@@ -202,13 +209,8 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
         const {oldState, oldUrl} = stateNavigator.stateContext;
         const refreshNav = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-        if (oldUrl && !refreshNav && allScenes[state.key]) {
-            if (!navigationEvent['rscFetching']) navigationEvent['rscFetching'] = {};
-            for (const {key: sceneViewKey, active} of getRootViews(allScenes[state.key])) {
-                if (typeof active === 'string' ? active === state.key : active.indexOf(state.key) !== -1)
-                    navigationEvent['rscFetching'][sceneViewKey] ||= false;
-            }
-        }
+        if (oldUrl && !refreshNav && allScenes[state.key])
+            navigationEvent['rscFetching'] = primeRootViews(state.key, navigationEvent['rscFetching']);
         return {keys, refresh, counter: (counter + 1) % 1000};
     }, [stateNavigator]);
     const rest = restNavigator === stateNavigator || stateNavigator.stateContext.history || refresh;
@@ -239,10 +241,10 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
                         onNavigateToTop={onNavigateToTop}
                         onApplyInsets={onApplyInsets}
                         onRest={onRest}>
-                        <PopSync<{crumb: number, url: string}>
-                            data={crumbs.concat(nextCrumb || []).map(({url}, crumb) => ({crumb, url}))}
+                        <PopSync<{crumb: number, url: string, stateKey: string}>
+                            data={crumbs.concat(nextCrumb || []).map(({url, state: {key: stateKey}}, crumb) => ({crumb, url, stateKey}))}
                             getKey={({crumb}) => keys[crumb]}>
-                            {(scenes, popNative) => scenes.map(({key, data: {crumb, url}}) => (
+                            {(scenes, popNative) => scenes.map(({key, data: {crumb, url, stateKey}}) => (
                                 <Scene
                                     key={key}
                                     url={url}
@@ -257,6 +259,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
                                     landscape={landscape}
                                     title={title}
                                     popped={popNative}
+                                    primeRefetch={() => primeRootViews(stateKey)}
                                     renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
                             ))}
                         </PopSync>
