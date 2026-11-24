@@ -134,7 +134,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         })
         const {state, oldState, oldUrl, crumbs} = stateNavigator.stateContext;
         const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-        if (oldUrl && !refresh && allScenes[state.key])
+        if (!refresh && allScenes[state.key])
             navigationEvent['rscFetching'] = primeRootViews(state.key, navigationEvent['rscFetching']);
     }
     const {stateContext: {oldState}, stateContext} = stateNavigator;

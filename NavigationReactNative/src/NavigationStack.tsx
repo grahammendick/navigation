@@ -209,7 +209,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const refresh = prevKeys.length === keys.length && prevKeys[keys.length - 1] === keys[keys.length - 1];
         const {oldState, oldUrl} = stateNavigator.stateContext;
         const refreshNav = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
-        if (oldUrl && !refreshNav && allScenes[state.key])
+        if (!refreshNav && allScenes[state.key])
             navigationEvent['rscFetching'] = primeRootViews(state.key, navigationEvent['rscFetching']);
         return {keys, refresh, counter: (counter + 1) % 1000};
     }, [stateNavigator]);
