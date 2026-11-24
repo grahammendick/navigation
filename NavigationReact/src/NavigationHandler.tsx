@@ -4,6 +4,7 @@ import { StateNavigator, StateContext, State } from 'navigation';
 import NavigationContext from './NavigationContext.js';
 import RefetchContext from './RefetchContext.js';
 import TransitionContext from './TransitionContext.js';
+import SceneViewContext from './SceneViewContext.js';
 import BundlerContext from './BundlerContext.js';
 import LinkUtility from './LinkUtility.js';
 type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean, sceneViews?: any, scrollY?: number};
@@ -436,11 +437,14 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
         });
         return offHmrReload;
     }, [navigationEvent, onHmrReload]);
+    const sceneViewContext = useMemo(() => ({ancestors: [], fetchingFn: () => false}), []);
     return (
         <NavigationContext.Provider value={nextNavigationEvent?.data}>
             <TransitionContext.Provider value={navigationTransition}>
                 <RefetchContext.Provider value={refetchControl}>
-                    {children}
+                    <SceneViewContext.Provider value={sceneViewContext}>
+                        {children}
+                    </SceneViewContext.Provider>
                 </RefetchContext.Provider>
             </TransitionContext.Provider>
         </NavigationContext.Provider>
