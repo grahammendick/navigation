@@ -9,7 +9,6 @@ type SceneProps = { crumb: number, url: string, sceneKey: string, rest: boolean,
 type SceneState = { navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent}, peekNavigationEvent: NavigationEvent };
 
 class Scene extends React.Component<SceneProps, SceneState> {
-    private timer: any;
     private offInvalidate: () => void;
     constructor(props) {
         super(props);
@@ -28,7 +27,17 @@ class Scene extends React.Component<SceneProps, SceneState> {
         stateNavigator.onBeforeNavigate(this.onBeforeNavigate);
         stateNavigator.onNavigate(this.onNavigate);
         this.offInvalidate = this.props.refetchControl?.onInvalidate?.(this.checkStale);
-        this.backgroundPeekNavigate();
+        var {crumb} = this.props;
+        var {crumbs} = stateNavigator.stateContext;
+        if (!this.state.navigationEvent) {
+            var fluentNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
+            fluentNavigator.navigateLink(crumbs[crumb].url);
+            var {oldState, state, data, asyncData} = fluentNavigator.stateContext;
+            var fluentNavigationEvent = {oldState, state, data, asyncData, stateNavigator: fluentNavigator, refetching: true, rscFetching: this.props.primeRefetch()} as any;
+            React.startTransition(() => {
+                this.setState({navigationEvent: fluentNavigationEvent, navigationTransition: {navigationEvent: fluentNavigationEvent, nextNavigationEvent: fluentNavigationEvent}});
+            });
+        }
     }
     static getDerivedStateFromProps(props: SceneProps, {navigationEvent: stateNavigationEvent}: SceneState) {
         var {url, navigationEvent, navigationTransition} = props;
@@ -43,31 +52,13 @@ class Scene extends React.Component<SceneProps, SceneState> {
     shouldComponentUpdate({crumb, rest, navigationEvent: {stateNavigator}}: SceneProps, {navigationEvent}: SceneState) {
         var {crumbs} = stateNavigator.stateContext;
         var freezableOrCurrent = rest && (!!React.Suspense || crumbs.length === crumb);
-        return freezableOrCurrent || navigationEvent !== this.state.navigationEvent || (this.fluentPeekable() && !this.timer);
-    }
-    componentDidUpdate() {
-        this.backgroundPeekNavigate();
+        return freezableOrCurrent || navigationEvent !== this.state.navigationEvent;
     }
     componentWillUnmount() {
         var {stateNavigator} = this.props.navigationEvent;
         stateNavigator.offBeforeNavigate(this.onBeforeNavigate);
         stateNavigator.offNavigate(this.onNavigate);
         this.offInvalidate?.();
-        clearTimeout(this.timer);
-    }
-    fluentPeekable() {
-        var {navigationEvent, crumb} = this.props;
-        var {crumbs} = navigationEvent.stateNavigator.stateContext;
-        return !this.state.navigationEvent && crumb === crumbs.length -1;
-    }
-    backgroundPeekNavigate() {
-        return;
-        if (this.fluentPeekable() && !this.timer) {
-            this.timer = setTimeout(() => {
-                if (this.fluentPeekable()) this.peekNavigate();
-                else this.timer = null;
-            }, 0);
-        }
     }
     handleBack() {
         var {navigationEvent} = this.state;
@@ -81,8 +72,6 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var {crumb} = this.props;
         if (url.split('crumb=').length - 1 === crumb)
             this.setState({peekNavigationEvent: this.props.navigationEvent});
-        // if (url.split('crumb=').length - 1 === crumb && history)
-        //     this.peekNavigate();
         return true;
     }
     onNavigate(_oldState, _state, _data, _asyncData, stateContext) {
@@ -97,16 +86,6 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 this.setState({navigationEvent: refetchNavigationEvent, navigationTransition: {navigationEvent: refetchNavigationEvent, nextNavigationEvent: refetchNavigationEvent}});
             });
         }
-    }
-    peekNavigate() {
-        var {crumb, navigationEvent} = this.props;
-        var {crumbs} = navigationEvent.stateNavigator.stateContext;
-        var {stateNavigator} = navigationEvent;
-        var peekNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
-        peekNavigator.navigateLink(crumbs[crumb].url);
-        peekNavigator.stateContext['peek'] = navigationEvent;
-        var {oldState, state, data, asyncData} = peekNavigator.stateContext;
-        this.setState({navigationEvent: {oldState, state, data, asyncData, stateNavigator: peekNavigator}});
     }
     getAnimation() {
         var {crumb, navigationEvent, customAnimation, unmountStyle, crumbStyle, hidesTabBar, backgroundColor, landscape} = this.props;
@@ -168,8 +147,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
         var {state, data} = stateContext || crumbs[crumb] || {};
         return !!state && (
-            <Freeze enabled={freezable && crumb < crumbs.length && navigationEvent && this.state.peekNavigationEvent !== this.props.navigationEvent
-                && (!stateContext['peek'] || stateContext['peek'] !== this.props.navigationEvent)}>
+            <Freeze enabled={freezable && crumb < crumbs.length && navigationEvent && this.state.peekNavigationEvent !== this.props.navigationEvent}>
                 <NVScene
                     ref={(ref: any) => {
                         const viewConfig = ref?.viewConfig || ref?._viewConfig || ref?.__viewConfig;
