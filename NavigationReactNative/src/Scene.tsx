@@ -67,10 +67,18 @@ class Scene extends React.Component<SceneProps, SceneState> {
         }
         return false;
     }
-    onBeforeNavigate(_state, _data, url: string, history: boolean) {
-        var {crumb} = this.props;
-        if (url.split('crumb=').length - 1 === crumb)
+    onBeforeNavigate(state, _data, url: string) {
+        var {crumb, refetchControl} = this.props;
+        var {navigationEvent} = this.state;
+        if (url.split('crumb=').length - 1 === crumb) {
             this.setState({peekNavigationEvent: this.props.navigationEvent});
+            if (navigationEvent && state === navigationEvent.state && refetchControl?.isStale?.(crumb, navigationEvent.state.key)) {
+                var refetchNavigationEvent = {...navigationEvent, ignoreCache: true, refetching: true, rscCache: undefined, rscFetching: this.props.primeRefetch(), rscFetch: undefined, trackable: undefined};
+                React.startTransition(() => {
+                    this.setState({navigationEvent: refetchNavigationEvent, navigationTransition: {navigationEvent: refetchNavigationEvent, nextNavigationEvent: refetchNavigationEvent}});
+                });
+            }
+        }
         return true;
     }
     onNavigate(_oldState, _state, _data, _asyncData, stateContext) {
@@ -79,7 +87,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
     checkStale(stateContext) {
         var {crumb, refetchControl} = this.props;
         var {navigationEvent} = this.state;
-        if (navigationEvent && crumb === stateContext.crumbs.length - 1 && refetchControl?.isStale?.(crumb, navigationEvent.state.key)) {
+        var {crumbs} = stateContext;
+        if (navigationEvent && crumb < crumbs.length && (crumb === crumbs.length - 1 || crumb === 0) && refetchControl?.isStale?.(crumb, navigationEvent.state.key)) {
             var refetchNavigationEvent = {...navigationEvent, ignoreCache: true, refetching: true, rscCache: undefined, rscFetching: this.props.primeRefetch(), rscFetch: undefined, trackable: undefined};
             React.startTransition(() => {
                 this.setState({navigationEvent: refetchNavigationEvent, navigationTransition: {navigationEvent: refetchNavigationEvent, nextNavigationEvent: refetchNavigationEvent}});
