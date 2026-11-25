@@ -3,7 +3,7 @@ import { NavigationContext } from 'navigation-react';
 
 var useNavigating = (handler: (data, url, history, currentContext) => void) => {
     var navigationEvent = useContext(NavigationContext);
-    var offBeforeNavigate = useRef(null);
+    var offNavigating = useRef(null);
     useEffect(() => {
         var {stateNavigator} = navigationEvent;
         var beforeNavigateHandler = (state, data, url, history, currentContext) => {
@@ -23,9 +23,10 @@ var useNavigating = (handler: (data, url, history, currentContext) => void) => {
         }
         stateNavigator.onBeforeNavigate(beforeNavigateHandler);
         stateNavigator.onNavigate(navigateHandler);
-        offBeforeNavigate.current?.();
-        offBeforeNavigate.current = () => {
-            stateNavigator.offBeforeNavigate(beforeNavigateHandler)
+        offNavigating.current?.();
+        offNavigating.current = () => {
+            stateNavigator.offBeforeNavigate(beforeNavigateHandler);
+            stateNavigator.offNavigate(navigateHandler);
         };
     }, [navigationEvent, handler]);
 };

@@ -1,11 +1,15 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { NavigationContext } from 'navigation-react';
 
 var useNavigated = (handler: () => void) => {
     var navigationEvent = useContext(NavigationContext);
+    var navigatedContext = useRef(null);
     useEffect(() => {
-        if (!navigationEvent['refetching'])
+        var {stateContext} = navigationEvent.stateNavigator;
+        if (!navigationEvent['refetching'] && stateContext !== navigatedContext.current) {
+            navigatedContext.current = stateContext;
             handler();
+        }
     }, [navigationEvent]);
 };
 
