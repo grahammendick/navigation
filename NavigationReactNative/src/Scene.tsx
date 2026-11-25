@@ -1,9 +1,8 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, Activity } from 'react';
 import { requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, State } from 'navigation';
 import { NavigationContext, TransitionContext, RefetchContext, NavigationEvent } from 'navigation-react';
 import BackButton from './BackButton';
-import Freeze from './Freeze';
 import OverlapContext from './OverlapContext';
 type SceneProps = { crumb: number, url: string, sceneKey: string, rest: boolean, renderScene: (state: State, data: any) => ReactNode, customAnimation: boolean, crumbStyle: any, unmountStyle: any, hidesTabBar: any, backgroundColor: any, landscape: any, title: (state: State, data: any) => string, popped: (key: string) => void, primeRefetch: () => any, navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent}, refetchControl: any };
 type SceneState = { navigationEvent: NavigationEvent, navigationTransition: {navigationEvent: NavigationEvent, nextNavigationEvent: NavigationEvent}, peekNavigationEvent: NavigationEvent };
@@ -147,7 +146,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
         var stateContext = navigationEvent?.stateNavigator?.stateContext;
         var {state, data} = stateContext || crumbs[crumb] || {};
         return !!state && (
-            <Freeze enabled={freezable && crumb < crumbs.length && navigationEvent && this.state.peekNavigationEvent !== this.props.navigationEvent}>
+            <Activity mode={freezable && crumb < crumbs.length && navigationEvent && this.state.peekNavigationEvent !== this.props.navigationEvent ? 'hidden' : 'visible'}>
                 <NVScene
                     ref={(ref: any) => {
                         const viewConfig = ref?.viewConfig || ref?._viewConfig || ref?.__viewConfig;
@@ -173,7 +172,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                         </TransitionContext.Provider>
                     </NavigationContext.Provider>
                 </NVScene>
-            </Freeze>
+            </Activity>
         );
     }
 }

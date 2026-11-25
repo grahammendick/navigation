@@ -1,10 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, Activity } from 'react';
 import { requireNativeComponent, Image, Platform, StyleSheet } from 'react-native';
 import BackButton from './BackButton';
 import TabBarItemContext from './TabBarItemContext';
 import BackHandlerContext from './BackHandlerContext';
 import createBackHandler from './createBackHandler';
-import Freeze from './Freeze';
 
 const TabBarItem = ({selected, onPress, children, title, image, systemItem, badge, index, primary, freezable, ...props}) => {
     const [loaded, setLoaded] = useState(selected);
@@ -12,16 +11,7 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
     const backHandler = useRef(createBackHandler());
     const onLoad = useRef({ onLoad: () => setLoaded(true)});
     useEffect(() => {
-        if(freeze !== freezable) {
-            if (global.nativeFabricUIManager && freezable) {
-                var timer = setTimeout(() => {
-                    setFreeze(freezable);
-                }, 100);
-            } else {
-                setFreeze(freezable);
-            }
-        }
-        return () => clearTimeout(timer);
+        if(freeze !== freezable) setFreeze(freezable);
     }, [freeze, freezable]);
     useEffect(() => {
         setFreeze(false);
@@ -32,7 +22,7 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
     return (
         <>
             <BackButton onPress={() => selected && backHandler.current.handleBack()} />
-            <Freeze enabled={loaded && !selected && freeze}>
+            <Activity mode={loaded && !selected && freeze ? 'hidden' : 'visible'}>
                 <TabBarItem
                     ref={(ref: any) => {
                         const viewConfig = ref?.viewConfig || ref?._viewConfig || ref?.__viewConfig;
@@ -61,7 +51,7 @@ const TabBarItem = ({selected, onPress, children, title, image, systemItem, badg
                         </BackHandlerContext.Provider>
                     </TabBarItemContext.Provider>
                 </TabBarItem>
-            </Freeze>
+            </Activity>
         </>
     );
 }
