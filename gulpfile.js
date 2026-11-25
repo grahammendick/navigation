@@ -24,14 +24,14 @@ var items = [
         require('./build/npm/navigation-react-mobile/package.json')),
     Object.assign({ globals: { navigation: 'Navigation', react: 'React',
             'navigation-react': 'NavigationReact', 'react-native': 'ReactNative' },
-            format: 'es' },
+            format: 'es', banner: "'use client';" },
         require('./build/npm/navigation-react-native/package.json')),
     Object.assign({ globals: { navigation: 'Navigation', react: 'React',
             'navigation-react': 'NavigationReact', 'react-native': 'ReactNative',
             'navigation-react-mobile': 'NavigationReactMobile' } },
         require('./build/npm/navigation-react-native-web/package.json')),
 ];
-function rollupTask(name, input, file, globals, format) {
+function rollupTask(name, input, file, globals, format, banner) {
     var include = input.replace(name + '.ts', '**');
     var tsconfig = input.replace(name + '.ts', 'tsconfig.json');
     return rollup.rollup({
@@ -40,7 +40,7 @@ function rollupTask(name, input, file, globals, format) {
         plugins: input.indexOf('Test') === -1
             ? [ typescript({ include, tsconfig }), cleanup({ comments: 'none' }) ] 
             : [ sucrase({ include: input, transforms: ['typescript','jsx'], jsxRuntime: 'automatic' }) ]
-    }).then((bundle) => bundle.write({ format, name, globals, file }));
+    }).then((bundle) => bundle.write({ format, name, globals, file, banner }));
 }
 function buildTask(name, input, file, globals, details) {
     var info = `/**
@@ -99,12 +99,12 @@ var itemTasks = items.reduce((tasks, item) => {
     var jsTo = './build/dist/' + packageName.replace(/-/g, '.') + '.js';
     var jsPackageTo = './build/npm/' + packageName + '/' + packageName.replace(/-/g, '.') + '.js';
     item.name = upperName.replace(/-/g, ' ');
-    var { globals = {}, format = 'cjs' } = item;
+    var { globals = {}, format = 'cjs', banner } = item;
     tasks.buildTasks.push(
         nameFunc(() => buildTask(name, tsFrom, jsTo, globals, item), 'build' + name));
     if (!item.exports) {
         tasks.packageTasks.push(
-            nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format), 'package' + name)
+            nameFunc(() => rollupTask(name, tsFrom, jsPackageTo, globals, format, banner), 'package' + name)
         );
     } else {
         var include = tsFrom.replace(name + '.ts', '**/*.{ts,tsx}');
