@@ -153,7 +153,7 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
     if (!navigationEvent) {
         const {data} = raiseNavigationEvent();
         const {url} = data.stateNavigator.stateContext;
-        const rscCaches = (parentNavigationEvent.state ? parentNavigationEvent : bundler)['rscCaches'] ||= {};
+        const rscCaches = (parentNavigationEvent.state ? (parentNavigationEvent['rscCache'] ||= {}) : bundler)['rscCaches'] ||= {};
         if (rscCaches[url]) data.rscCache = rscCaches[url];
         else rscCaches[url] = data.rscCache ||= {};
     }
