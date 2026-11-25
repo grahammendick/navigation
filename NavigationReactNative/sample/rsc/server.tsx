@@ -5,11 +5,10 @@ import People from './People';
 import List from './List';
 import Person from './Person';
 import Friends from './Friends';
-import TabsScene from './TabsScene';
 
 export async function renderSceneViews({url, oldUrl, sceneViewKeys, rootViews, action, args, prefetch}: {url: string, oldUrl?: string, sceneViewKeys: string[], rootViews: any, action: any, args: any[], prefetch?: boolean}) {
   const sceneViews: any = {
-    people: TabsScene,
+    people: People,
     list: List,
     person: Person,
     friends: Friends,
