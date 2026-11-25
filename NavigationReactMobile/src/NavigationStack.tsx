@@ -1,5 +1,5 @@
 'use client'
-import React, {useRef, useState, useContext, useEffect, ReactElement} from 'react';
+import React, {useRef, useState, useContext, useEffect, useLayoutEffect, ReactElement} from 'react';
 import { State, StateNavigator } from 'navigation';
 import { NavigationContext, NavigationEvent, SceneView, useRootViewRegistry } from 'navigation-react';
 import Scene from './Scene.js';
@@ -147,7 +147,7 @@ const NavigationStack = ({unmountStyle: unmountStyleStack, crumbStyle: crumbStyl
         }, 300);
         return () => clearTimeout(timer);
     }, [pause]);
-    useEffect(() => {
+    useLayoutEffect(() => {
         for(const key of Object.keys(allScenes) as any) {
             for(const {key: sceneViewKey, active} of getRootViews(allScenes[key]))
                 registerRootView(sceneViewKey, active);

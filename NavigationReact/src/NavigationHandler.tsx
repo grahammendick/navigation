@@ -244,7 +244,11 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
                 && Object.keys(navigationData).length === Object.keys(data).length
                 && Object.keys(navigationData).every(key => LinkUtility.areEqual(navigationData[key], data[key]))
             ));
-            if (prefetch) return prefetch.getItem(sceneViewKey);
+            if (prefetch) {
+                const sceneView = await prefetch.getItem(sceneViewKey);
+                if (sceneView) return sceneView;
+                return (await fetchRSC([sceneViewKey], null, null, navigationEventData))[sceneViewKey];
+            }
             if (!navigationEventData.rscFetch) {
                 let resolve: (sceneViewKeys: string[]) => void;
                 const promise = new Promise<string[]>(res => resolve = res);
@@ -285,7 +289,8 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
                 && Object.keys(prefetch.navigationData).every(key => LinkUtility.areEqual(prefetch.navigationData[key], navigationData[key]))
             ))) return;
             const items = {}, resolvers = {}, rejecters = {};
-            const getItem = (key: string) => items[key] ||= new Promise((res, rej) => {
+            let done = false;
+            const getItem = (key: string) => items[key] ||= done ? Promise.resolve() : new Promise((res, rej) => {
                 resolvers[key] = res;
                 rejecters[key] = rej;
             });
@@ -315,6 +320,8 @@ const NavigationHandler = ({stateNavigator, url, children}: {stateNavigator: Sta
                         for (const key of keys) entry.navigationData[key] = navigationData[key];
                     }, () => {});
                 }
+                done = true;
+                for (const key in resolvers) resolvers[key]();
             } catch (e) {
                 filterPrefetches(item => item !== prefetch);
                 for (const key in rejecters) rejecters[key](e);

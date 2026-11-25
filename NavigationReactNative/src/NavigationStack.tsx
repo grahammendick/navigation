@@ -217,7 +217,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     useLayoutEffect(() => {
         committedStack.current = {stateNavigator, keys, refresh, counter};
     });
-    useEffect(() => {
+    useLayoutEffect(() => {
         for (const key of Object.keys(allScenes)) {
             for (const {key: sceneViewKey, active} of getRootViews(allScenes[key]))
                 registerRootView(sceneViewKey, active);
