@@ -1,7 +1,7 @@
 import React, { ReactNode, ReactElement, useRef, useState, useContext, useEffect, useMemo, useLayoutEffect } from 'react';
 import { Platform, requireNativeComponent, StyleSheet } from 'react-native';
 import { StateNavigator, Crumb, State, StateContext } from 'navigation';
-import { NavigationContext, SceneView, useRootViewRegistry } from 'navigation-react';
+import { NavigationContext, TransitionContext, SceneView, useRootViewRegistry } from 'navigation-react';
 import FragmentContext from './FragmentContext';
 import InsetsContext from './InsetsContext';
 import PopSync from './PopSync';
@@ -19,6 +19,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
     const fragmentTags = useMemo(() => fragmentTag ? [...ancestorFragmentTags, fragmentTag] : [], [ancestorFragmentTags, fragmentTag]);
     const insets = useRef({top: 0, bottom: 0});
     const navigationEvent = useContext(NavigationContext);
+    const navigationTransition = useContext(TransitionContext);
     const registerRootView = useRootViewRegistry();
     const resetLinkStateContext = useRef(null);
     const committedStack = useRef<CommittedStack>({stateNavigator: null, keys: [], refresh: false, counter: 0});
@@ -45,7 +46,7 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const firstNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
         firstNavigator.navigateLink(firstLink);
         const {oldState, state, data, asyncData} = firstNavigator.stateContext;
-        return {oldState, state, data, asyncData, stateNavigator: firstNavigator};
+        return {oldState, state, data, asyncData, stateNavigator: firstNavigator, refetching: true, rscCache: navigationEvent['rscCache']} as any;
     }, [firstLink, navigationEvent]);
     const getRootViews = (scene: ReactElement<any>) => {
         const {stateKey, client} = scene.props;
@@ -68,6 +69,8 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         }
         return rscFetching;
     };
+    if (firstNavigationEvent && !firstNavigationEvent.rscFetching) firstNavigationEvent.rscFetching = primeRootViews(firstNavigationEvent.state.key);
+    const firstNavigationTransition = useMemo(() => firstNavigationEvent && {navigationEvent: firstNavigationEvent, nextNavigationEvent: firstNavigationEvent}, [firstNavigationEvent]);
     useEffect(() => {
         prevScenes.current = allScenes;
         const {stateNavigator} = navigationEvent;
@@ -228,42 +231,44 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         <FragmentContext.Provider value={fragmentTags}>
             <InsetsContext.Provider value={insets.current}>
                 <NavigationContext.Provider value={firstNavigationEvent || navigationEvent}>
-                    <NVNavigationStack
-                        ref={ref}
-                        keys={keys}
-                        fragmentTag={fragmentTag}
-                        ancestorFragmentTags={ancestorFragmentTags}
-                        mostRecentEventCount={mostRecentEventCount}
-                        customAnimation={customAnimation}
-                        style={styles.stack}
-                        {...getAnimation()}
-                        onWillNavigateBack={onWillNavigateBack}
-                        onNavigateToTop={onNavigateToTop}
-                        onApplyInsets={onApplyInsets}
-                        onRest={onRest}>
-                        <PopSync<{crumb: number, url: string, stateKey: string}>
-                            data={crumbs.concat(nextCrumb || []).map(({url, state: {key: stateKey}}, crumb) => ({crumb, url, stateKey}))}
-                            getKey={({crumb}) => keys[crumb]}>
-                            {(scenes, popNative) => scenes.map(({key, data: {crumb, url, stateKey}}) => (
-                                <Scene
-                                    key={key}
-                                    url={url}
-                                    crumb={crumb}
-                                    sceneKey={key}
-                                    rest={rest}
-                                    customAnimation={customAnimation}
-                                    unmountStyle={unmountStyle}
-                                    crumbStyle={crumbStyle}
-                                    hidesTabBar={hidesTabBar}
-                                    backgroundColor={backgroundColor}
-                                    landscape={landscape}
-                                    title={title}
-                                    popped={popNative}
-                                    primeRefetch={() => primeRootViews(stateKey)}
-                                    renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
-                            ))}
-                        </PopSync>
-                    </NVNavigationStack>
+                    <TransitionContext.Provider value={firstNavigationTransition || navigationTransition}>
+                        <NVNavigationStack
+                            ref={ref}
+                            keys={keys}
+                            fragmentTag={fragmentTag}
+                            ancestorFragmentTags={ancestorFragmentTags}
+                            mostRecentEventCount={mostRecentEventCount}
+                            customAnimation={customAnimation}
+                            style={styles.stack}
+                            {...getAnimation()}
+                            onWillNavigateBack={onWillNavigateBack}
+                            onNavigateToTop={onNavigateToTop}
+                            onApplyInsets={onApplyInsets}
+                            onRest={onRest}>
+                            <PopSync<{crumb: number, url: string, stateKey: string}>
+                                data={crumbs.concat(nextCrumb || []).map(({url, state: {key: stateKey}}, crumb) => ({crumb, url, stateKey}))}
+                                getKey={({crumb}) => keys[crumb]}>
+                                {(scenes, popNative) => scenes.map(({key, data: {crumb, url, stateKey}}) => (
+                                    <Scene
+                                        key={key}
+                                        url={url}
+                                        crumb={crumb}
+                                        sceneKey={key}
+                                        rest={rest}
+                                        customAnimation={customAnimation}
+                                        unmountStyle={unmountStyle}
+                                        crumbStyle={crumbStyle}
+                                        hidesTabBar={hidesTabBar}
+                                        backgroundColor={backgroundColor}
+                                        landscape={landscape}
+                                        title={title}
+                                        popped={popNative}
+                                        primeRefetch={() => primeRootViews(stateKey)}
+                                        renderScene={firstLink ? ({key}) => allScenes[key] : renderScene} />
+                                ))}
+                            </PopSync>
+                        </NVNavigationStack>
+                    </TransitionContext.Provider>
                 </NavigationContext.Provider>
             </InsetsContext.Provider>
         </FragmentContext.Provider>

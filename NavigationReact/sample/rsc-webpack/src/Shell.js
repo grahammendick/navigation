@@ -5,9 +5,13 @@ import { NavigationHandler } from 'navigation-react';
 import createStateNavigator from './stateNavigator.js';
 
 const Shell = ({url, children}) => {
-  const stateNavigator = useMemo(() => createStateNavigator(), [createStateNavigator]);
+  const stateNavigator = useMemo(() => {
+    const stateNavigator = createStateNavigator();
+    stateNavigator.navigateLink(url, 'replace');
+    return stateNavigator;
+  }, [createStateNavigator]);
   return (
-    <NavigationHandler stateNavigator={stateNavigator} url={url}>
+    <NavigationHandler stateNavigator={stateNavigator}>
       {children}
     </NavigationHandler>
   );

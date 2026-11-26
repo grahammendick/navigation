@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 import { NavigationHandler } from 'navigation-react';
 import createStateNavigator from './stateNavigator';
 
-const Shell = ({url, children}: {url: string, children: any}) => {
+const Shell = ({children}: {children: any}) => {
   const stateNavigator = useMemo(() => createStateNavigator(), [createStateNavigator]);
   return (
-    <NavigationHandler {...{stateNavigator, url} as any}>
+    <NavigationHandler stateNavigator={stateNavigator}>
       {children}
     </NavigationHandler>
   );

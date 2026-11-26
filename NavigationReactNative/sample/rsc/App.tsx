@@ -5,7 +5,7 @@ import Person from './Person';
 
 export default function App() {
   return (
-    <Shell url="/">
+    <Shell>
       <NavigationStack>
         <Scene stateKey="people" client={false}>
           <People />
