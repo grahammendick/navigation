@@ -44,6 +44,10 @@ const NavigationStack = ({underlayColor: underlayColorStack = '#000', title, cus
         const {stateNavigator} = navigationEvent;
         if (!firstLink || stateNavigator.stateContext.state) return null;
         const firstNavigator = new StateNavigator(stateNavigator, stateNavigator.historyManager);
+        firstNavigator.onBeforeNavigate = stateNavigator.onBeforeNavigate;
+        firstNavigator.offBeforeNavigate = stateNavigator.offBeforeNavigate;
+        firstNavigator.onNavigate = stateNavigator.onNavigate;
+        firstNavigator.offNavigate = stateNavigator.offNavigate;
         firstNavigator.navigateLink(firstLink);
         const {oldState, state, data, asyncData} = firstNavigator.stateContext;
         return {oldState, state, data, asyncData, stateNavigator: firstNavigator, refetching: true, rscCache: navigationEvent['rscCache']} as any;
