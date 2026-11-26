@@ -16,7 +16,7 @@ const bundler = {
 };
 
 registerRootComponent(() => (
-  <BundlerContext.Provider value={bundler as any}>
+  <BundlerContext.Provider value={bundler}>
     <App />
   </BundlerContext.Provider>
 ));

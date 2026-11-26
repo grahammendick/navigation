@@ -139,6 +139,10 @@ export class NavigationStack extends Component<NavigationStackProps> { }
      */
     stateKey: keyof NavigationInfo & string;
     /**
+     * Indicates whether the RSC Scene is a client component
+     */
+    client?: boolean;
+    /**
      * A Scene's to and from crumb trail style
      * @platform android
      */

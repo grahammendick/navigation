@@ -43,22 +43,32 @@ export var RefetchContext: Context<any>;
  */
 export var BundlerContext: Context<{
     /**
+     * Fetches RSC Views from the server
+     */
+    fetchRSC: (url: string, options: { body: any, headers?: Record<string, string>, signal?: AbortSignal }) => Promise<any>;
+    /**
+     * Registers a Hot Module Replacement reload listener
+     */
+    onHmrReload: (hmrReload: () => void) => () => void;
+}>;
+
+/**
+ * Creates RSC View fetcher from the bundler
+ */
+export function createFetchRSC(bundler: {
+    /**
+     * Part of RSC bundler api
+     */
+    createFromFetch: (promiseForResponse: Promise<Response>, options?: object) => Promise<any>;
+    /**
      * Part of RSC bundler api
      */
     createTemporaryReferenceSet: () => unknown;
     /**
      * Part of RSC bundler api
      */
-    encodeReply: (v: unknown[], options?: unknown) => Promise<string | FormData>;
-    /**
-     * Part of RSC bundler api
-     */
-    createFromFetch<T>(promiseForResponse: Promise<Response>, options?: object): Promise<T>;
-    /**
-     * Registers a Hot Module Replacement reload listener
-     */
-    onHmrReload: (hmrReload: () => void) => () => void;
-}>;
+    encodeReply: (v: any, options?: unknown) => Promise<string | FormData>;
+}): (url: string, options: { body: any, headers?: Record<string, string>, signal?: AbortSignal }) => Promise<any>;
 
 /**
  * The hook that provides the current navigation event data

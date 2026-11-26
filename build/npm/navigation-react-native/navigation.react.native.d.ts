@@ -11,6 +11,7 @@ declare global {
     interface SVGSetElement {}
     interface NavigationPrecommitController {}
     interface NavigationResult {}
+    interface NavigationDestination {}
     interface NavigateEvent {}
     interface HTMLAnchorElement {}
     interface URL {}
@@ -137,6 +138,10 @@ export class NavigationStack extends Component<NavigationStackProps> { }
      * The key of the corresponding State
      */
     stateKey: keyof NavigationInfo & string;
+    /**
+     * Indicates whether the RSC Scene is a client component
+     */
+    client?: boolean;
     /**
      * A Scene's to and from crumb trail style
      * @platform android
