@@ -7,7 +7,7 @@ import TransitionContext from './TransitionContext.js';
 import SceneViewContext from './SceneViewContext.js';
 import BundlerContext from './BundlerContext.js';
 import LinkUtility from './LinkUtility.js';
-type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean, sceneViews?: any, scrollY?: number};
+type Intercept = {resume?: () => void, commit?: () => void, signal?: AbortSignal, title?: string, controller?: NavigationPrecommitController, hasUAVisualTransition?: boolean, sceneViews?: any, scrollY?: number, cancelable?: boolean};
 type RSCFetch = {sceneViewKeys: string[], resolve: (sceneViewKeys: string[]) => void, sceneViews: Promise<any>, timeout?: ReturnType<typeof setTimeout>};
 type NavigationHandlerState = { ignoreCache?: boolean | string, rscCache?: any, rscFetching?: any, rscFetch?: RSCFetch, hasUAVisualTransition?: boolean, uncommitted?: boolean, trackable?: any, oldState: State, state: State, data: any, asyncData: any, stateNavigator: StateNavigator & { navigateLink: (...args: [...Parameters<StateNavigator['navigateLink']>, Intercept?]) => void } };
 
@@ -68,10 +68,12 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
                     suspendNavigation(stateContext, () => {
                         navigating = true;
-                        const startTran = startTransition || ((transition) => transition());
+                        const committed = history && !intercept.cancelable;
+                        const startTran = (!committed && startTransition) || ((transition) => transition());
                         intercept.title = typeof document !== 'undefined' && fetchServer ? document.title : null;
                         if (typeof window !== 'undefined' && fetchServer && window.navigation?.currentEntry) window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), scrollY: window.scrollY}});
                         intercept.resume = resumeNavigation;
+                        if (committed) resumeNavigation();
                         startTran(() => {
                             raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
                         });
@@ -397,10 +399,10 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }, [isPending, navigationEvent]);
     useEffect(() => {
         if (typeof window === 'undefined' || !fetchServer || !window.navigation) return;
-        stateNavigator.historyManager.interceptHistory((navigationLink: string, {signal, hasUAVisualTransition, destination}: NavigateEvent) => (
+        stateNavigator.historyManager.interceptHistory((navigationLink: string, {signal, hasUAVisualTransition, destination, cancelable}: NavigateEvent) => (
             new Promise((resolve, reject) => {
                 const {sceneViews, scrollY} = destination.getState() as any || {};
-                const intercept = {commit: resolve, signal, hasUAVisualTransition, sceneViews, scrollY};
+                const intercept = {commit: resolve, signal, hasUAVisualTransition, sceneViews, scrollY, cancelable: cancelable && !!window.NavigationPrecommitController};
                 navigationEvent.data.stateNavigator.navigateLink(navigationLink, undefined, true, undefined, undefined, intercept);
                 signal.addEventListener('abort', () => {
                     reject(signal.reason);
