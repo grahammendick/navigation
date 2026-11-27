@@ -19,7 +19,7 @@ const Details = async () => {
       <Text>Phone</Text>
       <Text>{phone}</Text>
       <Gender>
-        <SceneView active="person" name="friends" fallback={<View />}>
+        <SceneView active="person" name="friends" fallback={null}>
           <Friends />
         </SceneView>
       </Gender>

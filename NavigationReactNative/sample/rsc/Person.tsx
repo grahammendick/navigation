@@ -1,5 +1,5 @@
 'use server';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { SceneView, useNavigationEvent } from 'navigation-react';
 import { NavigationBar } from 'navigation-react-native';
 import { getPerson } from './data';
@@ -22,7 +22,7 @@ const Person = async () => {
         <Text>Phone</Text>
         <Text>{phone}</Text>
         <Gender>
-          <SceneView active="person" name="friends" fallback={<View />}>
+          <SceneView active="person" name="friends" fallback={null}>
             <Friends />
           </SceneView>
         </Gender>

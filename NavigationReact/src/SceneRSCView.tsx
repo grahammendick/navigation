@@ -116,7 +116,7 @@ const SceneView = ({active, name, ancestors, rendered, pending, fallback, errorF
                         }}>{sceneView}</SceneViewInner>
                     </SceneViewContext.Provider>
                 );
-                return fallback && sceneView && suspense ? <Suspense fallback={fallback}>{view}</Suspense> : view;
+                return fallback !== undefined && sceneView && suspense ? <Suspense fallback={fallback}>{view}</Suspense> : view;
             })()}
         </ErrorBoundary>
     );

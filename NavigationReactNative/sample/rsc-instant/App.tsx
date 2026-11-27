@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { SceneView } from 'navigation-react';
 import { NavigationStack, Scene } from 'navigation-react-native';
 import Shell from './Shell';
@@ -21,7 +21,7 @@ export default function App() {
         </Scene>
         <Scene stateKey="person">
           <Person>
-            <SceneView active="person" name="header" client={false} fallback={<View />}>
+            <SceneView active="person" name="header" client={false} fallback={null}>
               <Name />
             </SceneView>
             <SceneView active="person" client={false} fallback={<Text>loading...</Text>}>
