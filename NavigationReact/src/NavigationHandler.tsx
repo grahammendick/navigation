@@ -68,13 +68,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                 stateNavigator.navigateLink(url, historyAction, history, (stateContext, resumeNavigation) => {
                     suspendNavigation(stateContext, () => {
                         navigating = true;
+                        const {state, oldState, oldUrl, crumbs} = stateContext;
+                        const refresh = state === oldState && oldUrl?.split('crumb=').length - 1 === crumbs.length;
                         const committed = history && !intercept.cancelable;
-                        const startTran = (!committed && startTransition) || ((transition) => transition());
+                        const startTran = ((!committed || refresh) && startTransition) || ((transition) => transition());
                         intercept.title = typeof document !== 'undefined' && fetchServer ? document.title : null;
                         if (typeof window !== 'undefined' && fetchServer && window.navigation?.currentEntry) window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), scrollY: window.scrollY}});
                         intercept.resume = resumeNavigation;
-                        if (committed) resumeNavigation();
                         startTran(() => {
+                            if (committed) resumeNavigation();
                             raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
                         });
                     })
