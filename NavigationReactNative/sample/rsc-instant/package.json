@@ -1,0 +1,29 @@
+{
+  "name": "rsc-instant",
+  "version": "1.0.0",
+  "main": "index.tsx",
+  "dependencies": {
+    "@expo/metro-runtime": "~58.0.17",
+    "expo": "~58.1.0",
+    "expo-router": "~58.0.33",
+    "expo-status-bar": "~58.0.5",
+    "navigation": "^6.7.0",
+    "navigation-react": "^4.25.0",
+    "navigation-react-native": "^9.38.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.1",
+    "react-server-dom-webpack": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.3.0",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "start": "NODE_OPTIONS='--require ./alsFix.cjs' expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web"
+  },
+  "private": true
+}
