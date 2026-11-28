@@ -25,6 +25,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     const cache = useRef([]);
     const prefetches = useRef([]);
     const invalidateListeners = useRef(new Set<(stateContext: StateContext) => void>());
+    const ignoreNavigate = useRef(false);
     const expireCache = (sceneViewKey: string | boolean, crumbs?: number) => {
         cache.current.forEach((crumbCache, i) => {
             if (crumbs !== undefined && i !== crumbs) return;
@@ -75,8 +76,15 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
                         intercept.title = typeof document !== 'undefined' && fetchServer ? document.title : null;
                         if (typeof window !== 'undefined' && fetchServer && window.navigation?.currentEntry) window.navigation.updateCurrentEntry({state: {...window.navigation.currentEntry.getState(), scrollY: window.scrollY}});
                         intercept.resume = resumeNavigation;
+                        if (committed) {
+                            ignoreNavigate.current = true;
+                            try {
+                                resumeNavigation();
+                            } finally {
+                                ignoreNavigate.current = false;
+                            }
+                        }
                         startTran(() => {
-                            if (committed) resumeNavigation();
                             raiseNavigationEvent(stateContext, intercept, this.stateContext['rscCache']);
                         });
                     })
@@ -351,7 +359,7 @@ const NavigationHandler = ({stateNavigator, children}: {stateNavigator: StateNav
     }), [navigationEvent, nextNavigationEvent, fetchRSC]);
     useEffect(() => {
         const onNavigate = () => {
-            if (navigationEvent.stateNavigator === stateNavigator && navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
+            if (!ignoreNavigate.current && navigationEvent.stateNavigator === stateNavigator && navigationEvent.data.stateNavigator.stateContext !== stateNavigator.stateContext)
                 raiseNavigationEvent();
         };
         stateNavigator.onNavigate(onNavigate);
